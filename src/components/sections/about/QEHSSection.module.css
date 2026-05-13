@@ -1,0 +1,250 @@
+.section {
+  position: relative;
+  padding: 120px 0;
+  background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 150px;
+}
+
+.subtitle {
+  color: var(--brand-green);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--text-on-dark);
+  font-weight: 800;
+}
+
+.mazeWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.mazePathContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.svgPath {
+  width: 100%;
+  height: 100%;
+}
+
+.riverPath {
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 15 25;
+}
+
+.riverProgress {
+  stroke: var(--brand-green);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px rgba(130, 195, 65, 0.8));
+}
+
+.policyItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(100px * var(--item-scale, 1));
+  height: var(--item-height, 600px);
+  position: relative;
+  z-index: 2;
+}
+
+.policyItem.reverse {
+  flex-direction: row-reverse;
+}
+
+.numberWrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.largeNumber {
+  font-size: calc(14rem * var(--item-scale, 1));
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
+  display: block;
+  font-family: var(--font-outfit), sans-serif;
+  user-select: none;
+}
+
+.glowLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.textContent {
+  flex: 1;
+  max-width: 550px;
+}
+
+.policyTitle {
+  font-size: calc(2.8rem * var(--item-scale, 1));
+  color: var(--text-on-dark);
+  margin-bottom: calc(25px * var(--item-scale, 1));
+  font-weight: 700;
+}
+
+.policyText {
+  color: var(--text-secondary-on-dark);
+  line-height: 1.8;
+  font-size: calc(1.15rem * var(--item-scale, 1));
+  margin-bottom: calc(30px * var(--item-scale, 1));
+}
+
+.actionCircle {
+  width: calc(50px * var(--item-scale, 1));
+  height: calc(50px * var(--item-scale, 1));
+  border-radius: 50%;
+  background: var(--brand-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 20px rgba(130, 195, 65, 0.3);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.actionCircle:hover {
+  transform: scale(1.1) rotate(45deg);
+}
+
+.arrow {
+  width: calc(12px * var(--item-scale, 1));
+  height: calc(12px * var(--item-scale, 1));
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+  transform: rotate(45deg);
+  margin-left: calc(-3px * var(--item-scale, 1));
+}
+
+.imageContent {
+  flex: 1;
+  max-width: 650px;
+}
+
+.policyImageWrapper {
+  position: relative;
+  aspect-ratio: 16/10;
+  border-radius: 2px;
+  /* Clean sharp corners like modern tech sites */
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.policyImage {
+  object-fit: cover;
+  transition: transform 1s ease;
+}
+
+.policyItem:hover .policyImage {
+  transform: scale(1.05);
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholderGlow {
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(130, 195, 65, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1200px) {
+  .policyItem {
+    gap: 50px;
+  }
+
+  .largeNumber {
+    font-size: 7rem;
+  }
+}
+
+@media (max-width: 968px) {
+
+  .policyItem,
+  .policyItem.reverse {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .numberWrapper {
+    position: relative;
+    top: 0;
+    transform: none;
+    left: 0;
+    margin-bottom: -40px;
+  }
+
+  .mazePathContainer {
+    display: none;
+  }
+
+  .policyTitle {
+    font-size: 2rem;
+  }
+
+  .actionCircle {
+    margin: 0 auto;
+  }
+}

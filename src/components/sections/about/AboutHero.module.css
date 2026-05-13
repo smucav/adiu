@@ -1,0 +1,252 @@
+.heroSection {
+  position: relative;
+  padding: 160px 0 100px;
+  overflow: hidden;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--hero-bg-start) 0%,
+    var(--hero-bg-end) 100%
+  );
+  color: var(--text-on-dark);
+}
+
+[data-theme="dark"] .heroSection {
+  background: linear-gradient(135deg, var(--hero-bg-start) 0%, #000 100%);
+}
+
+.mapContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Changed from -1 to 0 */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  /* Container itself doesn't block, but children can */
+}
+
+.mapInteractiveWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: -100px;
+  /* Shift the entire map container to the left */
+  pointer-events: auto;
+  /* Enable events for the map */
+}
+
+.mapImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.6;
+}
+
+/* Position estimation for Ethiopia on a standard world map */
+.ethiopiaGlow {
+  position: absolute;
+  top: 48%;
+  /* Moved North (up) */
+  left: 61%;
+  /* Moved East (right) towards the Horn of Africa */
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #82c341;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 15px #82c341;
+}
+
+.pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #82c341;
+  border-radius: 50%;
+  z-index: 1;
+  animation: radarPulse 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  /* Ensure content is above map */
+  pointer-events: none;
+  /* Let events pass through to map in empty areas */
+}
+
+.content {
+  max-width: 1100px;
+  margin-bottom: 100px;
+  pointer-events: none;
+  /* Let hover pass through to map */
+}
+
+.heading {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  color: var(--text-on-dark);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  pointer-events: none;
+}
+
+.description {
+  font-size: 1.125rem;
+  color: var(--text-secondary-on-dark);
+  max-width: 600px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 80px;
+
+  pointer-events: none;
+  /* Let hover pass through to map */
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  pointer-events: none;
+}
+
+/*.statValue {
+  font-size: clamp(3.5rem, 5vw, 5rem);
+  font-weight: 800;
+  color: var(--brand-green);
+  -webkit-text-stroke: 2px white;
+  margin-bottom: 12px;
+  line-height: 1;
+}*/
+.statValue {
+  font-size: clamp(3.5rem, 5vw, 5rem);
+  font-weight: 800;
+  /*color: #72b331;*/ /* Lime green */
+  color: #f5f5f5;
+  -webkit-text-stroke: 2px #000;
+  paint-order: stroke fill;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.statDesc {
+  font-size: 1rem;
+  color: var(--text-secondary-on-dark);
+  margin-bottom: 0;
+}
+
+.mapTooltip {
+  position: absolute;
+  bottom: 20px;
+  /*background: var(--text-primary);*/
+  background: #a5e7a9;
+  backdrop-filter: blur(8px);
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #82c341;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 0;
+  margin-right: -220px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.country {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 0.5px;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  outline: none;
+  pointer-events: all;
+  transform-origin: center;
+}
+
+.glow {
+  fill: rgba(130, 195, 65, 0.4);
+  stroke: rgba(130, 195, 65, 0.8);
+  stroke-width: 1.5px;
+  filter: drop-shadow(0 0 8px rgba(130, 195, 65, 0.4));
+}
+
+.hovered {
+  fill: #82c341 !important;
+  stroke: #ffffff !important;
+  stroke-width: 1.5px !important;
+  filter: drop-shadow(0 0 15px #82c341);
+  cursor: pointer;
+  transform: scale(1.05) translateZ(0);
+  /* Fisheye-like scale effect */
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .statsRow {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 60px;
+  }
+
+  .mapInteractiveWrapper {
+    transform: scale(1.6);
+    margin-top: -40px;
+  }
+
+  .mapTooltip {
+    bottom: 0px;
+  }
+}

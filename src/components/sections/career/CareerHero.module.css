@@ -1,0 +1,85 @@
+.heroSection {
+  padding: 120px 0 80px;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+.layout {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.imageColumn {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroImage {
+  object-fit: contain;
+}
+
+.textColumn {
+  flex: 1;
+  max-width: 600px;
+}
+
+.title {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 500;
+  color: #000;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--brand-green);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 4px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ctaButton:hover {
+  background-color: var(--brand-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(132, 196, 65, 0.3);
+}
+
+@media (max-width: 992px) {
+  .layout {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .textColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .imageColumn {
+    width: 100%;
+    min-height: 400px;
+  }
+}

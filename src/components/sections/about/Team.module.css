@@ -1,0 +1,139 @@
+.section {
+  overflow: hidden;
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+.header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Rainbow Arch Container */
+.teamWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 80px 0 120px;
+}
+
+.teamScroll {
+  display: flex;
+  gap: 32px;
+  padding: 0 40px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.teamCard {
+  position: relative;
+  flex: 0 0 180px;
+  height: 250px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f1f5f9;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  will-change: transform, opacity;
+}
+
+.teamCard:hover {
+  transform: translateY(-60px) scale(1.15) !important;
+  z-index: 50 !important;
+  opacity: 1 !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.imageWrapper img {
+  filter: grayscale(100%);
+  transition: filter 0.5s ease;
+}
+
+.teamCard:hover .imageWrapper img {
+  filter: grayscale(0%);
+}
+
+.cardOverlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: center;
+}
+
+.memberName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.memberRole {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 1100px) {
+  .teamCard {
+    flex: 0 0 150px;
+    height: 210px;
+  }
+  .teamScroll {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .teamScroll {
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 20px;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+  }
+  
+  .teamCard {
+    flex: 0 0 140px;
+    height: 200px;
+    transform: none !important;
+    scroll-snap-align: center;
+    opacity: 1 !important;
+  }
+}

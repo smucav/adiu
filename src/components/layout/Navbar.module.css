@@ -1,0 +1,159 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 16px 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scrolled {
+  padding: 10px 0;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 5vw;
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/*
+   UNIVERSAL GLASS PILL
+   This design works on any background (light or dark) without hardcoding.
+   The heavy blur + semi-opaque white background creates a "Floating Island"
+   that remains visible and legible everywhere.
+*/
+.navLinksWrapper {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 100px;
+  padding: 8px 32px;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  margin: 0 20px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    inset 0 0 1px 1px rgba(255, 255, 255, 1);
+  transition: all 0.3s ease;
+}
+
+.navLinks {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.navLink {
+  font-weight: 700;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1a1a1a; /* Always dark text inside the white glass pill */
+  opacity: 0.7;
+}
+
+.navLink:hover {
+  opacity: 1;
+  color: var(--brand-green);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.loginLink {
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+  /* For the login link which is outside the pill, we can use mix-blend-mode
+     to ensure it's visible on any background without hardcoding. */
+  color: #ffffff;
+  mix-blend-mode: difference;
+}
+
+.loginArrow {
+  font-size: 1.1rem;
+  margin-left: 2px;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.loginLink:hover {
+  opacity: 0.8;
+}
+
+.loginLink:hover .loginArrow {
+  transform: translateX(3px);
+}
+
+.signUpButton {
+  background: #58af58 !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 700 !important;
+  font-size: 0.7rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  border-radius: 6px !important;
+  padding: 10px 22px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.signUpButton:hover {
+  background: var(--brand-green) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(130, 195, 65, 0.3);
+}
+
+@media (max-width: 1200px) {
+  .navContainer {
+    padding: 0 24px;
+  }
+  .navLinksWrapper {
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navLinksWrapper {
+    display: none;
+  }
+  .actions {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .actions {
+    display: none;
+  }
+}

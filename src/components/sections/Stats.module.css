@@ -1,0 +1,227 @@
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.headerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.headerColumn {
+  text-align: left;
+  max-width: 600px;
+  margin: 0;
+}
+
+.headerAction {
+  margin-bottom: 8px; /* Align with description bottom baseline roughly */
+}
+
+.heading {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.arrow {
+  margin-left: 6px;
+  display: inline-block;
+}
+
+/* Minimalist Linear Layout */
+.minimalistWrapper {
+  position: relative;
+  width: 100%;
+  padding: 60px 0;
+  margin-top: 0;
+}
+
+.mainLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  transform: translateY(-50%);
+}
+
+.lineProgress {
+  height: 100%;
+  background: linear-gradient(to right, transparent, var(--brand-green), transparent);
+  width: 100%;
+  box-shadow: 0 0 15px var(--brand-green);
+}
+
+.statsRow {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.statItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+}
+
+.statContent {
+  text-align: center;
+  padding: 20px;
+}
+
+.statValue {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.plus {
+  font-size: 0.5em;
+  color: var(--brand-green);
+  margin-left: 4px;
+}
+
+.statLabel {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.statNode {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--brand-green);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  box-shadow: 0 0 10px var(--brand-green);
+}
+
+.above {
+  padding-bottom: 40px;
+}
+
+.above .statContent {
+  margin-bottom: 24px;
+}
+
+.above .statNode {
+  top: 100%;
+}
+
+.below {
+  padding-top: 40px;
+}
+
+.below .statContent {
+  margin-top: 24px;
+}
+
+.below .statNode {
+  top: 0;
+}
+
+.nodeRipple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: var(--brand-green);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 2s infinite;
+  opacity: 0.5;
+}
+
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 992px) {
+  .headerWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .mainLine {
+    left: 20px;
+    width: 2px;
+    height: 100%;
+    top: 0;
+    transform: none;
+  }
+
+  .lineProgress {
+    width: 100%;
+    height: 0;
+    background: linear-gradient(to bottom, transparent, var(--brand-green), transparent);
+  }
+
+  .statsRow {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 60px;
+    gap: 60px;
+  }
+
+  .statItem {
+    flex-direction: row;
+    width: 100%;
+    padding: 0 !important;
+    text-align: left;
+  }
+
+  .statContent {
+    text-align: left;
+    margin: 0 !important;
+    padding: 0;
+  }
+
+  .statValue {
+    justify-content: flex-start;
+  }
+
+  .statNode {
+    left: -40px;
+    top: 50% !important;
+  }
+}

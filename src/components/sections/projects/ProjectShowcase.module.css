@@ -1,0 +1,90 @@
+.showcaseSection {
+  padding: 0 0 100px;
+  background-color: var(--bg-primary);
+}
+
+.showcaseContainer {
+  background-color: #7695B0;
+  border-radius: 60px; /* Larger radius for the capsule feel */
+  padding: 120px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+/* Common Card Styles */
+.imageCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px; /* Softer, larger radius */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.textBlock h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.textBlock p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  max-width: 500px;
+}
+
+/* Alarm Row - Horizontal */
+.alarmRow {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.alarmImageWrapper {
+  flex: 0 0 60%;
+  aspect-ratio: 16/10;
+}
+
+/* ACDB Row - Asymmetric 3-column / 2-side */
+.acdbRow {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.acdbImageLeft {
+  flex: 0 0 280px;
+  height: 420px;
+}
+
+.acdbTextCenter {
+  flex: 1;
+  text-align: left;
+}
+
+.acdbImageRight {
+  flex: 0 0 420px;
+  height: 420px;
+}
+
+@media (max-width: 992px) {
+  .alarmRow, .acdbRow {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .alarmImageWrapper, .acdbImageLeft, .acdbImageRight {
+    width: 100%;
+    flex: none;
+  }
+  
+  .textBlock p {
+    margin: 0 auto;
+  }
+
+  .acdbRow {
+    flex-direction: column;
+  }
+}

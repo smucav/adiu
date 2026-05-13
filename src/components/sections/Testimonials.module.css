@@ -1,0 +1,184 @@
+.sectionWrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: #fcfdfe;
+  /* Extremely subtle off-white for contrast */
+}
+
+.testimonialsContainer {
+  width: 100%;
+  position: relative;
+  padding: 20px 0 80px 40;
+  /* Adjusted to balance with global .section padding */
+}
+
+.bgDecoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--brand-green);
+  opacity: 0.35;
+  /* Increased from 0.15 for better visibility */
+}
+
+.bgDecoration svg {
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  width: 100%;
+  margin-bottom: 32px;
+  /* Decreased from 80px for a tighter layout */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+}
+
+.heading {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  max-width: 800px;
+}
+
+.description {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 600px;
+  /* Aligning description width with other sections */
+  opacity: 0.8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(450px, 100%), 1fr));
+  gap: 32px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 32px;
+  padding: 48px 40px;
+  /* Refined vertical/horizontal padding */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(130, 195, 65, 0.4);
+  /* Transform removed to stop text moving */
+}
+
+.card::before {
+  content: "“";
+  position: absolute;
+  top: 15px;
+  left: 25px;
+  font-size: 100px;
+  font-family: serif;
+  color: var(--brand-green);
+  opacity: 0.1;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.quote {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+  font-weight: 500;
+  padding-left: 40px;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.avatarWrapper {
+  width: 56px;
+  height: 56px;
+  position: relative;
+  border-radius: 16px;
+  /* Modern Squircle */
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.authorPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.authorInitial {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand-green);
+  letter-spacing: 0.05em;
+}
+
+.authorMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.authorTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brand-green);
+  opacity: 0.9;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
