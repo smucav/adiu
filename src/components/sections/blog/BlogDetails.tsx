@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import styles from "./BlogDetails.module.css";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 
 import { SanityArticle } from "@/sanity/lib/types";
 import { urlForImage } from "@/sanity/lib/image";
@@ -17,12 +17,20 @@ interface BlogDetailsProps {
 
 export function BlogDetails({ article, related }: BlogDetailsProps) {
   const { scrollYProgress } = useScroll();
+  const [showToast, setShowToast] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
   });
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
 
   if (!article) return null;
 
@@ -123,30 +131,61 @@ export function BlogDetails({ article, related }: BlogDetailsProps) {
             <div className={styles.stickySide}>
               <div className={styles.sidebarLabel}>Share</div>
               <div className={styles.shareGroup}>
-                {article.author.socialLinks?.map((link, idx) => {
-                  const platform = link.platform.toLowerCase();
-                  let label = link.platform.substring(0, 2).toLowerCase();
+                <button 
+                  onClick={() => setIsShareOpen(!isShareOpen)}
+                  className={styles.shareMainBtn}
+                  data-active={isShareOpen}
+                >
+                  <span className={styles.shareIcon}>↗</span> SHARE
+                </button>
 
-                  if (platform.includes("linkedin")) label = "in";
-                  if (platform.includes("twitter") || platform.includes("x"))
-                    label = "tw";
-                  if (platform.includes("facebook")) label = "fb";
-                  if (platform.includes("telegram")) label = "tg";
-                  if (platform.includes("github")) label = "gh";
-                  if (platform.includes("instagram")) label = "ig";
-
-                  return (
-                    <Link
-                      key={idx}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.socialBtn}
+                <AnimatePresence>
+                  {isShareOpen && (
+                    <motion.div 
+                      className={styles.shareMenu}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     >
-                      {label}
-                    </Link>
-                  );
-                })}
+                      <button 
+                        onClick={copyToClipboard}
+                        className={styles.menuItem}
+                      >
+                        <span className={styles.menuLabel}>Copy Link</span>
+                        <span className={styles.menuIcon}>{showToast ? '✓' : '❐'}</span>
+                      </button>
+                      
+                      <div className={styles.menuDivider} />
+                      
+                      <a 
+                        href={`https://twitter.com/intent/tweet?url=${typeof window !== 'undefined' ? encodeURIComponent(window.location.href) : ''}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.menuItem}
+                      >
+                        Twitter
+                      </a>
+                      
+                      <a 
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${typeof window !== 'undefined' ? encodeURIComponent(window.location.href) : ''}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.menuItem}
+                      >
+                        LinkedIn
+                      </a>
+                      
+                      <a 
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${typeof window !== 'undefined' ? encodeURIComponent(window.location.href) : ''}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.menuItem}
+                      >
+                        Facebook
+                      </a>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </aside>
@@ -221,6 +260,19 @@ export function BlogDetails({ article, related }: BlogDetailsProps) {
           </section>
         )}
       </div>
+      {/* 📋 YouTube-Style Toast Notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div 
+            className={styles.toast}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+          >
+            Link copied to clipboard
+          </motion.div>
+        )}
+      </AnimatePresence>
     </article>
   );
 }
