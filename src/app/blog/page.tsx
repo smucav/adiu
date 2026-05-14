@@ -1,5 +1,4 @@
-import { BlogHero } from "@/components/sections/blog/BlogHero";
-import { LatestArticles } from "@/components/sections/blog/LatestArticles";
+import { TechArchive } from "@/components/sections/blog/TechArchive";
 import { client } from "@/sanity/lib/client";
 import { getBlogPageQuery, getArticlesQuery } from "@/sanity/lib/queries";
 
@@ -16,8 +15,11 @@ export default async function BlogPage() {
 
   return (
     <main>
-      <BlogHero data={blogPage} featured={featuredArticles} />
-      <LatestArticles data={blogPage} articles={latestArticles} />
+      <TechArchive 
+        data={blogPage}
+        articles={articles || []}
+        categories={blogPage?.filterCategories || []}
+      />
     </main>
   );
 }

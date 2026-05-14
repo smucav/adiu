@@ -9,8 +9,17 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media (min-width: 768px)  { .blogHeroSection { padding: 10rem 0 8rem; } }
-@media (min-width: 1024px) { .blogHeroSection { padding: 12rem 0 10rem; } }
+@media (min-width: 768px) {
+  .blogHeroSection {
+    padding: 10rem 0 8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blogHeroSection {
+    padding: 12rem 0 10rem;
+  }
+}
 
 
 
@@ -82,13 +91,12 @@
 
 .searchBar:focus-within {
   background: rgba(255, 255, 255, 0.1);
-  border-color: var(--brand-green);
-  box-shadow: 0 0 40px rgba(130, 195, 65, 0.2);
+  box-shadow: 0 0 0px rgba(130, 195, 65, 0.1);
   transform: scale(1.02);
 }
 
 .searchIcon {
-  color: var(--brand-green);
+  color: #000;
   display: flex;
 }
 
@@ -118,7 +126,7 @@
 }
 
 .searchBtn:hover {
-  transform: scale(1.05);
+  transform: scale(3.05);
   background: #fff;
 }
 
@@ -172,7 +180,7 @@
 .cardGlow {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, transparent 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
   z-index: 1;
 }
 
@@ -184,7 +192,9 @@
 }
 
 @media (max-width: 640px) {
-  .textZone { padding: 2.5rem; }
+  .textZone {
+    padding: 2.5rem;
+  }
 }
 
 .tagWrapper {
@@ -223,8 +233,15 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(3); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
 }
 
 .featuredTitle {
@@ -302,7 +319,8 @@
 }
 
 /* ── Decorative Floating Elements ───────────────────────── */
-.float1, .float2 {
+.float1,
+.float2 {
   position: absolute;
   font-family: monospace;
   font-size: 0.75rem;
@@ -313,5 +331,14 @@
   z-index: 1;
 }
 
-.float1 { top: 15%; left: 5%; transform: rotate(-90deg); }
-.float2 { top: 25%; right: 5%; transform: rotate(90deg); }
+.float1 {
+  top: 15%;
+  left: 5%;
+  transform: rotate(-90deg);
+}
+
+.float2 {
+  top: 25%;
+  right: 5%;
+  transform: rotate(90deg);
+}

@@ -95,6 +95,23 @@ export const article = defineType({
             },
           ],
         },
+        {
+          name: 'socialLinks',
+          title: 'Social Links',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                { name: 'platform', title: 'Platform Label', type: 'string', description: 'e.g. LinkedIn, Telegram, GitHub' },
+                { name: 'url', title: 'URL', type: 'url' },
+              ],
+              preview: {
+                select: { title: 'platform', subtitle: 'url' }
+              }
+            }
+          ]
+        },
       ],
     }),
     defineField({

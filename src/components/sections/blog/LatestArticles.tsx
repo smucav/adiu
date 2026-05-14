@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 
 import { SanityBlogPage, SanityArticle } from "@/sanity/lib/types";
 import { urlForImage } from "@/sanity/lib/image";
+import { TechArchive } from "./TechArchive";
 
 interface LatestArticlesProps {
   data?: SanityBlogPage | null;
@@ -111,18 +112,17 @@ export function LatestArticles({ data, articles }: LatestArticlesProps) {
     new Set(articles?.flatMap(a => a.categories).filter(Boolean))
   );
 
-  // 2. Use defined categories from Sanity, but only if they actually have articles
+  // 2. Use all categories defined in Sanity, regardless of count
   const sanityCategories = data?.filterCategories || [];
-  let dynamicCategories = sanityCategories.length > 0 
-    ? sanityCategories.filter(cat => activeArticleCategories.some(ac => ac.toLowerCase() === cat.toLowerCase()))
-    : activeArticleCategories;
+  let dynamicCategories = sanityCategories.length > 0 ? sanityCategories : activeArticleCategories;
 
   // 3. Ensure "All" is at the front
-  if (!dynamicCategories.includes("All")) {
+  if (!dynamicCategories.map(c => c.toLowerCase()).includes("all")) {
     dynamicCategories = ["All", ...dynamicCategories];
   }
 
   const [activeCategory, setActiveCategory] = useState(dynamicCategories[0]);
+  const [isArchiveMode, setIsArchiveMode] = useState(false);
 
   useEffect(() => {
     if (!dynamicCategories.includes(activeCategory)) {
@@ -130,10 +130,24 @@ export function LatestArticles({ data, articles }: LatestArticlesProps) {
     }
   }, [dynamicCategories, activeCategory]);
 
-  const filteredArticles = articles?.filter(article => {
-    if (activeCategory === "All") return true;
-    return article.categories?.some(cat => cat.toLowerCase() === activeCategory.toLowerCase());
-  }) || [];
+  // For the Grid View: Filter and skip the first article (which is featured in the Hero)
+  // For the Archive View: Show everything (handled inside the return block)
+  const gridArticles = (articles || [])
+    .slice(1) // Skip featured
+    .filter(article => {
+      if (activeCategory === "All") return true;
+      return article.categories?.some(cat => cat.toLowerCase() === activeCategory.toLowerCase());
+    });
+
+  if (isArchiveMode) {
+    return (
+      <TechArchive 
+        articles={articles || []}
+        categories={data?.filterCategories || []}
+        onClose={() => setIsArchiveMode(false)}
+      />
+    );
+  }
 
   return (
     <section className={styles.latestSection}>
@@ -159,13 +173,22 @@ export function LatestArticles({ data, articles }: LatestArticlesProps) {
         </div>
 
         <div className={styles.articleGrid}>
-          {filteredArticles.map((article, index) => (
-            <ArticleCard key={article._id} article={article} index={index} />
+          {gridArticles.map((article, i) => (
+            <ArticleCard key={article._id} article={article} index={i} />
           ))}
         </div>
 
+        {gridArticles.length === 0 && (
+          <div className={styles.noResults}>
+            No articles found in this category.
+          </div>
+        )}
+
         <div className={styles.loadMoreContainer}>
-          <button className={styles.loadMoreBtn}>
+          <button 
+            className={styles.loadMoreBtn}
+            onClick={() => setIsArchiveMode(true)}
+          >
             Discover More
             <div className={styles.btnGlow} />
           </button>

@@ -125,17 +125,25 @@
   flex-wrap: wrap;
 }
 
-.category {
-  background-color: var(--light-mint);
-  color: var(--text-primary);
-  font-size: 0.8125rem;
-  /* 44px touch target */
-  padding: 0.5rem 1rem;
-  min-height: var(--touch-min, 44px);
+.categoriesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.categoryBadge {
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--brand-green);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(130, 195, 65, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(130, 195, 65, 0.2);
   display: inline-flex;
   align-items: center;
-  border-radius: 4px;
-  text-transform: capitalize;
 }
 
 .date {

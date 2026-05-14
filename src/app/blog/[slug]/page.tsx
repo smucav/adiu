@@ -1,5 +1,4 @@
 import { BlogDetails } from "@/components/sections/blog/BlogDetails";
-import { LatestArticles } from "@/components/sections/blog/LatestArticles";
 import { client } from "@/sanity/lib/client";
 import { getArticleBySlugQuery, getArticlesQuery } from "@/sanity/lib/queries";
 import { notFound } from "next/navigation";
@@ -25,22 +24,14 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
     notFound();
   }
 
-  const moreArticles = await client.fetch(getArticlesQuery);
-  const filteredMore = moreArticles.filter((a: any) => a._id !== article._id).slice(0, 3);
+  const allArticles = await client.fetch(getArticlesQuery);
+  const relatedArticles = allArticles
+    .filter((a: any) => a._id !== article._id)
+    .slice(0, 3);
 
   return (
     <main>
-      <BlogDetails article={article} />
-
-      {/* Suggested Reading / Related Posts at bottom */}
-      <div style={{ backgroundColor: "#f8fafc", padding: "80px 0 20px" }}>
-        <div className="container" style={{ marginBottom: "-40px" }}>
-          <h2 style={{ fontSize: "2rem", marginBottom: "0", textAlign: "center", color: "#000" }}>
-            More to read
-          </h2>
-        </div>
-        <LatestArticles articles={filteredMore} />
-      </div>
+      <BlogDetails article={article} related={relatedArticles} />
     </main>
   );
 }

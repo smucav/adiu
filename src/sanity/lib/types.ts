@@ -66,6 +66,7 @@ export interface SanityArticle {
     role: string
     bio?: string
     image: SanityImage
+    socialLinks?: Array<{ platform: string; url: string }>
   }
   readTime: string
 }

@@ -15,23 +15,9 @@ interface ArticlesProps {
 }
 
 export function Articles({ data, articles }: ArticlesProps) {
-  // Only show the first two latest articles as requested
   const articlesToDisplay = (Array.isArray(articles) && articles.length > 0) 
     ? articles.slice(0, 2) 
-    : [
-        {
-          title: "How cooling innovation redefines data center efficiency",
-          category: "infrastructure",
-          publishedAt: "2019-01-01",
-          slug: { current: "#" }
-        },
-        {
-          title: "Hybrid cloud vs multi cloud strategies explained",
-          category: "cloud",
-          publishedAt: "2024-01-01",
-          slug: { current: "#" }
-        }
-      ];
+    : [];
 
   return (
     <section className={`section`}>
@@ -71,9 +57,13 @@ export function Articles({ data, articles }: ArticlesProps) {
                   </div>
                   <h3 className={styles.articleTitle}>{article.title}</h3>
                   <div className={styles.meta}>
-                    <span className={styles.category}>{article.category}</span>
+                    <div className={styles.categoriesWrapper}>
+                      {article.categories?.slice(0, 2).map((cat: string, idx: number) => (
+                        <span key={idx} className={styles.categoryBadge}>{cat}</span>
+                      ))}
+                    </div>
                     <span className={styles.date}>
-                      {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ""}
+                      {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : ""}
                     </span>
                   </div>
                 </Link>

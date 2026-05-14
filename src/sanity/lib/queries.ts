@@ -51,7 +51,7 @@ export const getArticleBySlugQuery = groq`*[_type == "article" && slug.current =
   _id, title, slug, categories, publishedAt, excerpt, readTime,
   mainImage ${imageFields},
   body,
-  author{ name, role, bio, image ${imageFields} }
+  author{ name, role, bio, image ${imageFields}, socialLinks }
 }`;
 
 export const getStatsQuery = groq`*[_type == "stat"] | order(order asc){
