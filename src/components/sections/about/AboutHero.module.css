@@ -253,8 +253,16 @@
 .glow {
   fill: rgba(130, 195, 65, 0.6);
   stroke: rgba(130, 195, 65, 1);
-  stroke-width: 2px;
-  filter: drop-shadow(0 0 14px rgba(130, 195, 65, 0.7)) drop-shadow(0 0 30px rgba(130, 195, 65, 0.3));
+  stroke-width: 2.5px;
+  /* Filters are removed on mobile to prevent GPU artifacting (glitch lines).
+     The thicker stroke provides the 'active' look without the rendering cost. */
+}
+
+@media (min-width: 1024px) {
+  .glow {
+    filter: drop-shadow(0 0 14px rgba(130, 195, 65, 0.7)) 
+            drop-shadow(0 0 30px rgba(130, 195, 65, 0.3));
+  }
 }
 
 /* .hovered class removed — now handled via CSS-only :hover in countryGroup */

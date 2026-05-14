@@ -14,11 +14,11 @@ interface InteractiveWorldMapProps {
 
 // CSS-only hover scale — replaces the previous Framer Motion spring that ran
 // simultaneously on all ~200 country paths, causing severe jank on mobile.
-export function InteractiveWorldMap({
+export const InteractiveWorldMap = React.memo(({
   highlightedCountries = ["Ethiopia"],
   scale = 180,
   center = [40, 10],
-}: InteractiveWorldMapProps) {
+}: InteractiveWorldMapProps) => {
   const [tooltipContent, setTooltipContent] = useState<string | null>(null);
 
   return (
@@ -70,4 +70,6 @@ export function InteractiveWorldMap({
       </div>
     </div>
   );
-}
+});
+
+InteractiveWorldMap.displayName = "InteractiveWorldMap";

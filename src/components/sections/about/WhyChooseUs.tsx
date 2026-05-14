@@ -19,6 +19,15 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
+    // Detect touch-based mobile devices
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    if (isTouch) {
+      // Clear the canvas if it was already drawn and stop
+      const ctx = canvas.getContext("2d");
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 

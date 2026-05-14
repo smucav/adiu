@@ -135,12 +135,16 @@
 
 /* ── Stat card ────────────────────────────────────────────── */
 .statCard {
-  background: rgba(255, 255, 255, 0.03);
+  background: radial-gradient(
+    circle at top right,
+    rgba(130, 195, 65, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
   /* backdrop-filter skipped on mobile — too expensive on Android GPUs.
      Only activated at desktop via the 1024px query below. */
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 2rem 1.75rem;
-  border-radius: 1.25rem;
+  border: 1px solid rgba(130, 195, 65, 0.15);
+  padding: 2.25rem 1.75rem;
+  border-radius: 1.5rem;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               background 0.4s ease,
               border-color 0.4s ease,
