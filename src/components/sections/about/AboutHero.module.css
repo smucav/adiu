@@ -69,54 +69,41 @@
   opacity: 0.6;
 }
 
-/* ── Ethiopia glow pin ────────────────────────────────────── */
-.ethiopiaGlow {
-  position: absolute;
-  top: 48%;
-  left: 61%;
-  width: 30px;
-  height: 30px;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  cursor: pointer;
+/* ── Ethiopia geographic marker ───────────────────────────── */
+.ethiopiaMarker {
+  pointer-events: none;
+  transform-origin: center;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  background-color: #82c341;
-  border-radius: 50%;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 0 20px 6px rgba(130, 195, 65, 0.8), 0 0 40px 12px rgba(130, 195, 65, 0.4);
+.dotCircle {
+  fill: #82c341;
 }
 
-.pulse {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #82c341;
-  border-radius: 50%;
-  z-index: 1;
-  animation: radarPulse 1.8s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+.pulseCircle {
+  fill: rgba(130, 195, 65, 0.6);
+  transform-origin: center;
+  animation: svgRadarPulse 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-@keyframes radarPulse {
+@keyframes svgRadarPulse {
   0% {
-    transform: scale(0.5);
-    opacity: 1;
+    transform: scale(0.2);
+    opacity: 0.8;
   }
   100% {
-    transform: scale(6);
+    transform: scale(2.5);
     opacity: 0;
   }
 }
 
+@media (min-width: 1024px) {
+  .dotCircle {
+    filter: drop-shadow(0 0 4px rgba(130, 195, 65, 0.8));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pulse {
+  .pulseCircle {
     animation: none;
   }
 }

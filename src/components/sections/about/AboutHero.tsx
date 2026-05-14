@@ -34,11 +34,6 @@ export function AboutHero({ data }: AboutHeroProps) {
             ? [data.mapCenter.lng, data.mapCenter.lat]
             : undefined}
         />
-        {/* Ethiopia Pulse — hardware accelerated CSS animation */}
-        <div className={styles.ethiopiaGlow} aria-hidden="true">
-          <div className={styles.pulse} />
-          <div className={styles.dot} />
-        </div>
       </div>
       <div className={`container ${styles.container}`}>
         <FadeIn direction="up" distance={40}>
