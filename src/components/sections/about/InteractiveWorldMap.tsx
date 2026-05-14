@@ -66,7 +66,7 @@ export const InteractiveWorldMap = React.memo(
           {/* Ethiopia Marker — locked to geographic coordinates */}
           <Marker coordinates={[39.7, 9.1]}>
             <g className={styles.ethiopiaMarker}>
-              <circle className={styles.dotCircle} r={5} />
+              {/*<circle className={styles.dotCircle} r={5} />*/}
             </g>
           </Marker>
         </ComposableMap>
