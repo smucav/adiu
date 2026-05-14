@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { motion, useInView, useAnimation, useScroll, useTransform, useMotionValue, animate, MotionValue } from "framer-motion";
+import { useSpring } from "framer-motion";
+import {
+  motion,
+  useInView,
+  useAnimation,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  animate,
+  MotionValue,
+} from "framer-motion";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
@@ -40,21 +50,21 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
 };
 
 // Text Reveal Component (Line by line feel)
-export const TextReveal = ({ 
-  text, 
+export const TextReveal = ({
+  text,
   className,
-  delay = 0 
-}: { 
-  text: string | React.ReactNode, 
-  className?: string,
-  delay?: number
+  delay = 0,
+}: {
+  text: string | React.ReactNode;
+  className?: string;
+  delay?: number;
 }) => {
   const variants = {
     hidden: { y: "100%" },
     visible: { y: 0 },
   };
 
-  // If text is a string, we can do some basic splitting, 
+  // If text is a string, we can do some basic splitting,
   // but if it's a React element, we just wrap it.
   if (typeof text !== "string") {
     return (
@@ -88,19 +98,19 @@ export const TextReveal = ({
 };
 
 // Parallax Component
-export const Parallax = ({ 
-  children, 
+export const Parallax = ({
+  children,
   offset = 50,
-  className 
-}: { 
-  children: React.ReactNode, 
-  offset?: number,
-  className?: string
+  className,
+}: {
+  children: React.ReactNode;
+  offset?: number;
+  className?: string;
 }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [-offset, offset]);
@@ -112,25 +122,26 @@ export const Parallax = ({
   );
 };
 
-export const FadeIn = ({ 
-  children, 
+export const FadeIn = ({
+  children,
   delay = 0,
   duration = 0.8,
   direction = "up",
   distance = 40,
-  className
-}: { 
-  children: React.ReactNode, 
-  delay?: number, 
-  duration?: number,
-  direction?: "up" | "down" | "left" | "right",
-  distance?: number,
-  className?: string
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+  direction?: "up" | "down" | "left" | "right";
+  distance?: number;
+  className?: string;
 }) => {
   const variants = {
     hidden: {
       opacity: 0,
-      x: direction === "left" ? distance : direction === "right" ? -distance : 0,
+      x:
+        direction === "left" ? distance : direction === "right" ? -distance : 0,
       y: direction === "up" ? distance : direction === "down" ? -distance : 0,
     },
     visible: {
@@ -146,7 +157,7 @@ export const FadeIn = ({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-20px" }}
       transition={{ type: "spring", stiffness: 80, damping: 20, delay }}
     >
       {children}
@@ -154,23 +165,23 @@ export const FadeIn = ({
   );
 };
 
-export const StaggerContainer = ({ 
-  children, 
+export const StaggerContainer = ({
+  children,
   staggerDelay = 0.1,
   delay = 0,
-  className
-}: { 
-  children: React.ReactNode, 
-  staggerDelay?: number,
-  delay?: number,
-  className?: string
+  className,
+}: {
+  children: React.ReactNode;
+  staggerDelay?: number;
+  delay?: number;
+  className?: string;
 }) => {
   return (
     <motion.div
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-20px" }}
       variants={{
         hidden: {},
         visible: {
@@ -186,16 +197,16 @@ export const StaggerContainer = ({
   );
 };
 
-export const Antigravity = ({ 
-  children, 
-  amplitude = 15, 
+export const Antigravity = ({
+  children,
+  amplitude = 15,
   duration = 4,
-  className 
-}: { 
-  children: React.ReactNode, 
-  amplitude?: number, 
-  duration?: number,
-  className?: string
+  className,
+}: {
+  children: React.ReactNode;
+  amplitude?: number;
+  duration?: number;
+  className?: string;
 }) => {
   return (
     <motion.div
@@ -214,29 +225,29 @@ export const Antigravity = ({
   );
 };
 
-export const TypewriterText = ({ 
-  text, 
+export const TypewriterText = ({
+  text,
   speed = 25,
   delay = 0,
   className,
-  as: Component = "p"
-}: { 
-  text: string, 
-  speed?: number,
-  delay?: number,
-  className?: string,
-  as?: any
+  as: Component = "p",
+}: {
+  text: string;
+  speed?: number;
+  delay?: number;
+  className?: string;
+  as?: any;
 }) => {
   const [displayText, setDisplayText] = React.useState("");
   const [isComplete, setIsComplete] = React.useState(false);
 
   React.useEffect(() => {
     let timeout: any;
-    
+
     const startTyping = () => {
       let currentText = "";
       let index = 0;
-      
+
       const type = () => {
         if (index < text.length) {
           currentText += text[index];
@@ -247,12 +258,12 @@ export const TypewriterText = ({
           setIsComplete(true);
         }
       };
-      
+
       type();
     };
 
     const initialDelay = setTimeout(startTyping, delay * 1000);
-    
+
     return () => {
       clearTimeout(initialDelay);
       clearTimeout(timeout);
@@ -261,22 +272,22 @@ export const TypewriterText = ({
 
   return (
     <Component className={className}>
-      {displayText.split('\n').map((line, i) => (
+      {displayText.split("\n").map((line, i) => (
         <React.Fragment key={i}>
           {line}
-          {i < displayText.split('\n').length - 1 && <br />}
+          {i < displayText.split("\n").length - 1 && <br />}
         </React.Fragment>
       ))}
       <motion.span
         animate={{ opacity: [1, 0, 1] }}
         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-        style={{ 
-          display: "inline-block", 
-          width: "2px", 
-          height: "1em", 
-          backgroundColor: "currentColor", 
+        style={{
+          display: "inline-block",
+          width: "2px",
+          height: "1em",
+          backgroundColor: "currentColor",
           marginLeft: "2px",
-          verticalAlign: "middle"
+          verticalAlign: "middle",
         }}
       />
     </Component>
@@ -289,34 +300,51 @@ interface CounterProps {
   duration?: number;
 }
 
-export const Counter = ({ value = "0", className, duration = 2 }: CounterProps) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-  
-  // Ensure value is a string and handle undefined/null
+export const Counter = ({
+  value = "0",
+  className,
+  duration = 2,
+}: CounterProps) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-20px" });
+
   const safeValue = String(value || "0");
-  
-  // Extract number and formatting from string (e.g., "2,257" -> 2257)
-  const numericValue = parseInt(safeValue.replace(/,/g, ''), 10) || 0;
-  const hasComma = safeValue.includes(',');
-  const suffix = safeValue.replace(/[0-9,]/g, ''); // Extract things like "+" or "%"
-  
+  const numericValue =
+    parseFloat(safeValue.replace(/,/g, "").replace(/[^0-9.-]/g, "")) || 0;
+  const suffix = safeValue.replace(/[0-9,.-]/g, "");
+  const hasComma = safeValue.includes(",");
+
   const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => {
-    const val = Math.round(latest);
-    if (hasComma) {
-      return val.toLocaleString() + suffix;
-    }
-    return val.toString() + suffix;
+  const springValue = useSpring(count, {
+    stiffness: 60,
+    damping: 25,
   });
 
   useEffect(() => {
     if (isInView) {
-      animate(count, numericValue, { duration, ease: "easeOut" });
+      count.set(numericValue);
     }
-  }, [isInView, numericValue, count, duration]);
+  }, [isInView, numericValue, count]);
 
-  return <motion.span ref={ref} className={className}>{rounded}</motion.span>;
+  useEffect(() => {
+    const unsubscribe = springValue.on("change", (latest) => {
+      if (ref.current) {
+        const val = Math.round(latest);
+        let formatted = val.toString();
+        if (hasComma) {
+          formatted = val.toLocaleString();
+        }
+        ref.current.textContent = formatted + suffix;
+      }
+    });
+    return () => unsubscribe();
+  }, [springValue, suffix, hasComma]);
+
+  return (
+    <span ref={ref} className={className}>
+      0{suffix}
+    </span>
+  );
 };
 
 interface ScrollCounterProps {
@@ -326,14 +354,21 @@ interface ScrollCounterProps {
   className?: string;
 }
 
-export const ScrollCounter = ({ value = "0", scrollYProgress, range, className }: ScrollCounterProps) => {
+export const ScrollCounter = ({
+  value = "0",
+  scrollYProgress,
+  range,
+  className,
+}: ScrollCounterProps) => {
   // Extract number and formatting from string (e.g., "2,257" -> 2257)
   const safeValue = String(value || "0");
-  const numericValue = parseInt(safeValue.replace(/,/g, ''), 10) || 0;
-  const hasComma = safeValue.includes(',');
-  const suffix = safeValue.replace(/[0-9,]/g, '');
+  const numericValue = parseInt(safeValue.replace(/,/g, ""), 10) || 0;
+  const hasComma = safeValue.includes(",");
+  const suffix = safeValue.replace(/[0-9,]/g, "");
 
-  const count = useTransform(scrollYProgress, range, [0, numericValue], { clamp: true });
+  const count = useTransform(scrollYProgress, range, [0, numericValue], {
+    clamp: true,
+  });
   const rounded = useTransform(count, (latest) => {
     const val = Math.round(latest);
     if (hasComma) {
@@ -345,7 +380,13 @@ export const ScrollCounter = ({ value = "0", scrollYProgress, range, className }
   return <motion.span className={className}>{rounded}</motion.span>;
 };
 
-export const MagneticEffect = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+export const MagneticEffect = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
 
@@ -376,7 +417,13 @@ export const MagneticEffect = ({ children, className = "" }: { children: React.R
   );
 };
 
-export const InteractiveTiltCard = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+export const InteractiveTiltCard = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -409,7 +456,13 @@ export const InteractiveTiltCard = ({ children, className = "" }: { children: Re
   );
 };
 
-export const PhysicsFloat = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+export const PhysicsFloat = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -431,12 +484,12 @@ export const PhysicsFloat = ({ children, className = "" }: { children: React.Rea
 
   return (
     <motion.div
-      style={{ 
-        rotateX, 
-        rotateY, 
-        x: useTransform(x, [-300, 300], [-15, 15]), 
+      style={{
+        rotateX,
+        rotateY,
+        x: useTransform(x, [-300, 300], [-15, 15]),
         y: useTransform(y, [-300, 300], [-15, 15]),
-        perspective: 1000 
+        perspective: 1000,
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -452,7 +505,7 @@ export const PhysicsFloat = ({ children, className = "" }: { children: React.Rea
         },
         rotateX: { type: "spring", stiffness: 100, damping: 20 },
         rotateY: { type: "spring", stiffness: 100, damping: 20 },
-        x: { type: "spring", stiffness: 100, damping: 20 }
+        x: { type: "spring", stiffness: 100, damping: 20 },
       }}
     >
       {children}

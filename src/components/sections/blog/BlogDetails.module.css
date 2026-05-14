@@ -1,42 +1,115 @@
 .articleContainer {
-  padding: 100px 0 120px;
-  background-color: var(--bg-primary);
+  padding: 8rem 0;
+  background-color: #fff;
+  position: relative;
 }
 
+@media (min-width: 768px)  { .articleContainer { padding: 10rem 0; } }
+@media (min-width: 1024px) { .articleContainer { padding: 12rem 0; } }
+
+/* ── Progress Bar ───────────────────────────────────────── */
+.progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--brand-green);
+  transform-origin: 0%;
+  z-index: 2000;
+  box-shadow: 0 0 15px rgba(130, 195, 65, 0.4);
+}
+
+/* ── Header ─────────────────────────────────────────────── */
 .header {
   max-width: 900px;
-  margin: 0 auto 40px;
+  margin: 0 auto 5rem;
   text-align: center;
 }
 
-.category {
+.categoryRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.categoryBadge {
   display: inline-block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: var(--brand-green);
-  letter-spacing: 1px;
-  margin-bottom: 24px;
   background-color: var(--light-mint);
+  color: var(--brand-green);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 6px;
+  letter-spacing: 0.1em;
 }
 
 .title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 600;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: clamp(2.5rem, 7vw, 4.25rem);
+  font-weight: 800;
   color: #000;
-  line-height: 1.2;
-  margin-bottom: 32px;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin-bottom: 3rem;
 }
 
-.meta {
+.metaRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (min-width: 640px) {
+  .metaRow {
+    flex-direction: row;
+    justify-content: center;
+    gap: 4rem;
+  }
+}
+
+.authorBrief {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 24px;
+  gap: 12px;
+  text-align: left;
+}
+
+.avatar {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--brand-green);
+}
+
+.authorText {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorName {
   font-size: 1rem;
+  font-weight: 800;
+  color: #000;
+}
+
+.authorRole {
+  font-size: 0.8125rem;
   color: var(--text-secondary);
+}
+
+.readingMeta {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #64748b;
 }
 
 .metaItem {
@@ -45,154 +118,211 @@
   gap: 8px;
 }
 
-.heroImageWrapper {
+/* ── Simple Premium Hero ─────────────────────────────────── */
+.heroWrapper {
   width: 100%;
-  max-width: 1200px;
-  aspect-ratio: 21/9;
-  position: relative;
-  margin: 0 auto 60px;
-  border-radius: 16px;
+  max-width: 1100px;
+  margin: 0 auto 6rem;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-}
-
-.contentWrapper {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.shareBar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 40px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.shareLabel {
-  font-weight: 500;
-  color: #000;
-}
-
-.shareIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #f1f5f9;
-  color: var(--text-primary);
-  transition: all 0.2s;
-  text-decoration: none;
-}
-
-.shareIcon:hover {
-  background-color: var(--brand-green);
-  color: #fff;
-}
-
-.prose {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  color: #334155;
-}
-
-.prose h2 {
-  font-size: 2rem;
-  color: #000;
-  margin: 48px 0 24px;
-}
-
-.prose h3 {
-  font-size: 1.5rem;
-  color: #000;
-  margin: 32px 0 16px;
-}
-
-.prose p {
-  margin-bottom: 24px;
-  color: #334155;
-  font-size: 1.125rem;
-}
-
-.prose strong {
-  color: #000;
-  font-weight: 600;
-}
-
-.prose blockquote {
-  border-left: 4px solid var(--brand-green);
-  padding-left: 24px;
-  margin: 40px 0;
-  font-style: italic;
-  font-size: 1.5rem;
-  color: #000;
-  line-height: 1.5;
-}
-
-.prose ul, .prose ol {
-  margin-bottom: 24px;
-  padding-left: 24px;
-}
-
-.prose li {
-  margin-bottom: 12px;
-}
-
-.authorBox {
-  margin-top: 80px;
-  padding: 40px;
-  background-color: #f8fafc;
-  border-radius: 12px;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-}
-
-.authorImage {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
   position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.authorInfo h4 {
-  font-size: 1.25rem;
-  color: #000;
-  margin-bottom: 8px;
-}
-
-.authorInfo p {
-  margin: 0;
-  font-size: 0.95rem;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #f1f5f9;
 }
 
 @media (max-width: 768px) {
-  .heroImageWrapper {
-    aspect-ratio: 16/9;
-  }
-  
-  .meta {
-    flex-wrap: wrap;
-    gap: 16px;
+  .heroWrapper {
+    border-radius: 12px;
+    margin-bottom: 4rem;
   }
 }
 
-@media (max-width: 480px) {
-  .heroImageWrapper {
-    aspect-ratio: 4/3;
+.heroImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* ── Layout Grid ───────────────────────────────────────── */
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .layoutGrid {
+    grid-template-columns: 100px 1fr;
   }
-  
-  .title {
-    font-size: 2.5rem;
-  }
-  
-  .authorBox {
+}
+
+/* ── Sidebar ───────────────────────────────────────────── */
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar { display: block; }
+}
+
+.stickySide {
+  position: sticky;
+  top: 10rem;
+}
+
+.sidebarLabel {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.shareGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.socialBtn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #000;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.socialBtn:hover {
+  background: var(--brand-green);
+  border-color: var(--brand-green);
+  color: #fff;
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ── Main Content & Prose ──────────────────────────────── */
+.mainContent {
+  max-width: 760px;
+}
+
+.prose {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #334155;
+  font-family: var(--font-inter), sans-serif;
+}
+
+.prose h2 {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #000;
+  margin: 5rem 0 2rem;
+  letter-spacing: -0.03em;
+}
+
+.prose h3 {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #000;
+  margin: 4rem 0 1.5rem;
+}
+
+.prose p {
+  margin-bottom: 2.25rem;
+}
+
+.prose blockquote {
+  margin: 4rem 0;
+  padding: 2.5rem;
+  background: #f8fafc;
+  border-left: 6px solid var(--brand-green);
+  border-radius: 0 24px 24px 0;
+  font-style: italic;
+  font-size: 1.75rem;
+  color: #0f172a;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* ── Author Signature ──────────────────────────────────── */
+.authorSignature {
+  margin-top: 6rem;
+  padding-top: 3rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.signatureInner {
+  display: flex;
+  gap: 2.5rem;
+  padding: 2rem 0;
+  align-items: center;
+}
+
+.sigAvatar {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
+}
+
+.sigLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--brand-green);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.sigInfo h3 {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.sigBio {
+  font-size: 0.9375rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 1rem !important;
+  max-width: 600px;
+}
+
+.authorLink {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+.authorLink:hover { color: var(--brand-green); }
+
+@media (max-width: 640px) {
+  .signatureInner {
     flex-direction: column;
     text-align: center;
+    padding: 2.5rem;
   }
 }

@@ -17,6 +17,7 @@ import { jobRole } from './jobRole'
 import { faq } from './faq'
 import { focusedService } from './focusedService'
 import { servicesPage } from './servicesPage'
+import { serviceFeatureItem } from './serviceFeatureItem'
 import { project } from './project'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -39,6 +40,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     faq,
     focusedService,
     servicesPage,
+    serviceFeatureItem,
     project,
   ],
 }

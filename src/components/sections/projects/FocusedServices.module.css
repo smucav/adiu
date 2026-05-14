@@ -1,63 +1,100 @@
+/* =============================================================
+   FOCUSED SERVICES (home page bento) — MOBILE FIRST
+   Single column on mobile → 2-col → 3-col on wide
+   ============================================================= */
+
 .servicesSection {
-  padding: 160px 0;
+  /* Mobile: moderate vertical padding */
+  padding: 4rem 0;
   background-color: #ffffff;
 }
 
+@media (min-width: 768px)  { .servicesSection { padding: 6rem 0; } }
+@media (min-width: 1024px) { .servicesSection { padding: 10rem 0; } }
+
+/* ── Section header ───────────────────────────────────────── */
 .header {
   text-align: left;
-  margin-bottom: 80px;
+  margin-bottom: 2.5rem;
 }
+
+@media (min-width: 768px)  { .header { margin-bottom: 3.5rem; } }
+@media (min-width: 1024px) { .header { margin-bottom: 5rem; } }
 
 .label {
   display: inline-block;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--brand-green);
-  margin-bottom: 16px;
+  margin-bottom: 0.75rem;
   font-weight: 700;
 }
 
 .title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.1;
   letter-spacing: -0.04em;
-  max-width: 700px;
+  max-width: 44rem;
 }
 
-/* Minimalist Bento Grid */
+/* ── Bento grid: single column on mobile ──────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
 }
 
+@media (min-width: 768px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
+@media (min-width: 1280px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 1.875rem; } }
+
+/* ── Service card ─────────────────────────────────────────── */
 .card {
   background: #fafafa;
   border: 1px solid #eeeeee;
-  border-radius: 32px;
-  padding: 48px;
+  border-radius: 2rem;
+  /* Mobile: slimmer padding, no fixed min-height */
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  min-height: 420px;
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease;
 }
 
-.card:hover {
-  background: #ffffff;
-  border-color: var(--brand-green);
-  transform: translateY(-8px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+@media (min-width: 768px) {
+  .card {
+    padding: 2.5rem 2rem;
+    min-height: 340px;
+  }
 }
 
+@media (min-width: 1024px) {
+  .card {
+    padding: 3rem;
+    min-height: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    background: #ffffff;
+    border-color: var(--brand-green);
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* ── Card header ──────────────────────────────────────────── */
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 }
 
 .iconCircle {
@@ -69,7 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s ease;
+  transition: border-color 0.4s ease, background 0.4s ease;
 }
 
 .card:hover .iconCircle {
@@ -93,25 +130,28 @@
   font-weight: 600;
 }
 
+/* ── Card body ────────────────────────────────────────────── */
 .cardBody {
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 }
 
 .cardTitle {
-  font-size: 1.85rem;
+  font-size: clamp(1.375rem, 3vw, 1.85rem);
   font-weight: 600;
   color: #1a1a1a;
-  margin-bottom: 16px;
+  margin-bottom: 0.75rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 .cardDesc {
-  font-size: 1.05rem;
+  font-size: clamp(0.875rem, 2vw, 1.05rem);
   color: #666;
   line-height: 1.6;
+  margin-bottom: 0;
 }
 
+/* ── Card footer ──────────────────────────────────────────── */
 .cardFooter {
   display: flex;
   justify-content: space-between;
@@ -121,13 +161,13 @@
 .featureList {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
   max-width: 80%;
 }
 
 .featureTag {
   font-size: 0.75rem;
-  padding: 6px 12px;
+  padding: 0.375rem 0.75rem;
   background: #fff;
   border: 1px solid #eee;
   border-radius: 100px;
@@ -136,39 +176,13 @@
 }
 
 .index {
-  font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
   color: #eee;
   transition: color 0.4s ease;
+  flex-shrink: 0;
 }
 
 .card:hover .index {
   color: rgba(130, 195, 65, 0.2);
-}
-
-@media (max-width: 1200px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .servicesSection {
-    padding: 80px 0;
-  }
-  
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .card {
-    padding: 32px;
-    min-height: auto;
-  }
-  
-  .title {
-    font-size: 2.5rem;
-  }
 }

@@ -41,13 +41,20 @@ export const focusedService = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'featureItems',
+      title: 'Feature Highlights',
+      description: 'Bullet points shown on the service stack card.',
+      type: 'array',
+      of: [{ type: 'serviceFeatureItem' }],
+    }),
+    defineField({
       name: 'content',
       title: 'Detailed Content',
       description: 'Detailed information for the service detail page / modal.',
       type: 'array',
       of: [
         { type: 'block' },
-        { 
+        {
           type: 'image',
           options: { hotspot: true },
           fields: [

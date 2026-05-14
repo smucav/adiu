@@ -1,13 +1,18 @@
+/* =============================================================
+   FOOTER — MOBILE FIRST
+   Single-column stacked on mobile → 2-col tablet → 4-col desktop
+   ============================================================= */
+
 .footer {
   background-color: #0a141a;
   color: white;
-  padding: 100px 0 40px 0;
-  margin-top: 0;
+  /* Mobile: tighter padding */
+  padding: 3.5rem 0 2rem;
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle glow at the top */
+/* Subtle green border line */
 .footer::before {
   content: '';
   position: absolute;
@@ -19,26 +24,46 @@
   background: linear-gradient(90deg, transparent, rgba(130, 195, 65, 0.3), transparent);
 }
 
+@media (min-width: 768px) { .footer { padding: 5rem 0 2.5rem; } }
+@media (min-width: 1024px) { .footer { padding: 6.25rem 0 2.5rem; } }
+
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
 }
 
+/* ── Grid: single column on mobile ────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-  gap: 40px;
-  margin-bottom: 80px;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
 }
 
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+    margin-bottom: 5rem;
+  }
+}
+
+/* ── Brand column ─────────────────────────────────────────── */
 .brandCol {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.25rem;
 }
 
 .brandName {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: #fff;
@@ -47,26 +72,27 @@
 .brandDesc {
   color: #94a3b8;
   font-size: 0.9375rem;
-  line-height: 1.6;
+  line-height: 1.65;
   max-width: 280px;
 }
 
 .socials {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .socialIcon {
-  width: 36px;
-  height: 36px;
+  /* 44×44px touch target */
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -76,27 +102,33 @@
   transform: translateY(-3px);
 }
 
+/* ── Nav columns ──────────────────────────────────────────── */
 .colTitle {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--brand-green);
-  margin-bottom: 28px;
+  margin-bottom: 1.5rem;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 0.875rem;
 }
 
 .nav a {
   color: #cbd5e1;
   font-size: 0.9375rem;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
   display: inline-block;
   width: fit-content;
+  /* 44px touch target height */
+  padding: 0.25rem 0;
+  min-height: var(--touch-min, 44px);
+  display: flex;
+  align-items: center;
 }
 
 .nav a:hover {
@@ -104,23 +136,25 @@
   transform: translateX(4px);
 }
 
+/* ── Contact column ───────────────────────────────────────── */
 .contactInfo {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 .contactItem {
   display: flex;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .contactLabel {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: #64748b;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
 }
 
 .contactValue {
@@ -128,12 +162,14 @@
   font-size: 0.9375rem;
 }
 
+/* ── Bottom bar ───────────────────────────────────────────── */
 .bottomBar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 40px;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
 }
 
 .copyright {
@@ -143,34 +179,34 @@
 
 .legalLinks {
   display: flex;
-  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
 .legalLinks a {
   color: #64748b;
   font-size: 0.875rem;
   transition: color 0.2s ease;
+  /* 44px touch target */
+  min-height: var(--touch-min, 44px);
+  display: flex;
+  align-items: center;
 }
 
 .legalLinks a:hover {
   color: #fff;
 }
 
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 60px 40px;
-  }
-}
-
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
+@media (min-width: 768px) {
   .bottomBar {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+
+  .legalLinks {
+    justify-content: flex-end;
   }
 }

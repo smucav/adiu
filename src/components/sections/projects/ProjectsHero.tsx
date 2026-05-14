@@ -22,14 +22,25 @@ interface ProjectsHeroProps {
 const INITIAL_ROTATIONS = [-14, 9, -7, 13, -11, 6, -4, 17];
 
 const END_POSITIONS: [number, number, number][] = [
-  [-36, -32, -8],
-  [36, -32, 7],
-  [-38, 30, 10],
-  [38, 30, -7],
-  [-18, -42, -4],
-  [18, -42, 5],
-  [-44, 4, -12],
-  [44, 4, 11],
+  [-44, -36, -10], // Top Left
+  [44, -36, 10],   // Top Right
+  [-46, 34, 12],   // Bottom Left
+  [46, 34, -12],   // Bottom Right
+  [-25, -45, -6],  // Top center-left
+  [25, -45, 6],    // Top center-right
+  [-48, 8, -15],   // Mid Left
+  [48, 8, 15],     // Mid Right
+];
+
+const MOBILE_END_POSITIONS: [number, number, number][] = [
+  [-48, -35, -12], // Top Left
+  [48, -35, 12],   // Top Right
+  [-52, 35, 15],   // Bottom Left
+  [52, 35, -15],   // Bottom Right
+  [-30, -48, -8],  // Top center-left
+  [30, -48, 8],    // Top center-right
+  [-52, 5, -18],   // Mid Left
+  [52, 5, 18],     // Mid Right
 ];
 
 const FALLBACK_IMAGES = [
@@ -47,75 +58,93 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const images = [
-    data?.heroImageCenter ? urlForImage(data.heroImageCenter).url() : FALLBACK_IMAGES[0],
-    data?.heroImageLeft ? urlForImage(data.heroImageLeft).url() : FALLBACK_IMAGES[1],
-    data?.heroImageRight ? urlForImage(data.heroImageRight).url() : FALLBACK_IMAGES[2],
-    ...FALLBACK_IMAGES.slice(3, 8),
-  ];
+  // Construct exactly 8 images: take what's available from Sanity, then fill the rest from fallbacks
+  const images = Array.from({ length: 8 }).map((_, i) => {
+    if (data?.heroImages && data.heroImages[i]) {
+      return urlForImage(data.heroImages[i]).url();
+    }
+    return FALLBACK_IMAGES[i];
+  });
 
   useIsomorphicLayoutEffect(() => {
     if (!containerRef.current || !stickyRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
+    const mm = gsap.matchMedia();
 
-      // ── Initial state ────────────────────────────────────────────────────
+    mm.add("(max-width: 767px)", () => {
+      // Mobile: Tighter spread
+      const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
+      
+      // Initial State
       cards.forEach((card, i) => {
-        gsap.set(card, { x: 0, y: 0, rotation: INITIAL_ROTATIONS[i] ?? 0 });
+        gsap.set(card, { x: 0, y: 0, opacity: 1, rotation: INITIAL_ROTATIONS[i] ?? 0 });
       });
       gsap.set(textRef.current, { opacity: 0, y: 30 });
 
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-
-      // ── Scroll-driven timeline ────────────────────────────────────────────
-      // We trigger based on the WHOLE wrapper. The hero is STICKY via CSS.
-      // The scroll progress of this timeline is mapped to the length of the spacer.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
           end: "bottom bottom",
-          scrub: 1.2, // Smooth inertia
-          invalidateOnRefresh: true,
+          scrub: 1,
         },
       });
 
-      // Phase 1 — Cards spread (0 → 70% of the timeline)
       cards.forEach((card, i) => {
-        const [xPct, yPct, rot] = END_POSITIONS[i] ?? [0, 0, 0];
+        const [xPct, yPct, rot] = MOBILE_END_POSITIONS[i] ?? [0, 0, 0];
         tl.to(card, {
-          x: (vw * xPct) / 100,
-          y: (vh * yPct) / 100,
+          x: (window.innerWidth * xPct) / 100,
+          y: (window.innerHeight * yPct) / 100,
           rotation: rot,
-          ease: "none",
-          duration: 3,
+          ease: "power2.out",
+          duration: 1.5,
         }, 0);
       });
 
-      // Phase 2 — Text reveal (starts halfway)
-      tl.to(textRef.current, {
-        opacity: 1,
-        y: 0,
-        ease: "none",
-        duration: 1.2,
-      }, 1.5);
+      tl.to(textRef.current, { opacity: 1, y: 0, duration: 1 }, 0.8);
+      // After spread, move the whole deck behind text and fade them more
+      tl.set(deckRef.current, { zIndex: 5 }, 1.5);
+      tl.to(cards, { opacity: 0.4, scale: 0.85, duration: 1 }, 2);
+    });
 
-      // Phase 3 — Subtle cards fade (optional, keeps them from being too distracting)
-      tl.to(cards, {
-        opacity: 0.2,
-        scale: 0.9,
-        duration: 1,
-      }, 2.5);
+    mm.add("(min-width: 768px)", () => {
+      // Tablet/Desktop: Full spread
+      const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
+      
+      // Initial State
+      cards.forEach((card, i) => {
+        gsap.set(card, { x: 0, y: 0, opacity: 1, rotation: INITIAL_ROTATIONS[i] ?? 0 });
+      });
+      gsap.set(textRef.current, { opacity: 0, y: 30 });
 
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.2,
+        },
+      });
 
+      cards.forEach((card, i) => {
+        const [xPct, yPct, rot] = END_POSITIONS[i] ?? [0, 0, 0];
+        tl.to(card, {
+          x: (window.innerWidth * xPct) / 100,
+          y: (window.innerHeight * yPct) / 100,
+          rotation: rot,
+          ease: "power2.out",
+          duration: 1.5,
+        }, 0);
+      });
 
-    }, containerRef);
+      tl.to(textRef.current, { opacity: 1, y: 0, duration: 1 }, 1);
+      tl.to(cards, { opacity: 0.6, scale: 0.9, duration: 1 }, 2.2);
+    });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
@@ -141,7 +170,7 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
         </div>
 
         {/* Card Deck */}
-        <div className={styles.deckContainer}>
+        <div ref={deckRef} className={styles.deckContainer}>
           {images.slice(0, 8).map((src, i) => (
             <div
               key={i}

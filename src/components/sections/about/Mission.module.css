@@ -1,12 +1,21 @@
+/* =============================================================
+   MISSION SECTION — MOBILE FIRST
+   Stacked on mobile → side-by-side on ≥1024px
+   ============================================================= */
+
 .missionSection {
   position: relative;
   background: #fff;
   overflow: hidden;
-  padding: 120px 0;
+  /* Mobile: moderate padding */
+  padding: 4rem 0;
   color: #fff;
 }
 
-/* Premium background effects */
+@media (min-width: 768px)  { .missionSection { padding: 6rem 0; } }
+@media (min-width: 1024px) { .missionSection { padding: 7.5rem 0; } }
+
+/* ── Background effects ────────────────────────────────────── */
 .bgEffects {
   position: absolute;
   inset: 0;
@@ -22,6 +31,7 @@
     linear-gradient(90deg, rgba(130, 195, 65, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   mask-image: radial-gradient(circle at center, black, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
 }
 
 .glow {
@@ -40,19 +50,35 @@
   filter: blur(80px);
 }
 
+/* ── Container: stacked on mobile ─────────────────────────── */
 .container {
   position: relative;
   z-index: 1;
   display: flex;
-  gap: 80px;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
+@media (min-width: 1024px) {
+  .container {
+    flex-direction: row;
+    gap: 5rem;
+  }
+}
+
+/* ── Title column ─────────────────────────────────────────── */
 .titleColumn {
-  flex: 0 0 35%;
+  flex: none;
+}
+
+@media (min-width: 1024px) {
+  .titleColumn {
+    flex: 0 0 35%;
+  }
 }
 
 .heading {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 600;
   color: #000;
   line-height: 1.1;
@@ -64,31 +90,46 @@
   color: var(--brand-green);
 }
 
+/* ── Content column ───────────────────────────────────────── */
 .contentColumn {
   flex: 1;
 }
 
 .description {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
   color: rgba(0, 0, 0, 0.7);
-  margin-bottom: 80px;
-  line-height: 1.6;
-  max-width: 700px;
+  margin-bottom: 3rem;
+  line-height: 1.65;
+  max-width: 44rem;
 }
 
+/* ── Stats grid: 1-col → 2-col → 3-col ───────────────────── */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
 }
 
+@media (min-width: 480px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .statsGrid { grid-template-columns: repeat(3, 1fr); gap: 1.875rem; }
+}
+
+/* ── Stat card ────────────────────────────────────────────── */
 .statCard {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 40px 30px;
-  border-radius: 20px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 2rem 1.75rem;
+  border-radius: 1.25rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -106,57 +147,34 @@
   transition: height 0.4s ease;
 }
 
-.statCard:hover {
-  transform: translateY(-10px);
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(130, 195, 65, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
+@media (prefers-reduced-motion: no-preference) {
+  .statCard:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(130, 195, 65, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
 
-.statCard:hover::before {
-  height: 100%;
+  .statCard:hover::before {
+    height: 100%;
+  }
 }
 
 .statValue {
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
   font-weight: 600;
   color: #000;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
   line-height: 1;
   display: flex;
   align-items: baseline;
 }
 
 .statLabel {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   color: rgba(0, 0, 0, 0.5);
   margin-bottom: 0;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 500;
-}
-
-@media (max-width: 992px) {
-  .container {
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .titleColumn {
-    flex: none;
-  }
-
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .missionSection {
-    padding: 80px 0;
-  }
 }

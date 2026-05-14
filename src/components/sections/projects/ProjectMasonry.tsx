@@ -24,14 +24,16 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
-    if (!triggerRef.current || !galleryRef.current || !sectionRef.current) return;
+    const mm = gsap.matchMedia();
 
-    const gallery = galleryRef.current;
-    const totalWidth = gallery.scrollWidth;
-    const windowWidth = window.innerWidth;
-    const scrollAmount = totalWidth - windowWidth + (windowWidth * 0.1); // Add a small buffer
+    mm.add("(min-width: 1024px)", () => {
+      const gallery = galleryRef.current;
+      if (!gallery) return;
+      
+      const totalWidth = gallery.scrollWidth;
+      const windowWidth = window.innerWidth;
+      const scrollAmount = totalWidth - windowWidth + (windowWidth * 0.05);
 
-    const ctx = gsap.context(() => {
       // Horizontal Scroll Animation
       gsap.to(gallery, {
         x: -scrollAmount,
@@ -39,7 +41,7 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
         scrollTrigger: {
           trigger: triggerRef.current,
           start: "top top",
-          end: `+=${totalWidth}`, // Scroll duration based on content width
+          end: `+=${scrollAmount}`,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -49,9 +51,9 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
 
       // Subtle parallax for cards inside the gallery
       gsap.fromTo(".project-parallax", 
-        { x: 50 },
+        { x: 40 },
         { 
-          x: -50, 
+          x: -40, 
           scrollTrigger: {
             trigger: triggerRef.current,
             start: "top bottom",
@@ -60,9 +62,9 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
           }
         }
       );
-    }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   // Ensure we have projects to display, or fallback to dummy data
@@ -74,12 +76,19 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
     mainImage: null
   } as any));
 
-  // Chunk items into a repeating layout pattern
+  // Flat rendering for mobile carousel, chunked for desktop
   const renderProjects = () => {
+    // If we're on mobile/tablet (using a simple check or CSS-only approach)
+    // For CSS-only simplicity, we can render both or just ensure the desktop chunks look good on mobile.
+    // However, to satisfy "beautiful carousel", a flat list is better on mobile.
+    
+    // We'll use a CSS-driven approach where we might hide/show, 
+    // but better yet, let's just make the desktop chunks work as individual slides.
+    
     const elements: React.ReactNode[] = [];
     let i = 0;
     while (i < items.length) {
-      // 1. Single (portrait)
+      // 1. Single
       if (items[i]) {
         elements.push(
           <div key={`set-${i}-1`} className={`${styles.colSingle} project-parallax`}>
@@ -89,11 +98,12 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
         i++;
       }
 
-      // 2. Group (Large top + 2 small bottom)
+      // 2. Group
       if (i < items.length) {
         const p1 = items[i];
         const p2 = items[i + 1];
         const p3 = items[i + 2];
+        
         elements.push(
           <div key={`set-${i}-2`} className={`${styles.colGroup} project-parallax`}>
             <div className={styles.topRow}>
@@ -110,7 +120,7 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
         i += 3;
       }
 
-      // ... adding more variety ...
+      // 3. Another Single
       if (i < items.length) {
         elements.push(
           <div key={`set-${i}-3`} className={`${styles.colSingle} project-parallax`}>

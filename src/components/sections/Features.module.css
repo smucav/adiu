@@ -1,73 +1,110 @@
+/* =============================================================
+   FEATURES — MOBILE FIRST
+   Single column card on mobile → two-col grid on ≥768px
+   ============================================================= */
+
 .featureCard {
   background: linear-gradient(145deg, #4d8c6a 0%, #0a4a2e 100%);
-  border-radius: var(--radius-lg);
-  padding: 64px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  border-radius: var(--radius-md);
+  /* Mobile: generous vertical padding, smaller horizontal */
+  padding: 2.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
+
 .leftColumn {
   display: flex;
   flex-direction: column;
 }
+
 .illustration {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
-  margin-bottom: 40px;
+  min-height: 140px;
+  margin-bottom: 2rem;
 }
+
 .cubeStack {
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   background: var(--brand-green);
   border-radius: var(--radius-sm);
   transform: rotateX(60deg) rotateZ(45deg);
   transform-style: preserve-3d;
-  box-shadow: 20px 20px 0 #4fc87a;
+  box-shadow: 16px 16px 0 #4fc87a;
 }
+
 .heading {
-  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-size: clamp(1.75rem, 5vw, 3rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  margin-bottom: 16px;
-  color: #fff; /* lime-gold — pops on dark green */
+  margin-bottom: 1rem;
+  color: #fff;
 }
+
 .description {
-  color: #a8d5bc; /* soft sage — readable, not glaring */
-  font-size: 1.125rem;
+  color: #a8d5bc;
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
   line-height: 1.65;
   margin-bottom: 0;
 }
+
 .rightColumn {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 40px;
+  gap: 2rem;
 }
+
 .point {
-  border-left: 2px solid rgba(201, 232, 122, 0.35);
-  padding-left: 16px;
+  border-left: 2px solid rgba(201, 232, 122, 0.3);
+  padding-left: 1rem;
 }
+
 .pointTitle {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
   font-weight: 700;
-  color: #fff; /* same lime-gold as heading */
-  margin-bottom: 8px;
+  color: #fff;
+  margin-bottom: 0.4rem;
   letter-spacing: 0.01em;
 }
+
 .pointDescription {
-  color: #a8d5bc; /* same sage as body description */
-  font-size: 1rem;
+  color: #a8d5bc;
+  font-size: clamp(0.9rem, 2vw, 1rem);
   line-height: 1.6;
   margin-bottom: 0;
 }
-@media (max-width: 992px) {
+
+/* ── Tablet: two columns ──────────────────────────────────── */
+@media (min-width: 768px) {
   .featureCard {
-    grid-template-columns: 1fr;
-    padding: 40px 24px;
-    gap: 48px;
+    border-radius: var(--radius-lg);
+    padding: 3rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+  }
+
+  .cubeStack {
+    width: 100px;
+    height: 100px;
+    box-shadow: 18px 18px 0 #4fc87a;
+  }
+}
+
+/* ── Desktop: more breathing room ─────────────────────────── */
+@media (min-width: 1024px) {
+  .featureCard {
+    padding: 4rem;
+    gap: 5rem;
+  }
+
+  .cubeStack {
+    width: 120px;
+    height: 120px;
+    box-shadow: 20px 20px 0 #4fc87a;
   }
 }

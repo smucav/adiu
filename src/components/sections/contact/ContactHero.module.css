@@ -1,58 +1,84 @@
+/* =============================================================
+   CONTACT HERO — MOBILE FIRST
+   Stacked single column on mobile → side-by-side on ≥1024px
+   ============================================================= */
+
 .heroSection {
-  padding: 120px 0 80px;
+  /* Mobile: nav-aware padding */
+  padding: 7rem 0 3.5rem;
   background-color: var(--bg-primary);
 }
 
+@media (min-width: 768px)  { .heroSection { padding: 9rem 0 5rem; } }
+@media (min-width: 1024px) { .heroSection { padding: 10rem 0 6rem; } }
+
+/* ── Layout: stacked on mobile ────────────────────────────── */
 .layout {
   display: flex;
-  gap: 120px;
+  flex-direction: column;
+  gap: 3rem;
 }
 
+@media (min-width: 1024px) {
+  .layout {
+    flex-direction: row;
+    gap: 7.5rem;
+  }
+}
+
+/* ── Info column ──────────────────────────────────────────── */
 .infoColumn {
   flex: 1;
 }
 
 .label {
   color: var(--brand-green);
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   font-weight: 500;
-  margin-bottom: 24px;
+  margin-bottom: 1.25rem;
   display: block;
 }
 
 .title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 600;
   color: #000;
-  margin-bottom: 24px;
+  margin-bottom: 1.25rem;
 }
 
 .subtitle {
-  font-size: 1.125rem;
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 60px;
-  max-width: 450px;
+  line-height: 1.65;
+  /* Mobile: no fixed max-width so it fills the column */
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .subtitle {
+    max-width: 28rem;
+    margin-bottom: 3.75rem;
+  }
 }
 
 .infoBlock {
-  margin-bottom: 48px;
+  margin-bottom: 2.5rem;
 }
 
 .infoBlock h3 {
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   font-weight: 500;
   color: #000;
-  margin-bottom: 12px;
+  margin-bottom: 0.625rem;
 }
 
 .infoBlock p {
-  font-size: 1.125rem;
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
   color: var(--text-secondary);
   margin: 0;
 }
 
-/* Form Column */
+/* ── Form column ──────────────────────────────────────────── */
 .formColumn {
   flex: 1;
 }
@@ -60,26 +86,35 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 2rem;
 }
 
 .fieldGroup {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
+/* Form row: stacked on mobile, inline on tablet */
 .formRow {
   display: flex;
-  gap: 32px;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.formRow > div {
-  flex: 1;
+@media (min-width: 480px) {
+  .formRow {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  .formRow > div {
+    flex: 1;
+  }
 }
 
 .inputLabel {
-  font-size: 1.125rem;
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
   color: var(--text-secondary);
   pointer-events: none;
 }
@@ -88,11 +123,14 @@
   width: 100%;
   border: none;
   border-bottom: 1px solid #e2e8f0;
-  padding: 12px 0;
-  font-size: 1.125rem;
+  /* 44px touch target */
+  padding: 0.75rem 0;
+  min-height: var(--touch-min, 44px);
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
   background: transparent;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
 }
 
 .inputField:focus {
@@ -105,13 +143,6 @@
 }
 
 .submitBtn {
-  margin-top: 20px;
+  margin-top: 1rem;
   align-self: flex-start;
-}
-
-@media (max-width: 992px) {
-  .layout {
-    flex-direction: column;
-    gap: 80px;
-  }
 }

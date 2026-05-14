@@ -38,20 +38,20 @@ export const getTestimonialsQuery = groq`*[_type == "testimonial"]{
 }`;
 
 export const getArticlesQuery = groq`*[_type == "article"] | order(publishedAt desc){
-  _id, title, slug, category, publishedAt, excerpt,
+  _id, title, slug, categories, publishedAt, excerpt,
   mainImage ${imageFields}
 }`;
 
 export const getFeaturedArticlesQuery = groq`*[_type == "article"] | order(publishedAt desc)[0...3]{
-  _id, title, slug, category, publishedAt,
+  _id, title, slug, categories, publishedAt,
   mainImage ${imageFields}
 }`;
 
 export const getArticleBySlugQuery = groq`*[_type == "article" && slug.current == $slug][0]{
-  _id, title, slug, category, publishedAt, excerpt, readTime,
+  _id, title, slug, categories, publishedAt, excerpt, readTime,
   mainImage ${imageFields},
   body,
-  author{ name, role, image ${imageFields} }
+  author{ name, role, bio, image ${imageFields} }
 }`;
 
 export const getStatsQuery = groq`*[_type == "stat"] | order(order asc){
@@ -86,7 +86,9 @@ export const getFAQsQuery = groq`*[_type == "faq"] | order(order asc){
 }`;
 
 export const getFocusedServicesQuery = groq`*[_type == "focusedService"] | order(order asc){
-  _id, title, slug, category, description, content,
+  _id, title, slug, category, description,
+  featureItems[]{ _key, text },
+  content,
   image ${imageFields}
 }`;
 
@@ -112,9 +114,10 @@ export const getAboutPageQuery = groq`*[_type == "aboutPage"][0]{
 }`;
 
 export const getBlogPageQuery = groq`*[_type == "blogPage"][0]{
-  heroTitle, heroSubtitle,
+  heroTitle, heroSubtitle, heroBadge,
   archiveTitle, archiveSubtitle,
-  filterCategories
+  filterCategories,
+  searchPlaceholder, searchButtonText, featuredLabel
 }`;
 
 export const getCareerPageQuery = groq`*[_type == "careerPage"][0]{
@@ -134,9 +137,7 @@ export const getContactPageQuery = groq`*[_type == "contactPage"][0]{
 
 export const getProjectsPageQuery = groq`*[_type == "projectsPage"][0]{
   heroTitle, heroSubtitle,
-  heroImageLeft ${imageFields},
-  heroImageCenter ${imageFields},
-  heroImageRight ${imageFields},
+  heroImages[] ${imageFields},
   showcase1Title, showcase1Description,
   showcase1Image ${imageFields},
   showcase2Title, showcase2Description,
@@ -154,7 +155,13 @@ export const getServicesPageQuery = groq`*[_type == "servicesPage"][0]{
   heroImage ${imageFields},
   introHeading, introText,
   offeredServices[]->{
-    _id, title, slug, category, description, content,
+    _id, title, slug, category, description,
+    featureItems[]{ _key, text },
+    content,
     image ${imageFields}
-  }
+  },
+  ctaEyebrow, ctaHeading, ctaSubHeading, ctaDescription,
+  ctaPrimaryText, ctaPrimaryLink,
+  ctaSecondaryText, ctaSecondaryLink,
+  ctaMetaItems
 }`;

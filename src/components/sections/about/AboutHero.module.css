@@ -1,31 +1,34 @@
+/* =============================================================
+   ABOUT HERO — MOBILE FIRST
+   ============================================================= */
+
 .heroSection {
   position: relative;
-  padding: 160px 0 100px;
+  /* Mobile: nav-aware padding, smaller bottom */
+  padding: 7rem 0 3.5rem;
   overflow: hidden;
   text-align: center;
-  background: linear-gradient(
-    135deg,
-    var(--hero-bg-start) 0%,
-    var(--hero-bg-end) 100%
-  );
+  background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
   color: var(--text-on-dark);
 }
+
+@media (min-width: 768px)  { .heroSection { padding: 9rem 0 5rem; } }
+@media (min-width: 1024px) { .heroSection { padding: 10rem 0 6rem; } }
 
 [data-theme="dark"] .heroSection {
   background: linear-gradient(135deg, var(--hero-bg-start) 0%, #000 100%);
 }
 
+/* ── Map background ───────────────────────────────────────── */
 .mapContainer {
   position: absolute;
   inset: 0;
   z-index: 0;
-  /* Changed from -1 to 0 */
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  /* Container itself doesn't block, but children can */
 }
 
 .mapInteractiveWrapper {
@@ -35,10 +38,16 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  left: -100px;
-  /* Shift the entire map container to the left */
   pointer-events: auto;
-  /* Enable events for the map */
+  /* Mobile: no horizontal shift */
+  left: 0;
+}
+
+@media (min-width: 1024px) {
+  .mapInteractiveWrapper {
+    /* Desktop: shift left so map doesn't center on continent */
+    left: -100px;
+  }
 }
 
 .mapImage {
@@ -48,13 +57,11 @@
   opacity: 0.6;
 }
 
-/* Position estimation for Ethiopia on a standard world map */
+/* ── Ethiopia glow pin ────────────────────────────────────── */
 .ethiopiaGlow {
   position: absolute;
   top: 48%;
-  /* Moved North (up) */
   left: 61%;
-  /* Moved East (right) towards the Horn of Africa */
   width: 30px;
   height: 30px;
   transform: translate(-50%, -50%);
@@ -86,126 +93,130 @@
 }
 
 @keyframes radarPulse {
-  0% {
-    transform: scale(0.5);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(4);   opacity: 0; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .pulse { animation: none; }
+}
+
+/* ── Content layer ────────────────────────────────────────── */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 10;
-  /* Ensure content is above map */
   pointer-events: none;
-  /* Let events pass through to map in empty areas */
 }
 
 .content {
-  max-width: 1100px;
-  margin-bottom: 100px;
+  max-width: 69rem;
+  margin-bottom: 3.5rem;
   pointer-events: none;
-  /* Let hover pass through to map */
 }
 
 .heading {
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: clamp(2rem, 7vw, 4.5rem);
   color: var(--text-on-dark);
   font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 24px;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
   pointer-events: none;
 }
 
 .description {
-  font-size: 1.125rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.125rem);
   color: var(--text-secondary-on-dark);
-  max-width: 600px;
+  max-width: 38rem;
   margin: 0 auto;
+  line-height: 1.65;
   pointer-events: none;
+  margin-bottom: 0;
 }
 
+/* ── Stats row: wrapping on mobile ───────────────────────── */
 .statsRow {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   text-align: center;
   width: 100%;
-  max-width: 1000px;
+  max-width: 62rem;
   margin: 0 auto;
-  gap: 80px;
-
+  gap: 2.5rem 3rem;
   pointer-events: none;
-  /* Let hover pass through to map */
+}
+
+@media (min-width: 768px) {
+  .statsRow {
+    gap: 2rem 5rem;
+    flex-wrap: nowrap;
+  }
 }
 
 .statItem {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 120px;
   pointer-events: none;
 }
 
-/*.statValue {
-  font-size: clamp(3.5rem, 5vw, 5rem);
-  font-weight: 800;
-  color: var(--brand-green);
-  -webkit-text-stroke: 2px white;
-  margin-bottom: 12px;
-  line-height: 1;
-}*/
 .statValue {
-  font-size: clamp(3.5rem, 5vw, 5rem);
+  font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 800;
-  /*color: #72b331;*/ /* Lime green */
   color: #f5f5f5;
   -webkit-text-stroke: 2px #000;
   paint-order: stroke fill;
-  margin-bottom: 12px;
+  margin-bottom: 0.5rem;
   line-height: 1;
 }
 
 .statLabel {
-  font-size: 1.25rem;
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
   font-weight: 700;
   color: var(--text-on-dark);
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.04em;
 }
 
 .statDesc {
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
   color: var(--text-secondary-on-dark);
   margin-bottom: 0;
 }
 
+/* ── Tooltip ──────────────────────────────────────────────── */
 .mapTooltip {
   position: absolute;
   bottom: 20px;
-  /*background: var(--text-primary);*/
   background: #a5e7a9;
   backdrop-filter: blur(8px);
-  padding: 8px 16px;
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 14px;
   border-radius: 20px;
   color: #000;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   border: 1px solid #82c341;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   z-index: 0;
-  margin-right: -220px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
+@media (min-width: 1024px) {
+  .mapTooltip {
+    bottom: 20px;
+    margin-right: -220px;
+  }
+}
+
+/* ── Map SVG states ───────────────────────────────────────── */
 .country {
   fill: rgba(255, 255, 255, 0.05);
   stroke: rgba(255, 255, 255, 0.1);
@@ -230,23 +241,17 @@
   filter: drop-shadow(0 0 15px #82c341);
   cursor: pointer;
   transform: scale(1.05) translateZ(0);
-  /* Fisheye-like scale effect */
   z-index: 100;
 }
 
-@media (max-width: 768px) {
-  .statsRow {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 60px;
-  }
-
+/* Mobile: scale map up so it fills better */
+@media (max-width: 767px) {
   .mapInteractiveWrapper {
     transform: scale(1.6);
     margin-top: -40px;
   }
 
   .mapTooltip {
-    bottom: 0px;
+    bottom: 0;
   }
 }

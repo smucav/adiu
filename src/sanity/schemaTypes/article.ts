@@ -11,9 +11,11 @@ export const article = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'string',
+      name: 'categories',
+      title: 'Categories',
+      type: 'array',
+      of: [{ type: 'string' }],
+      validation: (Rule) => Rule.min(1),
     }),
     defineField({
       name: 'publishedAt',
@@ -78,6 +80,7 @@ export const article = defineType({
       fields: [
         { name: 'name', title: 'Name', type: 'string' },
         { name: 'role', title: 'Role', type: 'string' },
+        { name: 'bio', title: 'Bio', type: 'text', rows: 3 },
         { 
           name: 'image', 
           title: 'Image', 

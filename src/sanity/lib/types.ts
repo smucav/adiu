@@ -56,7 +56,7 @@ export interface SanityArticle {
   _id: string
   title: string
   slug: { current: string }
-  category: string
+  categories: string[]
   publishedAt: string
   mainImage: SanityImage
   excerpt: string
@@ -64,6 +64,7 @@ export interface SanityArticle {
   author: {
     name: string
     role: string
+    bio?: string
     image: SanityImage
   }
   readTime: string
@@ -121,9 +122,13 @@ export interface SanityAboutPage {
 export interface SanityBlogPage {
   heroTitle: string
   heroSubtitle: string
+  heroBadge?: string
   archiveTitle: string
   archiveSubtitle: string
   filterCategories: string[]
+  searchPlaceholder?: string
+  searchButtonText?: string
+  featuredLabel?: string
 }
 
 export interface SanityCareerPage {
@@ -153,9 +158,7 @@ export interface SanityContactPage {
 export interface SanityProjectsPage {
   heroTitle: string
   heroSubtitle: string
-  heroImageLeft: SanityImage
-  heroImageCenter: SanityImage
-  heroImageRight: SanityImage
+  heroImages?: SanityImage[]
   showcase1Title: string
   showcase1Description: string
   showcase1Image: SanityImage
@@ -173,6 +176,15 @@ export interface SanityServicesPage {
   heroImage: SanityImage
   introHeading: string
   introText: string
+  ctaEyebrow?: string
+  ctaHeading?: string
+  ctaSubHeading?: string
+  ctaDescription?: string
+  ctaPrimaryText?: string
+  ctaPrimaryLink?: string
+  ctaSecondaryText?: string
+  ctaSecondaryLink?: string
+  ctaMetaItems?: string[]
 }
 
 export interface SanityPartnerLogo {
@@ -228,12 +240,18 @@ export interface SanityFAQ {
   order: number
 }
 
+export interface SanityServiceFeatureItem {
+  _key: string
+  text: string
+}
+
 export interface SanityFocusedService {
   _id: string
   title: string
   slug: { current: string }
   category?: string
   description: string
+  featureItems?: SanityServiceFeatureItem[]
   content?: PortableTextBlock[]
   image: SanityImage
   order: number

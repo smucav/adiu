@@ -1,169 +1,317 @@
 .blogHeroSection {
-  padding: 100px 0 60px;
+  position: relative;
+  /* Standard hero padding but more breathing room at bottom */
+  padding: 8rem 0 6rem;
+  background-color: #000;
+  background-image: radial-gradient(circle at 50% 30%, rgba(130, 195, 65, 0.1) 0%, transparent 70%);
+  overflow: hidden;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.headerRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 80px;
-  flex-wrap: wrap;
-  gap: 40px;
+@media (min-width: 768px)  { .blogHeroSection { padding: 10rem 0 8rem; } }
+@media (min-width: 1024px) { .blogHeroSection { padding: 12rem 0 10rem; } }
+
+
+
+/* ── Header Layout ───────────────────────────────────────── */
+.contentContainer {
+  position: relative;
+  z-index: 10;
 }
 
-.headerText {
-  flex: 1;
-  max-width: 600px;
+.header {
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--brand-green);
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+  padding: 8px 16px;
+  background: rgba(130, 195, 65, 0.1);
+  border: 1px solid rgba(130, 195, 65, 0.3);
+  border-radius: 100px;
 }
 
 .title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 500;
-  color: #000;
-  margin-bottom: 16px;
-  line-height: 1.1;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: clamp(2.75rem, 8vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 2rem;
+}
+
+.title span {
+  background: linear-gradient(to right, #fff, var(--brand-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  margin: 0;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 42rem;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
 }
 
-.searchContainer {
+/* ── Search Bar (Premium Techy) ────────────────────────── */
+.searchBox {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchBar {
   display: flex;
   align-items: center;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px; /* Optional, depending on Figma, it looks quite square */
-  overflow: hidden;
-  height: 60px;
-  min-width: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  padding: 6px 6px 6px 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.searchBar:focus-within {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--brand-green);
+  box-shadow: 0 0 40px rgba(130, 195, 65, 0.2);
+  transform: scale(1.02);
+}
+
+.searchIcon {
+  color: var(--brand-green);
+  display: flex;
 }
 
 .searchInput {
   flex: 1;
-  height: 100%;
+  background: transparent;
   border: none;
-  padding: 0 24px;
+  color: #fff;
   font-size: 1rem;
-  color: var(--text-primary);
+  padding: 0 16px;
   outline: none;
 }
 
 .searchInput::placeholder {
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.4);
 }
 
-.searchButton {
-  height: 100%;
-  padding: 0 40px;
-  background-color: var(--brand-green);
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 400;
+.searchBtn {
+  background: var(--brand-green);
+  color: #000;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 100px;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.searchButton:hover {
-  background-color: var(--brand-green-hover);
+.searchBtn:hover {
+  transform: scale(1.05);
+  background: #fff;
 }
 
-.featuredList {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
+/* ── Glass Featured Card ───────────────────────────────── */
+.featuredSection {
+  margin-top: 4rem;
 }
 
-.featuredArticle {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-radius: 12px;
-  padding: 16px;
-  margin: -16px; /* Offset padding */
-}
-
-.featuredArticle:hover {
-  transform: translateY(-4px);
-  background: #f8fafc; /* slight hover highlight to indicate clickability */
-}
-
-.imageWrapper {
-  flex: 0 0 45%;
-  position: relative;
-  aspect-ratio: 16/9;
-  border-radius: 8px;
+.glassCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
   overflow: hidden;
-  background-color: #f1f5f9;
+  text-decoration: none;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.articleContent {
-  flex: 1;
+@media (min-width: 1024px) {
+  .glassCard {
+    grid-template-columns: 1.1fr 1fr;
+    min-height: 540px;
+  }
+}
+
+.glassCard:hover {
+  border-color: rgba(130, 195, 65, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+  transform: translateY(-12px);
+}
+
+.imageZone {
+  position: relative;
+  min-height: 350px;
+  overflow: hidden;
+}
+
+.featuredImage {
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glassCard:hover .featuredImage {
+  transform: scale(1.1);
+}
+
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, transparent 100%);
+  z-index: 1;
+}
+
+.textZone {
+  padding: 3.5rem;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: center;
 }
 
-.articleTitle {
-  font-size: 2rem;
-  font-weight: 500;
-  color: #000;
-  line-height: 1.3;
-  margin: 0;
+@media (max-width: 640px) {
+  .textZone { padding: 2.5rem; }
 }
 
-.articleExcerpt {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0;
-  max-width: 90%;
+.tagWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 2rem;
 }
 
-.articleMeta {
-  font-size: 0.875rem;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 8px;
-}
-
-.readMore {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--brand-green);
-  margin-top: auto;
-  display: inline-flex;
+.featuredLabel {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  transition: gap 0.2s;
+  gap: 10px;
+  color: var(--brand-green);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
-.featuredArticle:hover .readMore {
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  background: var(--brand-green);
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulseDot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--brand-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.featuredTitle {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.featuredExcerpt {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardFooter {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.authorGroup {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-@media (max-width: 992px) {
-  .headerRow {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .searchContainer {
-    width: 100%;
-    min-width: 0;
-  }
-  
-  .featuredArticle {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .imageWrapper {
-    width: 100%;
-  }
+.avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--brand-green);
 }
+
+.authorMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorName {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.readTime {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.readArticle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--brand-green);
+  transition: gap 0.3s ease;
+}
+
+.glassCard:hover .readArticle {
+  gap: 16px;
+}
+
+/* ── Decorative Floating Elements ───────────────────────── */
+.float1, .float2 {
+  position: absolute;
+  font-family: monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--brand-green);
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.float1 { top: 15%; left: 5%; transform: rotate(-90deg); }
+.float2 { top: 25%; right: 5%; transform: rotate(90deg); }

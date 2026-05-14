@@ -140,7 +140,7 @@ export function FisheyeGrid({
     let lastTime = performance.now();
     let lastRenderTime = 0;
     let time = 0;
-    
+
     // Throttle to ~30fps when idle, full 60fps when interacting
     const IDLE_FRAME_INTERVAL = 33; // ~30fps
 
@@ -242,7 +242,7 @@ export function FisheyeGrid({
         ctx.beginPath();
         ctx.arc(p.x, p.y, currentDotSize, 0, Math.PI * 2);
         ctx.fill();
-        
+
         // Reset shadow
         if (distSq < radiusSq) {
           ctx.shadowBlur = 0;
@@ -263,15 +263,15 @@ export function FisheyeGrid({
           if (distSqConn < connectionRangeSq) {
             const dist_conn = Math.sqrt(distSqConn);
             const lineOpacity = (1 - dist_conn / connectionRange) * 0.2;
-            
+
             const mouseDist1Sq = (mx - p.x) ** 2 + (my - p.y) ** 2;
             const mouseDist2Sq = (mx - p2.x) ** 2 + (my - p2.y) ** 2;
             const isNearMouse = mouseDist1Sq < radiusSq || mouseDist2Sq < radiusSq;
-            
-            ctx.strokeStyle = isNearMouse 
-              ? `${colorBase}${(lineOpacity * 3).toFixed(2)})` 
+
+            ctx.strokeStyle = isNearMouse
+              ? `${colorBase}${(lineOpacity * 3).toFixed(2)})`
               : `${colorBase}${lineOpacity.toFixed(2)})`;
-            
+
             ctx.lineWidth = isNearMouse ? 1.2 : 0.6;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);

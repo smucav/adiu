@@ -23,17 +23,20 @@ interface QEHSSectionProps {
 const DEFAULT_POLICIES: Policy[] = [
   {
     title: "Quality Assurance",
-    description: "We maintain rigorous quality control standards across all our operations to ensure excellence in every project we deliver. Our commitment to quality is reflected in our ISO certifications.",
+    description:
+      "We maintain rigorous quality control standards across all our operations to ensure excellence in every project we deliver. Our commitment to quality is reflected in our ISO certifications.",
     image: null,
   },
   {
     title: "Environmental Stewardship",
-    description: "Our commitment to the environment drives us to implement sustainable practices and minimize our ecological footprint. We actively monitor our carbon emissions.",
+    description:
+      "Our commitment to the environment drives us to implement sustainable practices and minimize our ecological footprint. We actively monitor our carbon emissions.",
     image: null,
   },
   {
     title: "Health & Occupational Safety",
-    description: "We prioritize a zero-harm culture, ensuring a safe and healthy working environment for all our stakeholders. Our comprehensive safety training programs ensure protection.",
+    description:
+      "We prioritize a zero-harm culture, ensuring a safe and healthy working environment for all our stakeholders. Our comprehensive safety training programs ensure protection.",
     image: null,
   },
 ];
@@ -47,9 +50,10 @@ export const QEHSSection: React.FC<QEHSSectionProps> = ({ data }) => {
 
   if (!mounted) return null;
 
-  const policies = data.qehsPolicies && data.qehsPolicies.length > 0
-    ? data.qehsPolicies
-    : DEFAULT_POLICIES;
+  const policies =
+    data.qehsPolicies && data.qehsPolicies.length > 0
+      ? data.qehsPolicies
+      : DEFAULT_POLICIES;
 
   return <QEHSContent data={{ ...data, qehsPolicies: policies }} />;
 };
@@ -60,7 +64,7 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -100,11 +104,13 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
 
         <div
           className={styles.mazeWrapper}
-          style={{
-            height: `${totalItems * itemHeight}px`,
-            "--item-scale": itemScale,
-            "--item-height": `${itemHeight}px`
-          } as React.CSSProperties}
+          style={
+            {
+              height: `${totalItems * itemHeight}px`,
+              "--item-scale": itemScale,
+              "--item-height": `${itemHeight}px`,
+            } as React.CSSProperties
+          }
         >
           <div className={styles.mazePathContainer}>
             <svg
@@ -137,13 +143,27 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
   );
 };
 
-const PolicyItem = ({ policy, index, globalProgress, totalItems }: { policy: Policy; index: number; globalProgress: any; totalItems: number }) => {
+const PolicyItem = ({
+  policy,
+  index,
+  globalProgress,
+  totalItems,
+}: {
+  policy: Policy;
+  index: number;
+  globalProgress: any;
+  totalItems: number;
+}) => {
   const isEven = index % 2 === 1;
   const step = 1 / totalItems;
   const start = index * step;
 
   // Faster connection range
-  const itemProgress = useTransform(globalProgress, [start, start + step * 0.3], [0, 1]);
+  const itemProgress = useTransform(
+    globalProgress,
+    [start, start + step * 0.3],
+    [0, 1],
+  );
 
   // Content slides in faster and stays longer
   const xText = useTransform(itemProgress, [0, 0.8], [isEven ? 400 : -400, 0]);
@@ -151,11 +171,15 @@ const PolicyItem = ({ policy, index, globalProgress, totalItems }: { policy: Pol
   const opacity = useTransform(itemProgress, [0, 0.4], [0, 1]);
 
   // Fix number visibility and glow
-  const numberStroke = useTransform(itemProgress, [0, 0.5, 1], [
-    "1px rgba(130, 195, 65, 0.2)",
-    "1px rgba(130, 195, 65, 0.6)",
-    "2px rgba(130, 195, 65, 1)"
-  ]);
+  const numberStroke = useTransform(
+    itemProgress,
+    [0, 0.5, 1],
+    [
+      "1px rgba(130, 195, 65, 0.2)",
+      "1px rgba(130, 195, 65, 0.6)",
+      "2px rgba(130, 195, 65, 1)",
+    ],
+  );
   const numberTextOpacity = useTransform(itemProgress, [0, 0.4], [0.2, 0.6]);
   const activeGlowOpacity = useTransform(itemProgress, [0.7, 1], [0, 1]);
 
@@ -178,17 +202,14 @@ const PolicyItem = ({ policy, index, globalProgress, totalItems }: { policy: Pol
           style={{
             opacity: activeGlowOpacity,
             WebkitTextStroke: "2px rgba(130, 195, 65, 1)",
-            filter: "drop-shadow(0 0 30px rgba(130, 195, 65, 0.8))"
+            filter: "drop-shadow(0 0 30px rgba(130, 195, 65, 0.8))",
           }}
         >
           {index + 1}
         </motion.span>
       </div>
 
-      <motion.div
-        style={{ x: xText, opacity }}
-        className={styles.textContent}
-      >
+      <motion.div style={{ x: xText, opacity }} className={styles.textContent}>
         <h3 className={styles.policyTitle}>{policy.title}</h3>
         <p className={styles.policyText}>{policy.description}</p>
         <div className={styles.actionCircle}>

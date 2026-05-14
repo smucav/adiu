@@ -1,90 +1,126 @@
+/* =============================================================
+   PROJECT SHOWCASE — MOBILE FIRST
+   Stacked single column on mobile → side-by-side on ≥768px
+   ============================================================= */
+
 .showcaseSection {
-  padding: 0 0 100px;
+  /* Mobile: minimal bottom padding */
+  padding: 0 0 3.5rem;
   background-color: var(--bg-primary);
 }
 
+@media (min-width: 768px)  { .showcaseSection { padding: 0 0 5rem; } }
+@media (min-width: 1024px) { .showcaseSection { padding: 0 0 6.25rem; } }
+
 .showcaseContainer {
   background-color: #7695B0;
-  border-radius: 60px; /* Larger radius for the capsule feel */
-  padding: 120px 100px;
+  /* Mobile: tighter radius and padding */
+  border-radius: 2rem;
+  padding: 3rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 120px;
+  gap: 3.5rem;
 }
 
-/* Common Card Styles */
+@media (min-width: 768px) {
+  .showcaseContainer {
+    border-radius: 3rem;
+    padding: 5rem 3rem;
+    gap: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .showcaseContainer {
+    border-radius: 3.75rem;
+    padding: 7.5rem 6.25rem;
+    gap: 7.5rem;
+  }
+}
+
+/* ── Common card ──────────────────────────────────────────── */
 .imageCard {
   position: relative;
   overflow: hidden;
-  border-radius: 32px; /* Softer, larger radius */
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  .imageCard { border-radius: 2rem; }
 }
 
 .textBlock h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.75rem, 4vw, 3rem);
   font-weight: 500;
-  margin-bottom: 16px;
+  margin-bottom: 0.875rem;
   line-height: 1.2;
 }
 
 .textBlock p {
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  line-height: 1.65;
   opacity: 0.9;
   max-width: 500px;
+  margin-bottom: 0;
 }
 
-/* Alarm Row - Horizontal */
+/* ── Alarm row: stacked on mobile ─────────────────────────── */
 .alarmRow {
   display: flex;
-  align-items: center;
-  gap: 80px;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .alarmImageWrapper {
-  flex: 0 0 60%;
-  aspect-ratio: 16/10;
+  width: 100%;
+  aspect-ratio: 16 / 9;
 }
 
-/* ACDB Row - Asymmetric 3-column / 2-side */
+/* ── ACDB row: stacked on mobile ──────────────────────────── */
 .acdbRow {
   display: flex;
-  align-items: center;
-  gap: 80px;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.acdbImageLeft {
-  flex: 0 0 280px;
-  height: 420px;
-}
+.acdbImageLeft  { width: 100%; height: 260px; }
+.acdbTextCenter { text-align: center; }
+.acdbImageRight { width: 100%; height: 280px; }
 
-.acdbTextCenter {
-  flex: 1;
-  text-align: left;
-}
-
-.acdbImageRight {
-  flex: 0 0 420px;
-  height: 420px;
-}
-
-@media (max-width: 992px) {
-  .alarmRow, .acdbRow {
-    flex-direction: column;
-    text-align: center;
-    gap: 40px;
+/* ── Tablet: side-by-side ─────────────────────────────────── */
+@media (min-width: 768px) {
+  .alarmRow {
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
   }
-  
-  .alarmImageWrapper, .acdbImageLeft, .acdbImageRight {
-    width: 100%;
-    flex: none;
-  }
-  
-  .textBlock p {
-    margin: 0 auto;
+
+  .alarmImageWrapper {
+    flex: 0 0 55%;
+    aspect-ratio: 16 / 10;
+    width: auto;
   }
 
   .acdbRow {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
   }
+
+  .acdbImageLeft  { flex: 0 0 240px; height: 380px; width: auto; }
+  .acdbTextCenter { flex: 1; text-align: left; }
+  .acdbImageRight { flex: 0 0 360px; height: 380px; width: auto; }
+}
+
+/* ── Desktop: final spacings ──────────────────────────────── */
+@media (min-width: 1024px) {
+  .alarmRow,
+  .acdbRow {
+    gap: 5rem;
+  }
+
+  .alarmImageWrapper { flex: 0 0 60%; }
+  .acdbImageLeft  { flex: 0 0 280px; height: 420px; }
+  .acdbImageRight { flex: 0 0 420px; height: 420px; }
 }

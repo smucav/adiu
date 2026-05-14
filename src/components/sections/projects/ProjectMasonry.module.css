@@ -1,103 +1,101 @@
+/* =============================================================
+   PROJECT MASONRY — MOBILE FIRST
+   Vertical stack on mobile → horizontal scroll gallery on desktop
+   ============================================================= */
+
 .masonrySection {
   position: relative;
   z-index: 100;
   background-color: transparent;
   width: 100%;
-  margin-top: -100vh; /* Slide-over effect from hero */
+  /* Negative margin to pull it over the sticky hero */
+  margin-top: -100vh;
 }
 
 .masonryContainer {
   position: relative;
   width: 100%;
-  height: 100vh;
-  background-color: #0b111a; /* Softer, neutral dark */
+  background-color: #0b111a;
   background-image: radial-gradient(
     circle at 50% 50%,
-    rgba(130, 195, 65, 0.03) 0%,
-    transparent 70%
+    rgba(130, 195, 65, 0.05) 0%,
+    transparent 80%
   );
   overflow: hidden;
+  /* Mobile height: allow room for cards + padding */
+  min-height: 100vh;
   display: flex;
   align-items: center;
 }
 
+/* ── MOBILE: Horizontal Swipe Carousel ────────────────────── */
 .horizontalWrapper {
   width: 100%;
-  padding: 0 5vw;
-  display: flex;
-  align-items: center;
+  padding: 0 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.horizontalWrapper::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
 }
 
 .gallery {
   display: flex;
-  gap: 30px;
+  flex-direction: row;
+  gap: 1.25rem;
   width: max-content;
-  align-items: center;
-  padding: 40px 0;
-  will-change: transform;
+  padding: 4rem 0;
 }
 
-/* Column Layouts */
-.colSingle {
+/* On mobile, every "col" is a snap point */
+.colSingle,
+.colGroup {
+  scroll-snap-align: center;
   flex-shrink: 0;
+  width: 85vw; /* Show a bit of the next card */
+  max-width: 340px;
+  height: 500px; /* Explicit height for mobile carousel */
 }
 
 .colGroup {
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  height: 80vh;
-  max-height: 800px;
+  gap: 1.25rem;
 }
 
-.topRow {
-  flex: 1.5;
+/* Specific card sizes inside carousel */
+.portrait,
+.large,
+.square,
+.tallPortrait,
+.hero {
   width: 100%;
+  height: 100%;
 }
 
+.topRow  { flex: 2; width: 100%; height: 60%; }
 .bottomRow {
   flex: 1;
   display: flex;
-  gap: 30px;
+  gap: 1rem;
   width: 100%;
+  height: 40%;
 }
 
-/* Card Sizes */
+/* Card styling */
 .projectCard {
   position: relative;
-  border-radius: 44px;
+  border-radius: 2rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   height: 100%;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.portrait {
-  width: 360px;
-  height: 520px;
-}
-
-.large {
-  width: 560px;
-  height: 100%;
-}
-
-.square {
-  width: 260px;
-  height: 100%;
-}
-
-.tallPortrait {
-  width: 400px;
-  height: 600px;
-}
-
-.hero {
-  width: 640px;
-  height: 560px;
+  width: 100%;
 }
 
 .imageContainer {
@@ -115,6 +113,10 @@
   transform: scale(1.05);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .projectCard:hover .image { transform: none; }
+}
+
 .overlay {
   position: absolute;
   inset: 0;
@@ -127,50 +129,106 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 30px;
-  opacity: 1;
+  padding: 1.5rem;
 }
 
-.content {
-  color: #fff;
-}
+.content { color: #fff; }
 
 .title {
-  font-size: 1.5rem;
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 0.375rem;
   letter-spacing: -0.02em;
 }
 
 .description {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.7);
-  line-height: 1.4;
+  line-height: 1.45;
   max-width: 90%;
 }
 
-@media (max-width: 1024px) {
-  .portrait { width: 350px; height: 500px; }
-  .large { width: 500px; }
-  .square { width: 235px; }
-  .hero { width: 600px; }
+/* ── Tablet: 2-column grid ────────────────────────────────── */
+@media (min-width: 768px) {
+  .masonrySection {
+    margin-top: 0; /* No slide-over on tablet to keep it simple */
+  }
+
+  .masonryContainer {
+    padding: 5rem 0;
+    height: auto;
+    display: block;
+  }
+
+  .horizontalWrapper {
+    padding: 0 2rem;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 0;
+  }
+
+  .colSingle,
+  .colGroup {
+    width: 100%;
+    max-width: none;
+    height: 400px;
+  }
 }
 
-@media (max-width: 768px) {
-  /* Fallback for mobile if pinning is too much */
+/* ── Desktop: horizontal scroll gallery (GSAP controlled) ─── */
+@media (min-width: 1024px) {
+  .masonrySection {
+    margin-top: -100vh; /* Restore slide-over on desktop */
+  }
+
   .masonryContainer {
-    height: auto;
-    padding: 80px 0;
+    height: 100vh;
+    padding: 0;
+    display: flex;
+    align-items: center;
   }
-  
-  .gallery {
-    flex-direction: column;
+
+  .horizontalWrapper {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    scroll-snap-type: none;
   }
-  
-  .portrait, .large, .square, .tallPortrait, .hero {
-    width: 100% !important;
-    height: 400px !important;
+
+  .gallery {
+    display: flex;
+    flex-direction: row;
+    gap: 1.875rem;
+    width: max-content;
+    align-items: center;
+    padding: 2.5rem 0;
   }
+
+  .colSingle,
+  .colGroup {
+    height: 80vh;
+    max-height: 800px;
+    width: auto;
+  }
+
+  .portrait     { width: 360px;  height: 520px; }
+  .large        { width: 560px;  height: 100%;  }
+  .square       { width: 260px;  height: 100%;  }
+  .tallPortrait { width: 400px;  height: 600px; }
+  .hero         { width: 640px;  height: 560px; }
+}
+
+@media (min-width: 1280px) {
+  .portrait     { width: 380px; }
+  .large        { width: 580px; }
+  .hero         { width: 660px; }
 }

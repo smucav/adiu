@@ -16,41 +16,23 @@ export const projectsPage = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'heroImageLeft',
-      title: 'Hero Image Left',
-      type: 'image',
-      fields: [
+      name: 'heroImages',
+      title: 'Hero Deck Images',
+      description: 'Upload exactly 8 images for the animated "deck of cards" hero section. If fewer are provided, fallbacks will be used.',
+      type: 'array',
+      validation: (Rule) => Rule.max(8),
+      of: [
         {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          description: 'Important for SEO and accessibility.',
-        },
-      ],
-    }),
-    defineField({
-      name: 'heroImageCenter',
-      title: 'Hero Image Center',
-      type: 'image',
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          description: 'Important for SEO and accessibility.',
-        },
-      ],
-    }),
-    defineField({
-      name: 'heroImageRight',
-      title: 'Hero Image Right',
-      type: 'image',
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          description: 'Important for SEO and accessibility.',
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Important for SEO and accessibility.',
+            },
+          ],
         },
       ],
     }),

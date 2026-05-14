@@ -154,13 +154,24 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
                     )}
                   </div>
 
-                  {!service.content && (
-                    <ul className={styles.featuresList}>
-                      <li className={styles.featureItem}>Optimized performance</li>
-                      <li className={styles.featureItem}>Enterprise grade security</li>
-                      <li className={styles.featureItem}>24/7 Support available</li>
-                    </ul>
-                  )}
+                  {!service.content && (() => {
+                    const items = service.featureItems && service.featureItems.length > 0
+                      ? service.featureItems
+                      : [
+                          { _key: 'f1', text: 'Optimized performance' },
+                          { _key: 'f2', text: 'Enterprise grade security' },
+                          { _key: 'f3', text: '24/7 Support available' },
+                        ];
+                    return (
+                      <ul className={styles.featuresList}>
+                        {items.map((item) => (
+                          <li key={item._key} className={styles.featureItem}>
+                            {item.text}
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  })()}
                 </div>
               </div>
 

@@ -10,18 +10,20 @@ interface CounterProps {
 
 export function Counter({ value, className }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  // Use a smaller margin for mobile compatibility
+  const isInView = useInView(ref, { once: true, margin: "-20px" });
   
-  const safeValue = value || "0";
-  // Parse the number from the value (e.g., "2,257" -> 2257, "95%" -> 95)
-  const numericValue = parseFloat(safeValue.replace(/,/g, "").replace(/%/g, ""));
-  const suffix = safeValue.includes("%") ? "%" : "";
+  const safeValue = String(value || "0");
+  // More robust number extraction
+  const numericValue = parseFloat(safeValue.replace(/,/g, "").replace(/[^0-9.-]/g, "")) || 0;
+  // Extract suffix (anything that isn't a digit, comma, dot, or minus)
+  const suffix = safeValue.replace(/[0-9,.-]/g, "");
   const hasComma = safeValue.includes(",");
 
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 60, // Slower, more premium feel
+    damping: 25,
   });
 
   useEffect(() => {
@@ -31,17 +33,19 @@ export function Counter({ value, className }: CounterProps) {
   }, [isInView, motionValue, numericValue]);
 
   useEffect(() => {
-    springValue.on("change", (latest) => {
+    const unsubscribe = springValue.on("change", (latest) => {
       if (ref.current) {
-        let formattedValue = Math.floor(latest).toString();
+        let val = Math.round(latest);
+        let formattedValue = val.toString();
         
         if (hasComma) {
-          formattedValue = Math.floor(latest).toLocaleString();
+          formattedValue = val.toLocaleString();
         }
         
         ref.current.textContent = formattedValue + suffix;
       }
     });
+    return () => unsubscribe();
   }, [springValue, suffix, hasComma]);
 
   return <span ref={ref} className={className}>0{suffix}</span>;

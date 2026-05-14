@@ -1,159 +1,521 @@
+/* =============================================================
+   NAVBAR — MOBILE FIRST, PREMIUM DESIGN
+   ============================================================= */
+
+/* ── Fixed header bar ──────────────────────────────────────── */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 16px 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0.875rem 0;
+  transition:
+    padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.4s ease,
+    backdrop-filter 0.4s ease;
 }
 
 .scrolled {
-  padding: 10px 0;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 0;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 }
 
+/* When menu is open, keep header dark-themed */
+.menuActive {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Inner container ───────────────────────────────────────── */
 .navContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 5vw;
+  gap: 1rem;
 }
 
+/* ── Logo ──────────────────────────────────────────────────── */
 .logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  position: relative;
+  z-index: 1010;
+}
+
+/* ── Desktop glass pill — hidden on mobile ─────────────────── */
+.navLinksWrapper { display: none; }
+
+/* ── Desktop actions — hidden on mobile ────────────────────── */
+.actions { display: none; }
+
+/* =============================================================
+   HAMBURGER — 2-BAR MORPH TO X
+   ============================================================= */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  z-index: 1010;
+}
+
+.hamburger:focus-visible {
+  outline: 2px solid var(--brand-green);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.bar {
+  display: block;
+  height: 2px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  width: 24px;
+  transform-origin: center;
+  transition:
+    transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    background 0.3s ease,
+    width 0.3s ease;
+}
+
+/* When menu is open: bars turn white */
+.menuActive .bar {
+  background: #ffffff;
+}
+
+/* Morph to × */
+.hamburgerOpen .bar:nth-child(1) {
+  transform: translateY(4px) rotate(45deg);
+  width: 24px;
+}
+
+.hamburgerOpen .bar:nth-child(2) {
+  transform: translateY(-4px) rotate(-45deg);
+  width: 24px;
+}
+
+/* =============================================================
+   FULL-SCREEN MOBILE DRAWER
+   ============================================================= */
+.mobileDrawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1005;
+  /* Rich dark gradient */
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(130, 195, 65, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(0, 107, 79, 0.15) 0%, transparent 60%),
+    linear-gradient(160deg, #051b24 0%, #0a2e20 50%, #051b24 100%);
+  /* Start hidden — clip from top */
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  overflow: hidden;
+}
+
+.drawerOpen {
+  clip-path: inset(0 0 0% 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileDrawer { transition: none; }
+}
+
+/* ── Decorative glowing orbs ───────────────────────────────── */
+.orb1 {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(130, 195, 65, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+.orb2 {
+  position: absolute;
+  bottom: 0;
+  left: -15%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 107, 79, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orbFloat 12s ease-in-out infinite reverse;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-30px) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb1, .orb2 { animation: none; }
+}
+
+/* ── Drawer inner scroll container ────────────────────────── */
+.drawerInner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 1.5rem 2rem;
+  overflow-y: auto;
+}
+
+/* ── Top bar inside drawer ─────────────────────────────────── */
+.drawerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Match header height */
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.drawerLogo {
+  display: block;
+  position: relative;
+  width: 120px;
+  height: 38px;
+}
+
+/* ── Close button ──────────────────────────────────────────── */
+.closeBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  flex-shrink: 0;
+}
+
+.closeBtn:hover {
+  background: rgba(130, 195, 65, 0.15);
+  border-color: rgba(130, 195, 65, 0.4);
+  color: #fff;
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid var(--brand-green);
+  outline-offset: 3px;
+}
+
+/* ── Nav list ──────────────────────────────────────────────── */
+.drawerNav {
   flex: 1;
   display: flex;
   align-items: center;
+  /* Vertical centering of links */
+  padding: 1rem 0;
 }
 
-/*
-   UNIVERSAL GLASS PILL
-   This design works on any background (light or dark) without hardcoding.
-   The heavy blur + semi-opaque white background creates a "Floating Island"
-   that remains visible and legible everywhere.
-*/
-.navLinksWrapper {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 100px;
-  padding: 8px 32px;
+.mobileNavList {
+  list-style: none;
+  width: 100%;
+}
+
+/* Each item animates in with a stagger */
+.mobileNavItem {
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.drawerOpen .mobileNavItem {
+  animation: slideUp 0.55s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  /* --i set inline per item */
+  animation-delay: calc(0.1s + var(--i, 0) * 0.07s);
+}
+
+@keyframes slideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileNavItem {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* ── Individual link ───────────────────────────────────────── */
+.mobileNavLink {
   display: flex;
-  align-items: center;
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  margin: 0 20px;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.08),
-    inset 0 0 1px 1px rgba(255, 255, 255, 1);
-  transition: all 0.3s ease;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  text-decoration: none;
+  position: relative;
+  group: link;
 }
 
-.navLinks {
-  display: flex;
-  gap: 24px;
-  align-items: center;
-}
-
-.navLink {
-  font-weight: 700;
-  font-size: 0.7rem;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
+.linkIndex {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: rgba(130, 195, 65, 0.6);
   letter-spacing: 0.08em;
-  color: #1a1a1a; /* Always dark text inside the white glass pill */
-  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.25s ease;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  align-self: flex-start;
 }
 
-.navLink:hover {
-  opacity: 1;
+.linkLabel {
+  font-size: clamp(2.25rem, 8vw, 3.5rem);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  transition: color 0.3s ease;
+}
+
+.linkLine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--brand-green), transparent);
+  transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Hover state */
+.mobileNavLink:hover .linkLabel,
+.mobileNavLink:focus-visible .linkLabel {
+  color: #ffffff;
+}
+
+.mobileNavLink:hover .linkIndex,
+.mobileNavLink:focus-visible .linkIndex {
   color: var(--brand-green);
 }
 
-.actions {
+.mobileNavLink:hover .linkLine,
+.mobileNavLink:focus-visible .linkLine {
+  width: 100%;
+}
+
+/* Active (current page) state */
+.activeMobileLink .linkLabel {
+  color: #ffffff;
+}
+
+.activeMobileLink .linkIndex {
+  color: var(--brand-green);
+}
+
+.activeMobileLink .linkLine {
+  width: 40%;
+}
+
+.mobileNavLink:focus-visible {
+  outline: none;
+  border-radius: 4px;
+}
+
+/* ── Footer area ───────────────────────────────────────────── */
+.drawerFooter {
+  flex-shrink: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  opacity: 0;
+}
+
+.drawerOpen .drawerFooter {
+  animation: fadeIn 0.5s 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawerFooter { opacity: 1; animation: none; }
+}
+
+/* "Start a project" link */
+.drawerCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  /* 44px touch target */
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  background: var(--brand-green);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 6px 24px rgba(130, 195, 65, 0.3);
+}
+
+.drawerCta:hover {
+  background: #72b331;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(130, 195, 65, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawerCta:hover { transform: none; }
+}
+
+/* Meta: tagline + socials */
+.drawerMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.drawerTagline {
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.04em;
+  text-align: right;
+  max-width: 18ch;
+  line-height: 1.4;
+}
+
+.drawerSocials {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.drawerSocialIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  gap: 24px;
-  flex: 1;
-  justify-content: flex-end;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
-.loginLink {
-  font-weight: 700;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition: all 0.2s ease;
-  /* For the login link which is outside the pill, we can use mix-blend-mode
-     to ensure it's visible on any background without hardcoding. */
-  color: #ffffff;
-  mix-blend-mode: difference;
+.drawerSocialIcon:hover {
+  background: rgba(130, 195, 65, 0.15);
+  border-color: rgba(130, 195, 65, 0.4);
+  color: var(--brand-green);
 }
 
-.loginArrow {
-  font-size: 1.1rem;
-  margin-left: 2px;
-  vertical-align: middle;
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
+/* =============================================================
+   TABLET / DESKTOP — hide drawer, show glass pill nav
+   ============================================================= */
+@media (min-width: 1024px) {
+  .hamburger { display: none; }
+  .mobileDrawer { display: none; }
 
-.loginLink:hover {
-  opacity: 0.8;
-}
-
-.loginLink:hover .loginArrow {
-  transform: translateX(3px);
-}
-
-.signUpButton {
-  background: #58af58 !important;
-  color: #ffffff !important;
-  border: none !important;
-  font-weight: 700 !important;
-  font-size: 0.7rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.1em !important;
-  border-radius: 6px !important;
-  padding: 10px 22px !important;
-  height: auto !important;
-  min-height: 0 !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-.signUpButton:hover {
-  background: var(--brand-green) !important;
-  color: #ffffff !important;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(130, 195, 65, 0.3);
-}
-
-@media (max-width: 1200px) {
-  .navContainer {
-    padding: 0 24px;
-  }
   .navLinksWrapper {
-    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 100px;
+    padding: 0.5rem 2rem;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    margin: 0 1.25rem;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.07),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .navLinksWrapper:hover {
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+  }
+
+  .navLinks {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .navLink {
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    opacity: 0.65;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 0.125rem;
+  }
+
+  .navLink:hover { opacity: 1; color: var(--brand-green); }
+  .activeLink    { opacity: 1; color: var(--brand-green); }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .signUpButton {
+    background: #58af58 !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 700 !important;
+    font-size: 0.6875rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    border-radius: 6px !important;
+    padding: 0 1.375rem !important;
+    min-height: 44px !important;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  .signUpButton:hover {
+    background: var(--brand-green) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(130, 195, 65, 0.3);
   }
 }
 
-@media (max-width: 1024px) {
-  .navLinksWrapper {
-    display: none;
-  }
-  .actions {
-    flex: 0 0 auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .actions {
-    display: none;
-  }
+@media (min-width: 1280px) {
+  .navLinksWrapper { padding: 0.5rem 2.5rem; }
 }
