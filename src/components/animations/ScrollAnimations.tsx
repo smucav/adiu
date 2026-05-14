@@ -20,9 +20,15 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Smooth Scroll Component
+// Smooth Scroll Component — Lenis is desktop-only.
+// On touch/mobile devices, native scroll momentum is faster and smoother
+// than any JS implementation. Overriding it causes jank and high CPU usage.
 export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
+    // Skip Lenis on touch devices — native scroll is always better on mobile
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (isTouchDevice) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -32,17 +38,15 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     // Synchronize Lenis with ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    const rafCallback = (time: number) => {
       lenis.raf(time * 1000);
-    });
-
-    gsap.ticker.lagSmoothing(0);
+    };
+    gsap.ticker.add(rafCallback);
+    gsap.ticker.lagSmoothing(500, 33); // Prevent skipped frames during heavy JS tasks
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(rafCallback);
     };
   }, []);
 
@@ -97,7 +101,7 @@ export const TextReveal = ({
   );
 };
 
-// Parallax Component
+// Parallax Component — disabled on touch/reduced-motion devices to avoid jank
 export const Parallax = ({
   children,
   offset = 50,
@@ -108,12 +112,24 @@ export const Parallax = ({
   className?: string;
 }) => {
   const ref = useRef(null);
+  const prefersReduced =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
+  // Also disable on touch devices — parallax causes jank on mobile
+  const isTouch =
+    typeof window !== "undefined" && "ontouchstart" in window;
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [-offset, offset]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReduced || isTouch ? [0, 0] : [-offset, offset]
+  );
 
   return (
     <motion.div ref={ref} style={{ y }} className={className}>
@@ -208,12 +224,15 @@ export const Antigravity = ({
   duration?: number;
   className?: string;
 }) => {
+  const prefersReduced =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
+
   return (
     <motion.div
       className={className}
-      animate={{
-        y: [0, -amplitude, 0],
-      }}
+      animate={prefersReduced ? {} : { y: [0, -amplitude, 0] }}
       transition={{
         duration,
         repeat: Infinity,
@@ -240,14 +259,28 @@ export const TypewriterText = ({
 }) => {
   const [displayText, setDisplayText] = React.useState("");
   const [isComplete, setIsComplete] = React.useState(false);
+  const containerRef = useRef<HTMLElement>(null);
+  const isInView = useInView(containerRef as React.RefObject<Element>, { once: true, margin: "-10px" });
+
+  // Respect reduced motion — show full text immediately
+  const prefersReduced =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
 
   React.useEffect(() => {
-    let timeout: any;
+    if (prefersReduced) {
+      setDisplayText(text);
+      setIsComplete(true);
+      return;
+    }
+    if (!isInView) return;
+
+    let timeout: ReturnType<typeof setTimeout>;
+    let currentText = "";
+    let index = 0;
 
     const startTyping = () => {
-      let currentText = "";
-      let index = 0;
-
       const type = () => {
         if (index < text.length) {
           currentText += text[index];
@@ -258,7 +291,6 @@ export const TypewriterText = ({
           setIsComplete(true);
         }
       };
-
       type();
     };
 
@@ -268,28 +300,30 @@ export const TypewriterText = ({
       clearTimeout(initialDelay);
       clearTimeout(timeout);
     };
-  }, [text, speed, delay]);
+  }, [text, speed, delay, isInView, prefersReduced]);
 
   return (
-    <Component className={className}>
+    <Component className={className} ref={containerRef}>
       {displayText.split("\n").map((line, i) => (
         <React.Fragment key={i}>
           {line}
           {i < displayText.split("\n").length - 1 && <br />}
         </React.Fragment>
       ))}
-      <motion.span
-        animate={{ opacity: [1, 0, 1] }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-        style={{
-          display: "inline-block",
-          width: "2px",
-          height: "1em",
-          backgroundColor: "currentColor",
-          marginLeft: "2px",
-          verticalAlign: "middle",
-        }}
-      />
+      {!isComplete && (
+        <motion.span
+          animate={prefersReduced ? {} : { opacity: [1, 0, 1] }}
+          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+          style={{
+            display: "inline-block",
+            width: "2px",
+            height: "1em",
+            backgroundColor: "currentColor",
+            marginLeft: "2px",
+            verticalAlign: "middle",
+          }}
+        />
+      )}
     </Component>
   );
 };
@@ -456,6 +490,9 @@ export const InteractiveTiltCard = ({
   );
 };
 
+// PhysicsFloat — 3D tilt is desktop-only (mousemove), mobile gets a simple wrapper.
+// The perpetual float animation (y: [0, -15, 0] repeat Infinity) is removed entirely
+// because it forces constant GPU compositing on every frame on mobile devices.
 export const PhysicsFloat = ({
   children,
   className = "",
@@ -466,8 +503,8 @@ export const PhysicsFloat = ({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const rotateX = useTransform(y, [-300, 300], [15, -15]);
-  const rotateY = useTransform(x, [-300, 300], [-15, 15]);
+  const rotateX = useTransform(y, [-300, 300], [8, -8]);
+  const rotateY = useTransform(x, [-300, 300], [-8, 8]);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -482,30 +519,23 @@ export const PhysicsFloat = ({
     y.set(0);
   };
 
+  // On touch/mobile, skip the expensive 3D tilt entirely — just render children
+  const isTouch =
+    typeof window !== "undefined" && "ontouchstart" in window;
+
+  if (isTouch) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
-      style={{
-        rotateX,
-        rotateY,
-        x: useTransform(x, [-300, 300], [-15, 15]),
-        y: useTransform(y, [-300, 300], [-15, 15]),
-        perspective: 1000,
-      }}
+      style={{ rotateX, rotateY, perspective: 1200 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={className}
-      animate={{
-        y: [0, -15, 0],
-      }}
       transition={{
-        y: {
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        },
-        rotateX: { type: "spring", stiffness: 100, damping: 20 },
-        rotateY: { type: "spring", stiffness: 100, damping: 20 },
-        x: { type: "spring", stiffness: 100, damping: 20 },
+        rotateX: { type: "spring", stiffness: 80, damping: 20 },
+        rotateY: { type: "spring", stiffness: 80, damping: 20 },
       }}
     >
       {children}

@@ -3,7 +3,6 @@
 import styles from "./Mission.module.css";
 import { FadeIn, StaggerContainer } from "../../animations/ScrollAnimations";
 import { Counter } from "../../animations/Counter";
-import { motion } from "framer-motion";
 
 import { SanityAboutPage } from "@/sanity/lib/types";
 
@@ -23,18 +22,8 @@ export function Mission({ data }: MissionProps) {
       {/* Dynamic Background Elements */}
       <div className={styles.bgEffects}>
         <div className={styles.grid} />
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ 
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className={styles.glow} 
-        />
+        {/* Pure CSS pulse — replaces perpetual Framer Motion Infinity loop */}
+        <div className={styles.glow} />
       </div>
 
       <div className={`container ${styles.container}`}>
@@ -58,15 +47,14 @@ export function Mission({ data }: MissionProps) {
           <StaggerContainer className={styles.statsGrid} staggerDelay={0.15}>
             {stats.map((stat, i) => (
               <FadeIn key={i} direction="up" distance={40} delay={0.3 + (i * 0.1)}>
-                <motion.div 
-                  className={styles.statCard}
-                  whileHover={{ y: -10 }}
-                >
+                {/* Plain div: whileHover on motion.div fires on touch (y:-10 jump).  
+                    CSS handles the hover via Mission.module.css statCard:hover */}
+                <div className={styles.statCard}>
                   <div className={styles.statValue}>
                     <Counter value={stat.value} />
                   </div>
                   <p className={styles.statLabel}>{stat.label}</p>
-                </motion.div>
+                </div>
               </FadeIn>
             ))}
           </StaggerContainer>

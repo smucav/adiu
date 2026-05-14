@@ -37,9 +37,16 @@ export function FisheyeGrid({
   const isMouseActive = useRef(false);
   const lastMouseMove = useRef(0);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  // Track whether we should skip rendering (touch/mobile devices)
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   // IntersectionObserver to pause when offscreen
   useEffect(() => {
+    // Skip heavy canvas on touch devices — check inside effect to respect hook ordering
+    if (window.matchMedia('(hover: none)').matches) {
+      setIsMobileDevice(true);
+      return;
+    }
     const container = containerRef.current;
     if (!container) return;
 
@@ -55,6 +62,7 @@ export function FisheyeGrid({
   }, []);
 
   useEffect(() => {
+    if (isMobileDevice) return; // skip on mobile
     const updateDimensions = () => {
       if (containerRef.current) {
         const { width, height } = containerRef.current.getBoundingClientRect();
@@ -63,7 +71,6 @@ export function FisheyeGrid({
     };
 
     updateDimensions();
-    // Debounce resize handler
     let resizeTimer: ReturnType<typeof setTimeout>;
     const debouncedResize = () => {
       clearTimeout(resizeTimer);
@@ -97,9 +104,10 @@ export function FisheyeGrid({
       window.removeEventListener('mousemove', handleGlobalMouseMove);
       document.removeEventListener('mouseleave', handleGlobalMouseLeave);
     };
-  }, []);
+  }, [isMobileDevice]);
 
   useEffect(() => {
+    if (isMobileDevice) return; // skip on mobile
     if (dimensions.width === 0 || dimensions.height === 0) return;
 
     const cols = Math.ceil(dimensions.width / gridSpacing) + 2;
@@ -287,6 +295,9 @@ export function FisheyeGrid({
     animationFrameId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animationFrameId);
   }, [dimensions, dotColor, dotSize, radius, magnification, gridSpacing]);
+
+  // On mobile, render nothing (gradient background is still visible through CSS)
+  if (isMobileDevice) return null;
 
   return (
     <div

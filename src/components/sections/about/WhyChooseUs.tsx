@@ -26,7 +26,9 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
     let nodes: any[] = [];
     let edges: any[] = [];
 
-    const NODE_COUNT = 80;
+    // Reduce node count on mobile for performance (O(n²) edge computation)
+    const isMobile = window.innerWidth < 768;
+    const NODE_COUNT = isMobile ? 40 : 80;
     const MAX_DIST = 130;
     const GLOW_RADIUS = 110;
 
@@ -168,7 +170,7 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
     window.addEventListener("resize", resize);
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
-    container.addEventListener("touchmove", handleTouchMove, { passive: false });
+    container.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     resize();
     draw();

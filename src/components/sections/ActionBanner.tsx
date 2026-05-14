@@ -64,6 +64,7 @@ export function ActionBanner({ data }: ActionBannerProps) {
                 width={600}
                 height={600}
                 sizes="(max-width: 768px) 100vw, 50vw"
+                loading="lazy"
                 style={{ width: "auto", height: "120%", objectFit: "contain" }}
               />
             </div>

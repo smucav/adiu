@@ -48,12 +48,23 @@ export const QEHSSection: React.FC<QEHSSectionProps> = ({ data }) => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
-
   const policies =
     data.qehsPolicies && data.qehsPolicies.length > 0
       ? data.qehsPolicies
       : DEFAULT_POLICIES;
+
+  // Avoid CLS: render a height-reserving skeleton on SSR/before mount
+  if (!mounted) {
+    return (
+      <section
+        style={{
+          minHeight: `${policies.length * 600}px`,
+          background: "transparent",
+        }}
+        aria-hidden="true"
+      />
+    );
+  }
 
   return <QEHSContent data={{ ...data, qehsPolicies: policies }} />;
 };
@@ -67,11 +78,21 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
     offset: ["start end", "end start"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
+  // On mobile, skip useSpring — the spring runs continuous JS calculations
+  // on every frame competing with native scroll momentum (very janky on Android).
+  // Raw scroll-linked MotionValues are composited off the main thread.
+  const isMobile =
+    typeof window !== "undefined"
+      ? window.matchMedia("(hover: none) and (pointer: coarse)").matches
+      : false;
+
+  const springProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
   });
+
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   const totalItems = qehsPolicies.length;
   // Dynamic scaling: starts compacting after 5 items
@@ -135,6 +156,7 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
               index={index}
               globalProgress={smoothProgress}
               totalItems={totalItems}
+              isMobile={isMobile}
             />
           ))}
         </div>
@@ -148,40 +170,61 @@ const PolicyItem = ({
   index,
   globalProgress,
   totalItems,
+  isMobile,
 }: {
   policy: Policy;
   index: number;
   globalProgress: any;
   totalItems: number;
+  isMobile: boolean;
 }) => {
   const isEven = index % 2 === 1;
   const step = 1 / totalItems;
   const start = index * step;
 
-  // Faster connection range
   const itemProgress = useTransform(
     globalProgress,
     [start, start + step * 0.3],
     [0, 1],
   );
 
-  // Content slides in faster and stays longer
-  const xText = useTransform(itemProgress, [0, 0.8], [isEven ? 400 : -400, 0]);
-  const xImage = useTransform(itemProgress, [0, 0.8], [isEven ? -400 : 400, 0]);
+  const prefersReduced =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
+
+  // On mobile: skip slide-in x transforms. Only animate opacity which is
+  // GPU-composited. This frees ~5 useTransform subscriptions per item.
+  const skipMotion = isMobile || prefersReduced;
+
+  const xText = useTransform(
+    itemProgress,
+    [0, 0.8],
+    skipMotion ? [0, 0] : [isEven ? 400 : -400, 0]
+  );
+  const xImage = useTransform(
+    itemProgress,
+    [0, 0.8],
+    skipMotion ? [0, 0] : [isEven ? -400 : 400, 0]
+  );
   const opacity = useTransform(itemProgress, [0, 0.4], [0, 1]);
 
-  // Fix number visibility and glow
+  // Skip string-interpolated stroke on mobile — CSS color string interpolation
+  // cannot be GPU-composited and runs on the main thread every scroll frame.
+  const staticStroke = "2px rgba(130, 195, 65, 1)";
   const numberStroke = useTransform(
     itemProgress,
     [0, 0.5, 1],
-    [
-      "1px rgba(130, 195, 65, 0.2)",
-      "1px rgba(130, 195, 65, 0.6)",
-      "2px rgba(130, 195, 65, 1)",
-    ],
+    skipMotion
+      ? [staticStroke, staticStroke, staticStroke]
+      : [
+          "1px rgba(130, 195, 65, 0.2)",
+          "1px rgba(130, 195, 65, 0.6)",
+          staticStroke,
+        ],
   );
-  const numberTextOpacity = useTransform(itemProgress, [0, 0.4], [0.2, 0.6]);
-  const activeGlowOpacity = useTransform(itemProgress, [0.7, 1], [0, 1]);
+  const numberTextOpacity = useTransform(itemProgress, [0, 0.4], [skipMotion ? 0.6 : 0.2, 0.6]);
+  const activeGlowOpacity = useTransform(itemProgress, [0.7, 1], [skipMotion ? 1 : 0, 1]);
 
   return (
     <div className={`${styles.policyItem} ${isEven ? styles.reverse : ""}`}>
@@ -196,13 +239,13 @@ const PolicyItem = ({
         >
           {index + 1}
         </motion.span>
-        {/* Secondary active glow layer */}
+        {/* Secondary active glow layer — filter only on desktop (rasterizes on every frame) */}
         <motion.span
           className={`${styles.largeNumber} ${styles.glowLayer}`}
           style={{
             opacity: activeGlowOpacity,
             WebkitTextStroke: "2px rgba(130, 195, 65, 1)",
-            filter: "drop-shadow(0 0 30px rgba(130, 195, 65, 0.8))",
+            ...(skipMotion ? {} : { filter: "drop-shadow(0 0 30px rgba(130, 195, 65, 0.8))" }),
           }}
         >
           {index + 1}

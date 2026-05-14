@@ -72,6 +72,24 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
   useIsomorphicLayoutEffect(() => {
     if (!containerRef.current || !stickyRef.current) return;
 
+    // Respect prefers-reduced-motion — show final state immediately, no scroll-pin
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
+      const positions = window.innerWidth < 768 ? MOBILE_END_POSITIONS : END_POSITIONS;
+      cards.forEach((card, i) => {
+        const [xPct, yPct, rot] = positions[i] ?? [0, 0, 0];
+        gsap.set(card, {
+          x: (window.innerWidth * xPct) / 100,
+          y: (window.innerHeight * yPct) / 100,
+          rotation: rot,
+          opacity: 0.4,
+          scale: 0.85,
+        });
+      });
+      if (textRef.current) gsap.set(textRef.current, { opacity: 1, y: 0 });
+      return;
+    }
+
     const mm = gsap.matchMedia();
 
     mm.add("(max-width: 767px)", () => {

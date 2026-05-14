@@ -51,32 +51,28 @@ export function Team({ data, members }: TeamProps) {
   const middleIndex = Math.floor(archMembers.length / 2);
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  // rAF-throttled scroll handler — prevents forced layout on every scroll event
+  const rafId = React.useRef<number | null>(null);
 
-  // Looping logic
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    
-    // Width of one full set of members
-    const setWidth = scrollWidth / 5;
-    
-    // If we're getting close to the start (less than 2 sets left)
-    if (scrollLeft < setWidth) {
-      scrollRef.current.scrollLeft = scrollLeft + (setWidth * 2);
-    } 
-    // If we're getting close to the end (less than 2 sets left)
-    else if (scrollLeft + clientWidth > scrollWidth - setWidth) {
-      scrollRef.current.scrollLeft = scrollLeft - (setWidth * 2);
-    }
-  };
+  const handleScroll = React.useCallback(() => {
+    if (rafId.current !== null) return; // already queued
+    rafId.current = requestAnimationFrame(() => {
+      rafId.current = null;
+      if (!scrollRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const setWidth = scrollWidth / 5;
+      if (scrollLeft < setWidth) {
+        scrollRef.current.scrollLeft = scrollLeft + setWidth * 2;
+      } else if (scrollLeft + clientWidth > scrollWidth - setWidth) {
+        scrollRef.current.scrollLeft = scrollLeft - setWidth * 2;
+      }
+    });
+  }, []);
 
-  // Center on mount and set initial scroll position
+  // Center on mount
   React.useEffect(() => {
     if (scrollRef.current) {
-      const container = scrollRef.current;
-      const scrollWidth = container.scrollWidth;
-      // Start in the middle of the 5 sets
-      container.scrollLeft = (scrollWidth / 5) * 2;
+      scrollRef.current.scrollLeft = (scrollRef.current.scrollWidth / 5) * 2;
     }
   }, [archMembers]);
 

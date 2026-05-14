@@ -48,6 +48,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
   filter: blur(80px);
+  /* CSS pulse replaces the Framer Motion Infinity loop — runs on compositor */
+  animation: glowPulse 8s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Disable on mobile (GPU overhead) and reduced-motion */
+@media (max-width: 767px) {
+  .glow { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow { animation: none; }
 }
 
 /* ── Container: stacked on mobile ─────────────────────────── */
@@ -121,8 +136,8 @@
 /* ── Stat card ────────────────────────────────────────────── */
 .statCard {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* backdrop-filter skipped on mobile — too expensive on Android GPUs.
+     Only activated at desktop via the 1024px query below. */
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 2rem 1.75rem;
   border-radius: 1.25rem;
@@ -147,7 +162,15 @@
   transition: height 0.4s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) {
+  .statCard {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Hover only on pointer (mouse) devices with no reduced-motion preference */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
   .statCard:hover {
     transform: translateY(-10px);
     background: rgba(255, 255, 255, 0.06);

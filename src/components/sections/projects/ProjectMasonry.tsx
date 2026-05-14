@@ -49,19 +49,23 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
         }
       });
 
-      // Subtle parallax for cards inside the gallery
-      gsap.fromTo(".project-parallax", 
-        { x: 40 },
-        { 
-          x: -40, 
-          scrollTrigger: {
-            trigger: triggerRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true
+      // Subtle parallax for cards inside the gallery —
+      // scoped to galleryRef so it doesn't accidentally target other elements
+      if (gallery) {
+        gsap.fromTo(
+          gallery.querySelectorAll("[data-parallax]"),
+          { x: 40 },
+          {
+            x: -40,
+            scrollTrigger: {
+              trigger: triggerRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
           }
-        }
-      );
+        );
+      }
     });
 
     return () => mm.revert();
@@ -91,7 +95,7 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
       // 1. Single
       if (items[i]) {
         elements.push(
-          <div key={`set-${i}-1`} className={`${styles.colSingle} project-parallax`}>
+          <div key={`set-${i}-1`} className={`${styles.colSingle}`} data-parallax>
             <ProjectCard project={items[i]} index={i} size="portrait" />
           </div>
         );
@@ -105,7 +109,7 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
         const p3 = items[i + 2];
         
         elements.push(
-          <div key={`set-${i}-2`} className={`${styles.colGroup} project-parallax`}>
+          <div key={`set-${i}-2`} className={`${styles.colGroup}`} data-parallax>
             <div className={styles.topRow}>
               <ProjectCard project={p1} index={i} size="large" />
             </div>
@@ -123,7 +127,7 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
       // 3. Another Single
       if (i < items.length) {
         elements.push(
-          <div key={`set-${i}-3`} className={`${styles.colSingle} project-parallax`}>
+          <div key={`set-${i}-3`} className={`${styles.colSingle}`} data-parallax>
             <ProjectCard project={items[i]} index={i} size="tallPortrait" />
           </div>
         );
@@ -175,6 +179,7 @@ function ProjectCard({ project, index, size = "medium" }: { project: any, index:
           fill
           className={styles.image}
           sizes="(max-width: 768px) 100vw, 40vw"
+          loading="lazy"
         />
         <div className={styles.overlay}>
           <div className={styles.content}>

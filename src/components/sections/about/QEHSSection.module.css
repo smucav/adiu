@@ -280,3 +280,8 @@
 @media (prefers-reduced-motion: reduce) {
   .placeholderGlow { animation: none; }
 }
+
+/* Also disable on mobile — perpetual GPU rotation is not worth it for a placeholder */
+@media (max-width: 767px) {
+  .placeholderGlow { animation: none; }
+}

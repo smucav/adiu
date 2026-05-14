@@ -8,12 +8,24 @@
   padding: 7rem 0 3.5rem;
   overflow: hidden;
   text-align: center;
-  background: linear-gradient(135deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--hero-bg-start) 0%,
+    var(--hero-bg-end) 100%
+  );
   color: var(--text-on-dark);
 }
 
-@media (min-width: 768px)  { .heroSection { padding: 9rem 0 5rem; } }
-@media (min-width: 1024px) { .heroSection { padding: 10rem 0 6rem; } }
+@media (min-width: 768px) {
+  .heroSection {
+    padding: 9rem 0 5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .heroSection {
+    padding: 10rem 0 6rem;
+  }
+}
 
 [data-theme="dark"] .heroSection {
   background: linear-gradient(135deg, var(--hero-bg-start) 0%, #000 100%);
@@ -73,13 +85,13 @@
 }
 
 .dot {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   background-color: #82c341;
   border-radius: 50%;
   position: relative;
   z-index: 2;
-  box-shadow: 0 0 15px #82c341;
+  box-shadow: 0 0 20px 6px rgba(130, 195, 65, 0.8), 0 0 40px 12px rgba(130, 195, 65, 0.4);
 }
 
 .pulse {
@@ -89,16 +101,24 @@
   background-color: #82c341;
   border-radius: 50%;
   z-index: 1;
-  animation: radarPulse 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation: radarPulse 1.8s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 @keyframes radarPulse {
-  0%   { transform: scale(0.5); opacity: 1; }
-  100% { transform: scale(4);   opacity: 0; }
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(6);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse { animation: none; }
+  .pulse {
+    animation: none;
+  }
 }
 
 /* ── Content layer ────────────────────────────────────────── */
@@ -194,8 +214,7 @@
   position: absolute;
   bottom: 20px;
   background: #a5e7a9;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  /* backdrop-filter only on desktop — expensive on mobile */
   padding: 6px 14px;
   border-radius: 20px;
   color: #000;
@@ -221,27 +240,27 @@
   fill: rgba(255, 255, 255, 0.05);
   stroke: rgba(255, 255, 255, 0.1);
   stroke-width: 0.5px;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  /* Only transition fill+stroke — NOT 'all'. 'all' on 200 SVG paths means
+     the browser animates every CSS property (including filter, transform, etc)
+     on every hover, causing unnecessary paint work on mobile. */
+  transition:
+    fill 0.3s ease,
+    stroke 0.3s ease;
   outline: none;
   pointer-events: all;
-  transform-origin: center;
 }
 
 .glow {
-  fill: rgba(130, 195, 65, 0.4);
-  stroke: rgba(130, 195, 65, 0.8);
-  stroke-width: 1.5px;
-  filter: drop-shadow(0 0 8px rgba(130, 195, 65, 0.4));
+  fill: rgba(130, 195, 65, 0.6);
+  stroke: rgba(130, 195, 65, 1);
+  stroke-width: 2px;
+  filter: drop-shadow(0 0 14px rgba(130, 195, 65, 0.7)) drop-shadow(0 0 30px rgba(130, 195, 65, 0.3));
 }
 
-.hovered {
-  fill: #82c341 !important;
-  stroke: #ffffff !important;
-  stroke-width: 1.5px !important;
-  filter: drop-shadow(0 0 15px #82c341);
-  cursor: pointer;
-  transform: scale(1.05) translateZ(0);
-  z-index: 100;
+/* .hovered class removed — now handled via CSS-only :hover in countryGroup */
+.countryGroup:hover .country {
+  fill: rgba(130, 195, 65, 0.3);
+  stroke: rgba(130, 195, 65, 1.6);
 }
 
 /* Mobile: scale map up so it fills better */

@@ -69,6 +69,12 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
     const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
     const totalCards = cards.length;
 
+    // Respect prefers-reduced-motion — skip pinned scroll animation
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(cards, { yPercent: 0, opacity: 1, scale: 1, filter: 'none' });
+      return;
+    }
+
     const ctx = gsap.context(() => {
       // Set initial states
       gsap.set(cards.slice(1), {
@@ -80,7 +86,7 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: `+=${totalCards * 150}%`, // More scroll room for a premium feel
+          end: `+=${totalCards * 150}%`,
           pin: true,
           scrub: 1.5,
           anticipatePin: 1,
@@ -93,17 +99,14 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
 
         const nextCard = cards[index + 1];
 
-        // 1. Current card moves up and stays as a sliver at the top
         tl.to(card, {
-          yPercent: -15, // Move up slightly
+          yPercent: -15,
           scale: 0.92,
           opacity: 0.4,
           filter: 'blur(4px)',
           ease: 'power2.inOut',
           duration: 1
         }, index)
-
-          // 2. Next card slides up and covers it
           .to(nextCard, {
             yPercent: 0,
             opacity: 1,

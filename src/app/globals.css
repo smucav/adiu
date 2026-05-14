@@ -57,7 +57,9 @@
 html {
   /* Prevent iOS font inflation */
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth intentionally removed — Lenis handles smooth scroll
+     on desktop, and native momentum scroll is used on mobile. Enabling this
+     here would conflict with Lenis and break iOS Safari anchor scrolling. */
 }
 
 body {
