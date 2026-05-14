@@ -1,72 +1,71 @@
 /* =============================================================
    TEAM SECTION — MOBILE FIRST
-   Horizontal scroll on mobile (snap) → centered arch on desktop
+   Horizontal scroll with Arch layout and navigation arrows below
    ============================================================= */
 
 .section {
   overflow: hidden;
-  padding: 3.5rem 0;
+  padding: 3rem 0;
   background-color: #fff;
 }
 
-@media (min-width: 768px)  { .section { padding: 5rem 0; } }
-@media (min-width: 1024px) { .section { padding: 5rem 0 7.5rem; } }
+@media (min-width: 1024px) {
+  .section { padding: 4rem 0; }
+}
 
 /* ── Header ───────────────────────────────────────────────── */
 .header {
-  text-align: center;
-  max-width: 50rem;
-  margin: 0 auto 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto 2.5rem;
   padding: 0 1rem;
 }
 
-@media (min-width: 768px) { .header { margin-bottom: 2.5rem; } }
+@media (min-width: 1024px) {
+  .header {
+    padding: 0 5vw;
+    text-align: center;
+  }
+}
+
+.titleGroup {
+  max-width: 40rem;
+  margin: 0 auto;
+}
 
 .heading {
-  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-size: clamp(2.25rem, 6vw, 4rem);
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.1;
-  margin-bottom: 0.875rem;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-outfit), sans-serif;
 }
 
 .description {
-  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-size: clamp(1rem, 2vw, 1.125rem);
   color: var(--text-secondary);
-  max-width: 31rem;
-  margin: 0 auto;
-  margin-bottom: 0;
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* ── Team wrapper ─────────────────────────────────────────── */
 .teamWrapper {
   position: relative;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  /* Mobile: less vertical padding */
-  padding: 1.5rem 0 2.5rem;
+  margin-bottom: 2rem;
 }
 
-@media (min-width: 1024px) {
-  .teamWrapper {
-    padding: 5rem 0 7.5rem;
-  }
-}
-
-/* ── Scroll container: horizontal snap on mobile ──────────── */
+/* ── Scroll container ─────────────────────────────────────── */
 .teamScroll {
   display: flex;
-  gap: 1rem;
-  padding: 1.25rem 1rem;
-  align-items: center;
-  width: 100%;
-  /* Mobile: horizontal scrollable with snap */
   overflow-x: auto;
-  justify-content: flex-start;
-  scroll-snap-type: x mandatory;
-  /* Hide scrollbar */
+  gap: 1.25rem;
+  padding: 3rem 1rem;
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none;
+  align-items: center;
 }
 
 .teamScroll::-webkit-scrollbar {
@@ -75,57 +74,51 @@
 
 @media (min-width: 1024px) {
   .teamScroll {
-    overflow-x: visible;
-    justify-content: center;
-    gap: 2rem;
-    padding: 0 2.5rem;
+    gap: 1.5rem;
+    padding: 3.5rem 15vw;
+    scroll-snap-type: none;
+  }
+}
+
+/* ── Arch Offset Wrapper ───────────────────────────────────── */
+.archOffset {
+  position: relative;
+  flex: 0 0 200px; /* Reduced from 280px */
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, opacity;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: center;
+}
+
+@media (min-width: 1024px) {
+  .archOffset {
+    flex: 0 0 160px; /* Compact size for desktop */
+    min-width: 140px;
+    scroll-snap-align: unset;
   }
 }
 
 /* ── Team card ────────────────────────────────────────────── */
 .teamCard {
   position: relative;
-  flex: 0 0 140px;
-  height: 200px;
-  border-radius: 14px;
+  width: 100%;
+  aspect-ratio: 3 / 4.5;
+  border-radius: 18px;
   overflow: hidden;
-  background: #f1f5f9;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  background: #f8fafc;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  will-change: transform, opacity;
-  /* Mobile: snap alignment */
-  scroll-snap-align: center;
-  /* No 3D transforms on mobile — too cramped */
-  transform: none !important;
+  will-change: transform, opacity, filter;
+}
+
+.teamCard:hover {
+  transform: translateY(-15px) scale(1.15) !important;
   opacity: 1 !important;
-}
-
-@media (min-width: 768px) {
-  .teamCard {
-    flex: 0 0 160px;
-    height: 230px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .teamCard {
-    flex: 0 0 180px;
-    height: 250px;
-    scroll-snap-align: none;
-    /* Re-enable 3D hover for desktop */
-    transform: unset !important;
-    opacity: unset !important;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .teamCard:hover {
-      transform: translateY(-60px) scale(1.15) !important;
-      z-index: 50 !important;
-      opacity: 1 !important;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    }
-  }
+  z-index: 200;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* ── Card image ───────────────────────────────────────────── */
@@ -137,27 +130,35 @@
 }
 
 .imageWrapper img {
-  filter: grayscale(100%);
-  transition: filter 0.5s ease;
+  filter: grayscale(0.8) contrast(1.1);
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .teamCard:hover .imageWrapper img {
-  filter: grayscale(0%);
+  filter: grayscale(0) contrast(1);
+  transform: scale(1.05);
 }
 
-/* ── Card overlay label ───────────────────────────────────── */
+/* ── Card overlay ─────────────────────────────────────────── */
 .cardOverlay {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  bottom: 0.75rem;
+  left: 0.625rem;
+  right: 0.625rem;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 0.25rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   text-align: center;
+  transition: all 0.4s ease;
+}
+
+.teamCard:hover .cardOverlay {
+  background: white;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 .memberName {
@@ -168,12 +169,88 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: var(--font-outfit), sans-serif;
 }
 
 .memberRole {
-  font-size: 0.6875rem;
-  color: var(--text-secondary);
-  font-weight: 600;
+  font-size: 0.625rem;
+  color: var(--brand-green);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  display: block;
+  margin-top: 0.125rem;
+}
+
+/* ── Placeholder ────────────────────────────────────────── */
+.placeholderImage {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 4rem;
+  color: rgba(0,0,0,0.1);
+  font-weight: 700;
+}
+
+/* ── Footer Navigation ────────────────────────────────────── */
+.footerNav {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.navButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.navButton {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
+}
+
+.navButton:hover {
+  background: var(--text-primary);
+  color: white;
+  border-color: var(--text-primary);
+  transform: scale(1.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Gradient Overlays ────────────────────────────────────── */
+.gradientLeft, .gradientRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25vw;
+  z-index: 150;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .gradientLeft, .gradientRight {
+    display: block;
+  }
+}
+
+.gradientLeft {
+  left: 0;
+  background: linear-gradient(to right, #fff 40%, rgba(255, 255, 255, 0) 100%);
+}
+
+.gradientRight {
+  right: 0;
+  background: linear-gradient(to left, #fff 40%, rgba(255, 255, 255, 0) 100%);
 }

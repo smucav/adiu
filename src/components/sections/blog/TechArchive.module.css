@@ -23,11 +23,37 @@
   text-transform: uppercase;
   color: var(--brand-green);
   letter-spacing: 0.2em;
-  margin-bottom: 1.5rem;
   padding: 8px 16px;
   background: rgba(130, 195, 65, 0.1);
   border: 1px solid rgba(130, 195, 65, 0.3);
   border-radius: 100px;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.backBtn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.backBtn:hover {
+  background: #000;
+  color: #fff;
+  border-color: #000;
 }
 
 .bigTitle {

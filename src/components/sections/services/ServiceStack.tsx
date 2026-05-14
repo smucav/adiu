@@ -31,7 +31,8 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
       category: "Infrastructure",
       description: "Advanced wireless network solutions for enterprise environments. We design, deploy and manage complex networks.",
       image: null,
-      content: undefined
+      content: undefined,
+      featureItems: undefined
     },
     {
       _id: 'default-2',
@@ -39,7 +40,8 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
       category: "Cloud",
       description: "Secure and scalable cloud infrastructure for modern businesses. Migration and optimization services included.",
       image: null,
-      content: undefined
+      content: undefined,
+      featureItems: undefined
     },
     {
       _id: 'default-3',
@@ -47,7 +49,8 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
       category: "Datacenter",
       description: "End-to-end data center design and implementation services with a focus on efficiency and reliability.",
       image: null,
-      content: undefined
+      content: undefined,
+      featureItems: undefined
     },
     {
       _id: 'default-4',
@@ -55,9 +58,10 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
       category: "Security",
       description: "Comprehensive security audits and threat protection for your digital assets and infrastructure.",
       image: null,
-      content: undefined
+      content: undefined,
+      featureItems: undefined
     }
-  ];
+  ] as any[];
 
   useIsomorphicLayoutEffect(() => {
     if (!sectionRef.current || !containerRef.current) return;
@@ -164,7 +168,7 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
                         ];
                     return (
                       <ul className={styles.featuresList}>
-                        {items.map((item) => (
+                        {items.map((item: any) => (
                           <li key={item._key} className={styles.featureItem}>
                             {item.text}
                           </li>

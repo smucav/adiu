@@ -28,7 +28,7 @@ export function Team({ data, members }: TeamProps) {
     // Sort by rank (1 first)
     const sorted = [...rawMembers].sort((a, b) => (a.rank || 99) - (b.rank || 99));
 
-    // Arch shuffle: [M7, M5, M3, M1, M2, M4, M6]
+    // Arch shuffle: [..., R4, R2, R1, R3, R5, ...]
     const left: any[] = [];
     const right: any[] = [];
 
@@ -43,79 +43,125 @@ export function Team({ data, members }: TeamProps) {
       }
     });
 
-    return [...left, sorted[0], ...right];
+    const base = [...left, sorted[0], ...right];
+    // Duplication for infinite loop (5x ensures enough scrollable area)
+    return [...base, ...base, ...base, ...base, ...base];
   }, [members]);
 
   const middleIndex = Math.floor(archMembers.length / 2);
+
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // Looping logic
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    
+    // Width of one full set of members
+    const setWidth = scrollWidth / 5;
+    
+    // If we're getting close to the start (less than 2 sets left)
+    if (scrollLeft < setWidth) {
+      scrollRef.current.scrollLeft = scrollLeft + (setWidth * 2);
+    } 
+    // If we're getting close to the end (less than 2 sets left)
+    else if (scrollLeft + clientWidth > scrollWidth - setWidth) {
+      scrollRef.current.scrollLeft = scrollLeft - (setWidth * 2);
+    }
+  };
+
+  // Center on mount and set initial scroll position
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      const container = scrollRef.current;
+      const scrollWidth = container.scrollWidth;
+      // Start in the middle of the 5 sets
+      container.scrollLeft = (scrollWidth / 5) * 2;
+    }
+  }, [archMembers]);
 
   return (
     <section className={styles.section}>
       <div className="container">
         <FadeIn direction="up" distance={30}>
           <div className={styles.header}>
-            <h2 className={styles.heading}>{data?.teamHeading || "Meet our team"}</h2>
-            <p className={styles.description}>
-              {data?.teamDescription || "We’ve got an entire team dedicated to supporting you and your business 24/7."}
-            </p>
+            <div className={styles.headerTop}>
+              <div className={styles.titleGroup}>
+                <h2 className={styles.heading}>{data?.teamHeading || "Meet our team"}</h2>
+                <p className={styles.description}>
+                  {data?.teamDescription || "We’ve got an entire team dedicated to supporting you and your business 24/7."}
+                </p>
+              </div>
+            </div>
           </div>
         </FadeIn>
       </div>
 
       <div className={styles.teamWrapper}>
-        <div className={styles.teamScroll}>
-          {archMembers.map((member: any, index) => {
-            const distanceFromCenter = Math.abs(index - middleIndex);
-            // Dynamic arch calculation: drop increases as we move from center
-            // Flattened arch formula: y = 20 * (distance^1.2)
-            const yOffset = index === middleIndex ? -30 : (20 * Math.pow(distanceFromCenter, 1.1) - 30);
-            const scale = index === middleIndex ? 1.1 : Math.max(0.85, 1 - (distanceFromCenter * 0.03));
-            const opacity = Math.max(0.7, 1 - (distanceFromCenter * 0.1));
+        <div className={styles.gradientLeft}></div>
+        <div className={styles.gradientRight}></div>
+        
+        <div 
+          className={styles.teamScroll} 
+          ref={scrollRef}
+          onScroll={handleScroll}
+        >
+          {archMembers.length > 0 && archMembers.map((member: any, index) => {
+            // Index in the original single set (for consistent arch)
+            const baseCount = Math.max(1, archMembers.length / 5);
+            const indexInBase = index % baseCount;
+            const middleInBase = Math.floor(baseCount / 2);
+            const distanceFromMiddle = Math.abs(indexInBase - middleInBase);
+            
+            // Pure Smooth Arch (Rank-based)
+            const yOffset = indexInBase === middleInBase ? -20 : (12 * Math.pow(distanceFromMiddle, 1.1) - 20);
+            const scale = indexInBase === middleInBase ? 1.1 : Math.max(0.85, 1 - (distanceFromMiddle * 0.05));
+            const opacity = indexInBase === middleInBase ? 1 : Math.max(0.6, 1 - (distanceFromMiddle * 0.15));
 
-            const imageSrc = member.photo ? urlForImage(member.photo).width(300).height(420).url() : null;
+            const imageSrc = member.photo ? urlForImage(member.photo).width(400).height(550).url() : null;
 
             return (
               <div
-                key={index}
-                className={styles.teamCard}
+                key={`${member._id || member.name}-${index}`}
+                className={styles.archOffset}
                 style={{
-                  transform: `translateY(${yOffset}px) scale(${scale})`,
-                  opacity: opacity,
-                  zIndex: 10 - distanceFromCenter
+                  transform: `translateY(${yOffset}px)`,
+                  zIndex: 100 - distanceFromMiddle
                 } as React.CSSProperties}
               >
-                <div className={styles.imageWrapper}>
-                  {imageSrc ? (
-                    <Image
-                      src={imageSrc}
-                      alt={member.name}
-                      fill
-                      style={{ objectFit: "cover" }}
-                      sizes="300px"
-                    />
-                  ) : (
-                    <div className={styles.placeholderImage} style={{
-                      background: `linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%',
-                      fontSize: '3rem',
-                      color: 'rgba(0,0,0,0.1)',
-                      fontWeight: 700
-                    }}>
-                      {member.name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <div className={styles.cardOverlay}>
-                  <h3 className={styles.memberName}>{member.name}</h3>
-                  <span className={styles.memberRole}>{member.role}</span>
+                <div 
+                  className={styles.teamCard} 
+                  style={{ 
+                    transform: `scale(${scale})`,
+                    opacity: opacity 
+                  } as React.CSSProperties}
+                >
+                  <div className={styles.imageWrapper}>
+                    {imageSrc ? (
+                      <Image
+                        src={imageSrc}
+                        alt={member.name}
+                        fill
+                        style={{ objectFit: "cover" }}
+                        sizes="(max-width: 768px) 160px, 240px"
+                      />
+                    ) : (
+                      <div className={styles.placeholderImage}>
+                        {member.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles.cardOverlay}>
+                    <h3 className={styles.memberName}>{member.name}</h3>
+                    <span className={styles.memberRole}>{member.role}</span>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+
     </section>
   );
 }

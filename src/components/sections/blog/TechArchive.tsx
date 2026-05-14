@@ -11,9 +11,10 @@ interface TechArchiveProps {
   data?: SanityBlogPage | null;
   articles: SanityArticle[];
   categories: string[];
+  onClose?: () => void;
 }
 
-export function TechArchive({ data, articles, categories }: TechArchiveProps) {
+export function TechArchive({ data, articles, categories, onClose }: TechArchiveProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,7 +81,14 @@ export function TechArchive({ data, articles, categories }: TechArchiveProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className={styles.badge}>{data?.heroBadge || "Archive"}</div>
+            <div className={styles.headerTop}>
+              <div className={styles.badge}>{data?.heroBadge || "Archive"}</div>
+              {onClose && (
+                <button onClick={onClose} className={styles.backBtn}>
+                  ← BACK TO GRID
+                </button>
+              )}
+            </div>
             <h1 className={styles.bigTitle}>
               {data?.heroTitle || "Blog"} <span>({articles.length})</span>
             </h1>
