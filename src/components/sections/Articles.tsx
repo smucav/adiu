@@ -20,7 +20,16 @@ export function Articles({ data, articles }: ArticlesProps) {
     : [];
 
   return (
-    <section className={`section`}>
+    <section className={`section ${styles.sectionWrapper}`}>
+      <div className={styles.bgDecoration}>
+        <svg viewBox="0 0 1440 400" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <path d="M0 400L240 320C480 240 960 80 1440 240V400H0V400Z" fill="currentColor" fillOpacity="0.06" />
+          <path d="M0 400L360 280C720 160 1080 320 1440 200V400H0V400Z" fill="currentColor" fillOpacity="0.04" />
+        </svg>
+      </div>
+      <div className={styles.bgDecorationGray}>
+        <div className={styles.grayArt} />
+      </div>
       <div className={`container`}>
         <FadeIn direction="up" distance={30}>
           <div className={styles.header}>
@@ -47,12 +56,11 @@ export function Articles({ data, articles }: ArticlesProps) {
                 <Link href={`/blog/${slug}`} className={styles.articleCard}>
                   <div className={styles.imagePlaceholder}>
                     <Image
-                      src={article.mainImage?.asset ? urlForImage(article.mainImage).width(400).quality(75).url() : "/images/blog_image_kinda.png"}
+                      src={article.mainImage?.asset ? urlForImage(article.mainImage).width(800).quality(85).url() : "/images/blog_image_kinda.png"}
                       alt={article.mainImage?.alt || article.title || ""}
-                      width={300}
-                      height={200}
+                      fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{ width: 'auto', height: '80%', objectFit: 'contain' }}
+                      className={styles.articleImage}
                     />
                   </div>
                   <h3 className={styles.articleTitle}>{article.title}</h3>

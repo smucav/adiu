@@ -78,7 +78,7 @@
   }
 
   .grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 1.5rem;
   }
 }
@@ -124,27 +124,27 @@
 
 @media (min-width: 768px) {
   .card {
-    padding: 2.5rem;
-    border-radius: 2.5rem;
+    padding: 1.75rem;
+    border-radius: 1.5rem;
   }
 
   .card::before {
-    font-size: 100px;
-    top: 15px;
-    left: 25px;
+    font-size: 80px;
+    top: 10px;
+    left: 20px;
   }
 }
 
 /* ── Quote ────────────────────────────────────────────────── */
 .quote {
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: 1rem;
   color: var(--text-primary);
-  line-height: 1.7;
-  margin-bottom: 2rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
   position: relative;
   z-index: 1;
   font-weight: 500;
-  padding-left: 2.5rem;
+  padding-left: 2rem;
 }
 
 /* ── Author ───────────────────────────────────────────────── */
@@ -156,10 +156,10 @@
 }
 
 .avatarWrapper {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   position: relative;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);

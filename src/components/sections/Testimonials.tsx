@@ -13,7 +13,7 @@ interface TestimonialsProps {
 }
 
 export function Testimonials({ data, testimonials }: TestimonialsProps) {
-  const testimonialsToDisplay = testimonials?.length > 0 ? testimonials : [
+  const defaultTestimonials = [
     {
       quote: "Lorem ipsum dolor sit amet consectetur viverra velit faucibus pharetra lorem sed scelerisque sit in nec arcu malesuada.",
       author: "Abebe Kebede",
@@ -25,6 +25,8 @@ export function Testimonials({ data, testimonials }: TestimonialsProps) {
       role: "Senior Project Manager"
     }
   ];
+
+  const testimonialsToDisplay = (testimonials?.length > 0 ? testimonials : defaultTestimonials).slice(0, 6);
 
   return (
     <section className={`section ${styles.sectionWrapper}`}>

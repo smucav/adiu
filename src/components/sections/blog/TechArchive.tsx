@@ -5,20 +5,21 @@ import styles from "./TechArchive.module.css";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import { Search } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, ArrowRight, Clock } from "lucide-react";
+import { urlForImage } from "@/sanity/lib/image";
+import Image from "next/image";
 
 interface TechArchiveProps {
   data?: SanityBlogPage | null;
   articles: SanityArticle[];
   categories: string[];
-  onClose?: () => void;
 }
 
-export function TechArchive({ data, articles, categories, onClose }: TechArchiveProps) {
+export function TechArchive({ data, articles, categories }: TechArchiveProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 10;
+  const articlesPerPage = 9;
 
   // 1. Discover all unique categories from articles + defined ones
   const allCategories = useMemo(() => {
@@ -40,40 +41,42 @@ export function TechArchive({ data, articles, categories, onClose }: TechArchive
       return matchesCategory && matchesSearch;
     });
 
-    // Reset to first page when filtering
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page when filtering
     return filtered;
   }, [articles, activeCategory, searchQuery]);
 
-  // 3. Pagination Logic
-  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
-  const paginatedArticles = useMemo(() => {
+  // 3. Featured Logic
+  const showFeatured = currentPage === 1 && activeCategory === "All" && !searchQuery && filteredArticles.length > 0;
+  const featuredArticle = showFeatured ? filteredArticles[0] : null;
+  
+  // 4. Grid Articles (Exclude featured if showing)
+  const gridArticles = useMemo(() => {
+    const startList = showFeatured ? filteredArticles.slice(1) : filteredArticles;
     const startIndex = (currentPage - 1) * articlesPerPage;
-    return filteredArticles.slice(startIndex, startIndex + articlesPerPage);
-  }, [filteredArticles, currentPage, articlesPerPage]);
+    return startList.slice(startIndex, startIndex + articlesPerPage);
+  }, [filteredArticles, showFeatured, currentPage]);
 
-  // 4. Count articles per category (always based on total list)
-  const categoryCounts = useMemo(() => {
-    return allCategories.reduce((acc, cat) => {
-      if (cat === "All") {
-        acc[cat] = articles.length;
-      } else {
-        acc[cat] = articles.filter(a => 
-          a.categories?.some(c => c.toLowerCase() === cat.toLowerCase())
-        ).length;
-      }
-      return acc;
-    }, {} as Record<string, number>);
-  }, [allCategories, articles]);
+  // 5. Pagination Logic
+  const totalItems = showFeatured ? filteredArticles.length - 1 : filteredArticles.length;
+  const totalPages = Math.ceil(totalItems / articlesPerPage) || 1;
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    window.scrollTo({ top: 300, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   };
 
   return (
     <div className={styles.archiveWrapper}>
       <div className="container">
+        
         {/* ── Page Header ──────────────────────────────────────── */}
         <header className={styles.pageHeader}>
           <motion.div
@@ -81,145 +84,176 @@ export function TechArchive({ data, articles, categories, onClose }: TechArchive
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className={styles.headerTop}>
-              <div className={styles.badge}>{data?.heroBadge || "Archive"}</div>
-              {onClose && (
-                <button onClick={onClose} className={styles.backBtn}>
-                  ← BACK TO GRID
-                </button>
-              )}
-            </div>
-            <h1 className={styles.bigTitle}>
-              {data?.heroTitle || "Blog"} <span>({articles.length})</span>
-            </h1>
-            <p className={styles.subtitle}>{data?.heroSubtitle}</p>
-          </motion.div>
-
-          {/* 🔍 Search Bar */}
-          <motion.div 
-            className={styles.searchContainer}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className={styles.searchBar}>
-              <Search size={20} className={styles.searchIcon} />
-              <input 
-                type="text" 
-                placeholder={data?.searchPlaceholder || "Search archive..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-            </div>
+            <div className={styles.badge}>{data?.heroBadge || "Our Blog"}</div>
+            <h1 className={styles.bigTitle}>{data?.archiveTitle || "Latest Insights & News"}</h1>
+            <p className={styles.subtitle}>
+              {data?.archiveSubtitle || "Discover the latest trends, tips, and insights from our team of experts."}
+            </p>
           </motion.div>
         </header>
 
-        <div className={styles.layout}>
-          {/* 📂 SIDEBAR: TOPICS */}
-          <aside className={styles.sidebar}>
-            <div className={styles.sidebarSection}>
-              <div className={styles.sidebarLabel}>/ TOPICS</div>
-              <ul className={styles.topicList}>
-                {allCategories.map((cat) => (
-                  <li key={cat}>
-                    <button 
-                      className={styles.topicBtn}
-                      data-active={activeCategory === cat}
-                      onClick={() => setActiveCategory(cat)}
-                    >
-                      <span className={styles.topicName}>{cat}</span>
-                      <span className={styles.topicCount}>{categoryCounts[cat] || 0}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
-
-          {/* 📜 MAIN LIST */}
-          <main className={styles.mainList}>
-            <div className={styles.listHeader}>
-              <span className={styles.colDate}>/ DATE</span>
-              <span className={styles.colName}>/ NAME</span>
-            </div>
-
-            <div className={styles.rows}>
-              <AnimatePresence mode="popLayout">
-                {paginatedArticles.map((article, i) => (
-                  <motion.div
-                    key={article._id}
-                    layout
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    transition={{ duration: 0.3, delay: i * 0.01 }}
-                  >
-                    <Link href={`/blog/${article.slug.current}`} className={styles.articleRow}>
-                      <span className={styles.date}>
-                        {new Date(article.publishedAt).toLocaleDateString('en-GB', { 
-                          year: 'numeric', 
-                          month: '2-digit', 
-                          day: '2-digit' 
-                        }).replace(/\//g, '.')}
-                      </span>
-
-                      <h3 className={styles.title}>{article.title}</h3>
-                      <div className={styles.rowLine} />
-                      <span className={styles.plus}>+</span>
-                    </Link>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              
-              {filteredArticles.length === 0 && (
-                <div className={styles.noResults}>
-                  NO LOGS MATCH YOUR SEARCH CRITERIA
-                </div>
-              )}
-            </div>
-
-            {/* ── Pagination Controls ───────────────────────────── */}
-            <div className={styles.pagination}>
-              <button 
-                className={styles.pageBtn}
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
+        {/* ── Controls (Search & Filters) ──────────────────────────────── */}
+        <div className={styles.controlsRow}>
+          <div className={styles.categoryPills}>
+            {allCategories.map((cat) => (
+              <button
+                key={cat}
+                className={styles.pillBtn}
+                data-active={activeCategory === cat}
+                onClick={() => setActiveCategory(cat)}
               >
-                ← PREV
+                {cat}
               </button>
-              
-              <div className={styles.pageNumbers}>
-                {totalPages <= 1 ? (
-                  <button className={styles.pageNum} data-active="true">01</button>
-                ) : (
-                  Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <button
-                      key={page}
-                      className={styles.pageNum}
-                      data-active={currentPage === page}
-                      onClick={() => handlePageChange(page)}
-                    >
-                      {page.toString().padStart(2, '0')}
-                    </button>
-                  ))
+            ))}
+          </div>
+
+          <div className={styles.searchBox}>
+            <Search size={18} className={styles.searchIcon} />
+            <input 
+              type="text" 
+              placeholder={data?.searchPlaceholder || "Search articles..."}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+        </div>
+
+        {/* ── Featured Article ────────────────────────────────────────── */}
+        {showFeatured && featuredArticle && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Link href={`/blog/${featuredArticle.slug.current}`} className={styles.featuredArticle}>
+              <div className={styles.featuredImageWrapper}>
+                {featuredArticle.mainImage && (
+                  <Image
+                    src={urlForImage(featuredArticle.mainImage).width(800).height(500).url() as string}
+                    alt={featuredArticle.mainImage.alt || featuredArticle.title}
+                    width={800}
+                    height={500}
+                    className={styles.featuredImage}
+                  />
                 )}
               </div>
+              <div className={styles.featuredContent}>
+                <span className={styles.featuredCategory}>
+                  {featuredArticle.categories?.[0] || "General"}
+                </span>
+                <h2 className={styles.featuredTitle}>{featuredArticle.title}</h2>
+                {featuredArticle.excerpt && (
+                  <p className={styles.featuredExcerpt}>{featuredArticle.excerpt}</p>
+                )}
+                <div className={styles.featuredMeta}>
+                  <span className={styles.featuredDate}>{formatDate(featuredArticle.publishedAt)}</span>
+                  {featuredArticle.readTime && (
+                    <span className={styles.featuredDate}>
+                      <Clock size={14} /> {featuredArticle.readTime}
+                    </span>
+                  )}
+                </div>
+                <div className={styles.featuredReadMore}>
+                  Read Article <ArrowRight size={16} className={styles.readMoreArrow} />
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        )}
 
-              <button 
-                className={styles.pageBtn}
-                disabled={currentPage === totalPages || totalPages === 0}
-                onClick={() => handlePageChange(currentPage + 1)}
+        {/* ── Article Grid ───────────────────────────────────────────── */}
+        <div className={styles.articleGrid}>
+          <AnimatePresence mode="popLayout">
+            {gridArticles.map((article, i) => (
+              <motion.div
+                key={article._id}
+                layout
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
               >
-                NEXT →
-              </button>
+                <Link href={`/blog/${article.slug.current}`} className={styles.articleCard}>
+                  <div className={styles.cardImageWrapper}>
+                    <span className={styles.cardCategory}>
+                      {article.categories?.[0] || "General"}
+                    </span>
+                    {article.mainImage && (
+                      <Image
+                        src={urlForImage(article.mainImage).width(600).height(400).url() as string}
+                        alt={article.mainImage.alt || article.title}
+                        width={600}
+                        height={400}
+                        className={styles.cardImage}
+                      />
+                    )}
+                  </div>
+                  
+                  <div className={styles.cardMeta}>
+                    <span>{formatDate(article.publishedAt)}</span>
+                    {article.readTime && (
+                      <span className={styles.featuredDate}>
+                        <Clock size={14} /> {article.readTime}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className={styles.cardTitle}>{article.title}</h3>
+                  
+                  {article.excerpt && (
+                    <p className={styles.cardExcerpt}>{article.excerpt}</p>
+                  )}
+
+                  <div className={styles.readMore}>
+                    Read Article <ArrowRight size={16} className={styles.readMoreArrow} />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+
+          {filteredArticles.length === 0 && (
+            <div className={styles.noResults}>
+              No articles found matching your criteria. Try adjusting your search or filters.
+            </div>
+          )}
+        </div>
+
+        {/* ── Pagination ─────────────────────────────────────────────── */}
+        {totalPages > 1 && (
+          <div className={styles.paginationRow}>
+            <button 
+              className={styles.pageBtnIcon}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              <ChevronLeft size={18} />
+            </button>
+            
+            <div className={styles.pageNumbers}>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  className={styles.pageNum}
+                  data-active={currentPage === page}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
             </div>
 
-            <div className={styles.showingInfo}>
-              SHOWING {Math.min(paginatedArticles.length, articlesPerPage)} OF {filteredArticles.length} LOGS
-            </div>
-          </main>
-        </div>
+            <button 
+              className={styles.pageBtnIcon}
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
   );

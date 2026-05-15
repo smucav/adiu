@@ -15,7 +15,7 @@ export default async function BlogPage() {
 
   return (
     <main>
-      <TechArchive 
+      <TechArchive
         data={blogPage}
         articles={articles || []}
         categories={blogPage?.filterCategories || []}

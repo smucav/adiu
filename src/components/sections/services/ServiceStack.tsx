@@ -3,6 +3,7 @@
 import { useLayoutEffect, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Link from 'next/link';
 import { PortableText } from '@portabletext/react';
 import styles from './ServiceStack.module.css';
 import { SanityServicesPage, SanityFocusedService } from '@/sanity/lib/types';
@@ -181,8 +182,7 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
                   })()}
                 </div>
               </div>
-
-              <button className={styles.getStartedBtn}>Get started</button>
+              <Link href="/contact" className={styles.getStartedBtn}>Get started</Link>
             </div>
           );
         })}
