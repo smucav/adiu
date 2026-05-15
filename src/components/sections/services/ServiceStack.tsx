@@ -4,13 +4,12 @@ import { useLayoutEffect, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
-import { PortableText } from '@portabletext/react';
 import styles from './ServiceStack.module.css';
 import { SanityServicesPage, SanityFocusedService } from '@/sanity/lib/types';
+import { Target } from 'lucide-react'; // Placeholder icon matching the screenshot
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-// Register ScrollTrigger
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -22,170 +21,154 @@ interface ServiceStackProps {
 
 export function ServiceStack({ pageData, services }: ServiceStackProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const leftPanelRef = useRef<HTMLDivElement>(null);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const listContainerRef = useRef<HTMLDivElement>(null);
 
+  // If no services from Sanity yet, fallback to screenshot data for development
   const servicesToDisplay = (Array.isArray(services) && services.length > 0) ? services : [
-    {
-      _id: 'default-1',
-      title: "Network Infrastructure",
-      category: "Infrastructure",
-      description: "Advanced wireless network solutions for enterprise environments. We design, deploy and manage complex networks.",
-      image: null,
-      content: undefined,
-      featureItems: undefined
-    },
-    {
-      _id: 'default-2',
-      title: "Cloud Solutions",
-      category: "Cloud",
-      description: "Secure and scalable cloud infrastructure for modern businesses. Migration and optimization services included.",
-      image: null,
-      content: undefined,
-      featureItems: undefined
-    },
-    {
-      _id: 'default-3',
-      title: "Data Center Design",
-      category: "Datacenter",
-      description: "End-to-end data center design and implementation services with a focus on efficiency and reliability.",
-      image: null,
-      content: undefined,
-      featureItems: undefined
-    },
-    {
-      _id: 'default-4',
-      title: "Cyber Security",
-      category: "Security",
-      description: "Comprehensive security audits and threat protection for your digital assets and infrastructure.",
-      image: null,
-      content: undefined,
-      featureItems: undefined
-    }
+    { _id: '1', title: 'Product Development', description: 'Everything from design to emissions calculations' },
+    { _id: '2', title: 'Technical Support', description: 'Advice, assistance and personalised support' },
+    { _id: '3', title: 'Supply Chain', description: 'Optimised supply chain management' },
+    { _id: '4', title: 'Logistics', description: 'Making processes more agile and resilient' },
+    { _id: '5', title: 'Traceability and Security', description: 'Protecting each product on several levels' },
+    { _id: '6', title: 'Sustainability', description: 'Environmentally-friendly packaging, responsible and transparent processes' },
+    { _id: '7', title: 'Full Service', description: 'A single partner, from artwork to batch release' },
   ] as any[];
 
   useIsomorphicLayoutEffect(() => {
-    if (!sectionRef.current || !containerRef.current) return;
+    if (!sectionRef.current || !leftPanelRef.current || !rightPanelRef.current || !listContainerRef.current) return;
 
-    const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-    const totalCards = cards.length;
-
-    // Respect prefers-reduced-motion — skip pinned scroll animation
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.set(cards, { yPercent: 0, opacity: 1, scale: 1, filter: 'none' });
+    // Mobile fallback (no pinning needed)
+    if (window.innerWidth <= 768 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
     const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set(cards.slice(1), {
-        yPercent: 100,
-        opacity: 0
-      });
+      const windowHeight = window.innerHeight;
+      const listContainer = listContainerRef.current!;
+      const listHeight = listContainer.scrollHeight;
+
+      // Calculate how much the list exceeds the viewport
+      // We want to scroll until the bottom of the list (including its padding) is at the bottom of the screen
+      const scrollableHeight = Math.max(0, listHeight - windowHeight);
+
+      // Duration for the horizontal expansion
+      // Reduced from 1.5 to 0.5 to make the transition faster and reduce the empty scroll space
+      const expandDuration = windowHeight * 0.5;
+
+      // Total scroll distance = expansion distance + vertical scroll distance
+      const totalScroll = expandDuration + scrollableHeight;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: `+=${totalCards * 150}%`,
+          end: `+=${totalScroll}`,
           pin: true,
-          scrub: 1.5,
-          anticipatePin: 1,
+          scrub: true,
+          anticipatePin: 1
+        }
+      });
+
+      // PHASE 1: Horizontal Expansion (Duration 1)
+      tl.to(leftPanelRef.current, {
+        width: '0vw',
+        opacity: 0,
+        ease: 'none',
+        duration: 1
+      }, 0);
+
+      tl.to(rightPanelRef.current, {
+        width: '100vw',
+        ease: 'none',
+        duration: 1
+      }, 0);
+
+      // Smoothly fade/slide out left content
+      const leftContent = leftPanelRef.current!.querySelector(`.${styles.leftContent}`);
+      tl.to(leftContent, {
+        opacity: 0,
+        x: -80,
+        duration: 0.6,
+        ease: 'power2.inOut'
+      }, 0);
+
+      // Stagger items in as we expand
+      const items = listContainer.querySelectorAll(`.${styles.listItem}`);
+      tl.fromTo(items,
+        { x: 30 },
+        {
+          x: 0,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: 'power3.out'
         },
-      });
+        0 // Start immediately with expansion
+      );
 
-      // Build the stacking timeline
-      cards.forEach((card, index) => {
-        if (index === totalCards - 1) return;
+      // PHASE 2: Vertical Scroll (if list is longer than screen)
+      if (scrollableHeight > 0) {
+        // The duration here is relative to Phase 1. 
+        // We want it to take exactly as much "scroll space" as its height.
+        const verticalDuration = scrollableHeight / (expandDuration / 1);
 
-        const nextCard = cards[index + 1];
-
-        tl.to(card, {
-          yPercent: -15,
-          scale: 0.92,
-          opacity: 0.4,
-          filter: 'blur(4px)',
-          ease: 'power2.inOut',
-          duration: 1
-        }, index)
-          .to(nextCard, {
-            yPercent: 0,
-            opacity: 1,
-            ease: 'power2.out',
-            duration: 1.2
-          }, index + 0.1);
-
-        gsap.set(nextCard, { zIndex: index + 2 });
-      });
-    }, sectionRef);
+        tl.to(listContainer, {
+          y: -scrollableHeight,
+          ease: 'none',
+          duration: verticalDuration
+        }, 1); // Starts at time index 1 (end of expansion)
+      }
+    });
 
     return () => ctx.revert();
-  }, [servicesToDisplay.length]);
-
-  const getGradient = (index: number) => {
-    const gradients = [
-      styles.blueGradient,
-      styles.redGradient,
-      styles.orangeGradient,
-      styles.greenGradient,
-      styles.purpleGradient,
-      styles.darkGradient
-    ];
-    return gradients[index % gradients.length];
-  };
+  }, [servicesToDisplay]);
 
   return (
-    <section ref={sectionRef} className={styles.stackContainer}>
-      <div ref={containerRef} className={styles.stackWrapper}>
-        {servicesToDisplay.map((service, index) => {
-          const displayIndex = (index + 1).toString().padStart(2, '0');
+    <section className={styles.section} ref={sectionRef}>
+      <div className={styles.container}>
 
-          return (
-            <div
-              key={service._id}
-              ref={(el) => { cardsRef.current[index] = el; }}
-              className={`${styles.serviceCard} ${getGradient(index)}`}
-              style={{ zIndex: index + 1 }}
-            >
-              <div className={styles.cardLabel}>({service.category?.substring(0, 2).toUpperCase() || 'SR'})</div>
-              <div className={styles.cardNumber}>{displayIndex}</div>
-
-              <div className={styles.mainContent}>
-                <h3 className={styles.title}>{service.title}</h3>
-
-                <div className={styles.descriptionBox}>
-                  <div className={styles.description}>
-                    {service.content ? (
-                      <PortableText value={service.content} />
-                    ) : (
-                      <p>{service.description}</p>
-                    )}
-                  </div>
-
-                  {!service.content && (() => {
-                    const items = service.featureItems && service.featureItems.length > 0
-                      ? service.featureItems
-                      : [
-                          { _key: 'f1', text: 'Optimized performance' },
-                          { _key: 'f2', text: 'Enterprise grade security' },
-                          { _key: 'f3', text: '24/7 Support available' },
-                        ];
-                    return (
-                      <ul className={styles.featuresList}>
-                        {items.map((item: any) => (
-                          <li key={item._key} className={styles.featureItem}>
-                            {item.text}
-                          </li>
-                        ))}
-                      </ul>
-                    );
-                  })()}
-                </div>
+        {/* Left Side: Fixed text block */}
+        <div className={styles.leftPanel} ref={leftPanelRef}>
+          <div className={styles.leftContent}>
+            <div className={styles.topBadge}>Services</div>
+            <h2 className={styles.title}>The true value<br />of partnership</h2>
+            <div className={styles.textContent}>
+              <div className={styles.textBlock}>
+                It is our services that make the most of each product, by optimising each stage of development, while reducing complexity and increasing precision.
               </div>
-              <Link href="/contact" className={styles.getStartedBtn}>Get started</Link>
+              <div className={styles.textBlock}>
+                An ecosystem designed to take packaging to its full potential.
+              </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
+
+        {/* Right Side: Expanding list */}
+        <div className={styles.rightPanel} ref={rightPanelRef}>
+          <div className={styles.listContainer} ref={listContainerRef}>
+            {servicesToDisplay.map((service, index) => {
+              // Create 001, 002 formatting
+              const indexStr = String(index + 1).padStart(3, '0');
+
+              return (
+                <Link
+                  href={`/services/${service.slug?.current || '#'}`}
+                  className={styles.listItem}
+                  key={service._id}
+                >
+                  <div className={styles.itemInner}>
+                    <span className={styles.itemIndex}>{indexStr}</span>
+                    <Target className={styles.itemIcon} />
+                    <span className={styles.itemTitle}>{service.title}</span>
+                    <span className={styles.viewMore}>View more</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
     </section>
   );
