@@ -10,24 +10,33 @@ interface CareerHeroProps {
 }
 
 export function CareerHero({ data }: CareerHeroProps) {
+  const imageUrl = data?.heroImage 
+    ? urlForImage(data.heroImage).url() 
+    : "/images/fast_growing_team_image.png";
+
   return (
     <section className={styles.heroSection}>
+      {/* Background Image */}
+      <div className={styles.bgWrapper}>
+        <Image 
+          src={imageUrl} 
+          alt={data?.heroImage?.alt || data?.heroTitle || "Adiu Team"}
+          fill
+          className={styles.bgImage}
+          priority
+          sizes="100vw"
+        />
+        <div className={styles.overlay} />
+      </div>
+
       <div className="container">
-        <div className={styles.layout}>
-          <div className={styles.imageColumn}>
-            <Image 
-              src={data?.heroImage ? urlForImage(data.heroImage).width(600).quality(80).url() : "/images/fast_growing_team_image.png"} 
-              alt={data?.heroImage?.alt || data?.heroTitle || "Fast growing team"}
-              fill
-              className={styles.heroImage}
-              sizes="(max-width: 992px) 100vw, 50vw"
-              priority
-            />
-          </div>
+        <div className={styles.content}>
           <div className={styles.textColumn}>
-            <h1 className={styles.title}>{data?.heroTitle || "Join our fast growing team"}</h1>
+            <h1 className={styles.title}>
+              {data?.heroTitle || "Build your career with ADIU"}
+            </h1>
             <p className={styles.subtitle}>
-              {data?.heroSubtitle || "Lorem ipsum dolor sit amet consectetur viverra velit faucibus pharetra lorem sed scelerisque sit in nec arcu."}
+              {data?.heroSubtitle || "Join our team of elite engineers and technicians working on the next generation of infrastructure."}
             </p>
             <Link href="#open-roles" className={styles.ctaButton}>
               {data?.heroCtaText || "Join our team"} &rsaquo;

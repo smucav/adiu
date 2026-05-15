@@ -25,6 +25,14 @@ export const careerPage = defineType({
       title: 'Hero Image',
       type: 'image',
       options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+          description: 'Important for SEO and accessibility.',
+        },
+      ],
     }),
     defineField({
       name: 'whyWorkTitle',

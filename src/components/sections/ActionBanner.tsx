@@ -37,10 +37,14 @@ const NetworkGraph = () => {
       vx: number;
       vy: number;
       radius: number;
+      w: number;
+      h: number;
 
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+      constructor(w: number, h: number) {
+        this.w = w;
+        this.h = h;
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
         this.vx = (Math.random() - 0.5) * 0.6;
         this.vy = (Math.random() - 0.5) * 0.6;
         this.radius = Math.random() * 2 + 1.5;
@@ -50,8 +54,8 @@ const NetworkGraph = () => {
         this.x += this.vx;
         this.y += this.vy;
 
-        if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
-        if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+        if (this.x < 0 || this.x > this.w) this.vx = -this.vx;
+        if (this.y < 0 || this.y > this.h) this.vy = -this.vy;
       }
 
       draw() {
@@ -66,9 +70,7 @@ const NetworkGraph = () => {
     const initParticles = () => {
       particles = [];
       const isMobile = window.innerWidth < 768;
-      // Use a much lower density on mobile to prevent lag
       const divisor = isMobile ? 25000 : 12000;
-      // Hard cap the maximum number of particles depending on device
       const maxParticles = isMobile ? 25 : 100;
       
       const numParticles = Math.min(
@@ -77,7 +79,7 @@ const NetworkGraph = () => {
       );
 
       for (let i = 0; i < numParticles; i++) {
-        particles.push(new Particle());
+        particles.push(new Particle(canvas.width, canvas.height));
       }
     };
 

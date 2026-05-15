@@ -4,13 +4,22 @@
 
 .section {
   width: 100%;
-  background: #fff;
+  background: #f7fbf4; /* Extremely Light Mint/Green */
   /* Mobile: balanced padding */
   padding: 5rem 0;
 }
 
-@media (min-width: 768px) { .section { padding: 2rem 0 7rem; } }
-@media (min-width: 1024px) { .section { padding: 2rem 0 8.75rem; } }
+@media (min-width: 768px) {
+  .section {
+    padding: 2rem 0 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 2rem 0 8.75rem;
+  }
+}
 
 .inner {
   max-width: 64rem;
@@ -85,7 +94,8 @@
   text-decoration: none;
   letter-spacing: -0.01em;
   transition: all 0.3s ease;
-  width: 100%; /* Full width on mobile */
+  width: 100%;
+  /* Full width on mobile */
 }
 
 @media (min-width: 480px) {
@@ -130,7 +140,7 @@
 .divider {
   width: 100%;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent);
+  background: linear-gradient(to right, transparent, rgba(130, 195, 65, 0.15), transparent);
   margin: 4rem 0 2.5rem;
 }
 

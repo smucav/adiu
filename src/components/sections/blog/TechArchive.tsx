@@ -13,9 +13,10 @@ interface TechArchiveProps {
   data?: SanityBlogPage | null;
   articles: SanityArticle[];
   categories: string[];
+  onClose?: () => void;
 }
 
-export function TechArchive({ data, articles, categories }: TechArchiveProps) {
+export function TechArchive({ data, articles, categories, onClose }: TechArchiveProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);

@@ -92,6 +92,13 @@ export const getFocusedServicesQuery = groq`*[_type == "focusedService"] | order
   image ${imageFields}
 }`;
 
+export const getServiceBySlugQuery = groq`*[_type == "focusedService" && slug.current == $slug][0]{
+  _id, title, slug, category, description,
+  featureItems[]{ _key, text },
+  content,
+  image ${imageFields}
+}`;
+
 export const getProjectsQuery = groq`*[_type == "project"] | order(order asc){
   _id, title, slug, category, client, description, content,
   mainImage ${imageFields}

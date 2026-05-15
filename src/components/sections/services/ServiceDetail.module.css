@@ -1,0 +1,245 @@
+.section {
+  padding: 160px 0 100px;
+  background: #ffffff;
+  color: #1a1a1a;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background glow - adjusted for light theme */
+.section::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(130, 195, 65, 0.03) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary, #64748b);
+  text-decoration: none;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.backLink:hover {
+  opacity: 1;
+  transform: translateX(-5px);
+  color: var(--brand-green, #82c341);
+}
+
+.header {
+  margin-bottom: 80px;
+}
+
+.category {
+  display: inline-block;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--brand-green, #82c341);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.title {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+  max-width: 900px;
+  color: var(--text-primary, #0f172a);
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 80px;
+  position: relative;
+  background: #f9fafb;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.featuredImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.imageWrapper:hover .featuredImage {
+  transform: scale(1.03);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.sidebar {
+  position: sticky;
+  top: 120px;
+}
+
+.sidebarTitle {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 32px;
+  color: var(--text-primary, #0f172a);
+}
+
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary, #64748b);
+  line-height: 1.5;
+}
+
+.featureIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--brand-green, #82c341);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.contentWrapper {
+  font-family: var(--font-outfit), sans-serif;
+}
+
+.description {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+
+.richText {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--text-secondary, #64748b);
+}
+
+.richText p {
+  margin-bottom: 24px;
+}
+
+.richText h2, .richText h3 {
+  color: var(--text-primary, #0f172a);
+  margin: 48px 0 24px;
+}
+
+.footer {
+  margin-top: 120px;
+  padding-top: 60px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nextService {
+  text-align: right;
+}
+
+.nextLabel {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 8px;
+}
+
+.nextTitle {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-primary, #0f172a);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nextTitle:hover {
+  color: var(--brand-green, #82c341);
+}
+
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .sidebar {
+    position: static;
+    order: 2;
+  }
+  
+  .contentWrapper {
+    order: 1;
+  }
+  
+  .imageWrapper {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 120px 0 60px;
+  }
+  
+  .header {
+    margin-bottom: 40px;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .description {
+    font-size: 1.25rem;
+  }
+}
