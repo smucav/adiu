@@ -1,0 +1,262 @@
+.section {
+  padding: 100px 0;
+  background: #ffffff;
+}
+
+.tabsContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 240px 1fr 320px;
+  gap: 64px;
+  align-items: flex-start;
+  padding: 0 20px;
+}
+
+.tabList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 120px;
+}
+
+.tabButton {
+  background: #ffffff;
+  border: 0.5px solid #e0e0e0;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  border-radius: 12px;
+}
+
+.iconWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.tabLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.activeTab {
+  background: #ffffff;
+  border: 1.5px solid #00a100;
+  box-shadow: 0 4px 20px rgba(41, 182, 216, 0.1);
+}
+
+.activeTab .iconWrapper {
+  background: #008a00;
+  color: #ffffff;
+}
+
+.activeTab .tabLabel {
+  color: #00a100;
+}
+
+.tabPanel {
+  display: flex;
+  flex-direction: column;
+}
+
+.contentSide {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.heading {
+  font-size: clamp(32px, 5vw, 42px);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.paragraph {
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.8;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+.valuesList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.valueItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.checkIcon {
+  color: #6abf3f;
+  flex-shrink: 0;
+}
+
+.statsSide {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 120px;
+}
+
+.metricCard {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  padding: 24px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.metricCard:hover {
+  transform: translateX(-8px);
+  border-color: #00a100;
+  box-shadow: 0 10px 30px rgba(41, 182, 216, 0.08);
+}
+
+.metricText {
+  display: flex;
+  flex-direction: column;
+}
+
+.metricValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.metricLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1200px) {
+  .tabsContainer {
+    grid-template-columns: 200px 1fr 280px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .tabsContainer {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .tabList {
+    flex-direction: row;
+    position: static;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .tabButton {
+    width: auto;
+    padding: 12px 20px;
+  }
+
+  .iconWrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tabLabel {
+    font-size: 12px;
+  }
+
+  .contentSide {
+    text-align: center;
+  }
+
+  .valuesList {
+    align-items: center;
+  }
+
+  .statsSide {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .metricCard:hover {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .tabList {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .tabButton {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .heading {
+    font-size: 28px;
+  }
+
+  .statsSide {
+    grid-template-columns: 1fr;
+  }
+}

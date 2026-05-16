@@ -46,9 +46,9 @@ export function OpenRoles({ data, roles }: OpenRolesProps) {
             <div key={category} className={styles.categoryGroup}>
               <h3 className={styles.categoryTitle}>{category}</h3>
               {catRoles.map((role: any) => (
-                <Link 
-                  href={ensureAbsoluteUrl(role.applyUrl)} 
-                  key={role._id} 
+                <Link
+                  href={ensureAbsoluteUrl(role.applyUrl)}
+                  key={role._id}
                   className={styles.roleCard}
                   target={role.applyUrl && role.applyUrl !== "#" ? "_blank" : undefined}
                   rel={role.applyUrl && role.applyUrl !== "#" ? "noopener noreferrer" : undefined}

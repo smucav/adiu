@@ -70,6 +70,19 @@ export const aboutPage = defineType({
       group: 'mission',
     }),
     defineField({
+      name: 'visionStatement',
+      title: 'Vision Statement',
+      type: 'text',
+      group: 'mission',
+    }),
+    defineField({
+      name: 'coreValues',
+      title: 'Core Values',
+      type: 'array',
+      group: 'mission',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
       name: 'missionImage',
       title: 'Mission Image',
       type: 'image',

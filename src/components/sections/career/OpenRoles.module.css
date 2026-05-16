@@ -50,7 +50,8 @@
   justify-content: space-between;
   padding: 32px 40px;
   background-color: white;
-  border: 1px solid #d4edc9; /* Soft green outline */
+  border: 1px solid #d4edc9;
+  /* Soft green outline */
   border-radius: 8px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -58,7 +59,7 @@
 
 .roleCard:hover {
   border-color: var(--brand-green);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
   transform: translateY(-2px);
 }
 
@@ -111,7 +112,7 @@
     gap: 24px;
     padding: 24px;
   }
-  
+
   .arrowIcon {
     align-self: flex-end;
   }

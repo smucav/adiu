@@ -110,6 +110,7 @@ export const getAboutPageQuery = groq`*[_type == "aboutPage"][0]{
   heroBackgroundImage ${imageFields},
   heroStats[]{ value, label, description },
   missionHeading, missionDescription,
+  visionStatement, coreValues,
   missionImage ${imageFields},
   missionStats[]{ value, label },
   whyChooseUsSubtitle, whyChooseUsHeading,

@@ -1,5 +1,5 @@
 import { AboutHero } from "@/components/sections/about/AboutHero";
-import { Mission } from "@/components/sections/about/Mission";
+import { VisionMissionValues } from "@/components/sections/about/VisionMissionValues";
 import { WhyChooseUs } from "@/components/sections/about/WhyChooseUs";
 import { QEHSSection } from "@/components/sections/about/QEHSSection";
 import { Team } from "@/components/sections/about/Team";
@@ -17,7 +17,7 @@ export default async function AboutPage() {
   return (
     <main>
       <AboutHero data={aboutPage} />
-      <Mission data={aboutPage} />
+      <VisionMissionValues data={aboutPage} />
       <WhyChooseUs data={aboutPage} />
       <QEHSSection data={aboutPage} />
       <Team data={aboutPage} members={teamMembers} />

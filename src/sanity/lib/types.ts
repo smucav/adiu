@@ -108,6 +108,8 @@ export interface SanityAboutPage {
   heroStats: Array<{ value: string; label: string; description: string }>
   missionHeading: string
   missionDescription: string
+  visionStatement?: string
+  coreValues?: string[]
   missionImage?: SanityImage
   missionStats: Array<{ value: string; label: string }>
   whyChooseUsSubtitle: string
