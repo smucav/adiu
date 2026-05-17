@@ -113,6 +113,20 @@ export const homePage = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'awardsStats',
+      title: 'Awards Section Mini-Stats',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'value', title: 'Value (e.g. 12+)', type: 'string' },
+            { name: 'label', title: 'Label (e.g. Awards)', type: 'string' },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: 'actionBannerHeading',
       title: 'Action Banner Heading',
       type: 'string',

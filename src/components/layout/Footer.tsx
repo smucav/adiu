@@ -70,19 +70,25 @@ export function Footer({ settings }: FooterProps) {
               <div className={styles.contactItem}>
                 <div>
                   <div className={styles.contactLabel}>Email us</div>
-                  <div className={styles.contactValue}>hello@adiu.com</div>
+                  <div className={styles.contactValue}>
+                    {settings?.supportEmail || "hello@adiu.com"}
+                  </div>
                 </div>
               </div>
               <div className={styles.contactItem}>
                 <div>
                   <div className={styles.contactLabel}>Call us</div>
-                  <div className={styles.contactValue}>+251 11 661 0000</div>
+                  <div className={styles.contactValue}>
+                    {settings?.supportPhone || "+251 11 661 0000"}
+                  </div>
                 </div>
               </div>
               <div className={styles.contactItem}>
                 <div>
                   <div className={styles.contactLabel}>Visit us</div>
-                  <div className={styles.contactValue}>Bole Road, Addis Ababa, Ethiopia</div>
+                  <div className={styles.contactValue}>
+                    {settings?.supportAddress || "Bole Road, Addis Ababa, Ethiopia"}
+                  </div>
                 </div>
               </div>
             </div>
@@ -94,8 +100,8 @@ export function Footer({ settings }: FooterProps) {
             &copy; {new Date().getFullYear()} {settings?.siteTitle || "Adiu Communication"}. All rights reserved.
           </p>
           <div className={styles.legalLinks}>
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms of Service</Link>
+            <Link href={settings?.privacyPolicyUrl || "/privacy"}>Privacy Policy</Link>
+            <Link href={settings?.termsUrl || "/terms"}>Terms of Service</Link>
             <Link href="/cookies">Cookie Settings</Link>
           </div>
         </div>

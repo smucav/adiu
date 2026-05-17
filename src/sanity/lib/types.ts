@@ -33,6 +33,9 @@ export interface SanityGlobalSettings {
   footerCopyright?: string
   privacyPolicyUrl?: string
   termsUrl?: string
+  supportEmail?: string
+  supportPhone?: string
+  supportAddress?: string
 }
 
 export interface SanityStat {
@@ -88,6 +91,7 @@ export interface SanityHomePage {
   statsCtaLink: string
   awardsHeading: string
   awardsDescription: string
+  awardsStats?: Array<{ value: string; label: string }>
   actionBannerHeading: string
   actionBannerDescription: string
   actionBannerCtaText: string

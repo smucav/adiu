@@ -12,6 +12,7 @@ export const getGlobalSettingsQuery = groq`*[_type == "globalSettings"][0]{
   footerBrandDesc,
   socialUrls{ facebook, linkedin, instagram },
   footerCopyright, privacyPolicyUrl, termsUrl,
+  supportEmail, supportPhone, supportAddress,
   revalidateTime
 }`;
 
@@ -25,6 +26,7 @@ export const getHomePageQuery = groq`*[_type == "homePage"][0]{
   featurePoints[]{ title, description },
   statsHeading, statsDescription, statsCtaText, statsCtaLink,
   awardsHeading, awardsDescription,
+  awardsStats[]{ value, label },
   actionBannerHeading, actionBannerDescription, actionBannerCtaText, actionBannerCtaLink,
   actionBannerImage ${imageFields},
   testimonialsHeading, testimonialsDescription,

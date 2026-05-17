@@ -94,6 +94,24 @@ export const globalSettings = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'supportEmail',
+      title: 'Support / Contact Email',
+      type: 'string',
+      initialValue: 'hello@adiu.com',
+    }),
+    defineField({
+      name: 'supportPhone',
+      title: 'Support / Contact Phone',
+      type: 'string',
+      initialValue: '+251 11 661 0000',
+    }),
+    defineField({
+      name: 'supportAddress',
+      title: 'Support / Contact Address',
+      type: 'text',
+      initialValue: 'Bole Road, Addis Ababa, Ethiopia',
+    }),
+    defineField({
       name: 'revalidateTime',
       title: 'Cache Revalidation Time (seconds)',
       type: 'number',

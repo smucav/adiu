@@ -21,6 +21,15 @@ export function Awards({ data, awards }: AwardsProps) {
   const displayAwards =
     Array.isArray(awards) && awards.length > 0 ? awards : mockAwards;
 
+  const displayStats = data?.awardsStats && data.awardsStats.length > 0
+    ? data.awardsStats
+    : [
+        { value: "12+", label: "Awards" },
+        { value: "8", label: "Certifications" },
+        { value: "6", label: "Partners" },
+        { value: "5", label: "Years" }
+      ];
+
   // Distribute awards into rows
   const row1Awards = displayAwards.slice(0, 3);
   const row2Awards = displayAwards.slice(3, 7);
@@ -53,10 +62,9 @@ export function Awards({ data, awards }: AwardsProps) {
               delay={0.3}
               className={styles.statsRow}
             >
-              <StatItem value="12+" label="Awards" />
-              <StatItem value="8" label="Certifications" />
-              <StatItem value="6" label="Partners" />
-              <StatItem value="5" label="Years" />
+              {displayStats.map((item, index) => (
+                <StatItem key={index} value={item.value} label={item.label} />
+              ))}
             </StaggerContainer>
           </div>
         </header>
