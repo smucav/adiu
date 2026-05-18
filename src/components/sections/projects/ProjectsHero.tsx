@@ -184,7 +184,14 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
             {data?.heroSubtitle ??
               "Building the backbone of modern connectivity through precision engineering and sustainable practices."}
           </p>
-          <button className={styles.ctaButton}>explore our work</button>
+          <button 
+            className={styles.ctaButton}
+            onClick={() => {
+              document.getElementById("projects-masonry")?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            explore our work
+          </button>
         </div>
 
         {/* Card Deck */}

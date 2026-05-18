@@ -138,7 +138,7 @@ export function ProjectMasonry({ projects }: ProjectMasonryProps) {
   };
 
   return (
-    <section ref={sectionRef} className={styles.masonrySection}>
+    <section id="projects-masonry" ref={sectionRef} className={styles.masonrySection}>
       <div ref={triggerRef} className={styles.masonryContainer}>
         <div className={styles.horizontalWrapper}>
           <div ref={galleryRef} className={styles.gallery}>

@@ -132,14 +132,26 @@ export function ServiceStack({ pageData, services }: ServiceStackProps) {
         <div className={styles.leftPanel} ref={leftPanelRef}>
           <div className={styles.leftContent}>
             <div className={styles.topBadge}>Services</div>
-            <h2 className={styles.title}>The true value<br />of partnership</h2>
+            <h2 className={styles.title}>
+              {pageData?.introHeading || "The true value of partnership"}
+            </h2>
             <div className={styles.textContent}>
-              <div className={styles.textBlock}>
-                It is our services that make the most of each product, by optimising each stage of development, while reducing complexity and increasing precision.
-              </div>
-              <div className={styles.textBlock}>
-                An ecosystem designed to take packaging to its full potential.
-              </div>
+              {pageData?.introText ? (
+                pageData.introText.split("\n\n").map((para, idx) => (
+                  <div key={idx} className={styles.textBlock}>
+                    {para}
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className={styles.textBlock}>
+                    It is our services that make the most of each product, by optimising each stage of development, while reducing complexity and increasing precision.
+                  </div>
+                  <div className={styles.textBlock}>
+                    An ecosystem designed to take packaging to its full potential.
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
