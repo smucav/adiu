@@ -66,23 +66,39 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   gap: 6px;
   width: 44px;
   height: 44px;
   flex-shrink: 0;
   cursor: pointer;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
   padding: 0;
   position: relative;
   z-index: 1010;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hamburger:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-color: rgba(130, 195, 65, 0.3);
 }
 
 .hamburger:focus-visible {
   outline: 2px solid var(--brand-green);
   outline-offset: 4px;
-  border-radius: 6px;
+  border-radius: 50%;
 }
 
 .bar {
@@ -90,12 +106,19 @@
   height: 2px;
   background: #1a1a1a;
   border-radius: 2px;
-  width: 24px;
+  width: 20px;
   transform-origin: center;
   transition:
     transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
     background 0.3s ease,
     width 0.3s ease;
+}
+
+/* When menu is active, make the hamburger button transparent-white */
+.menuActive .hamburger {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: none;
 }
 
 /* When menu is open: bars turn white */
@@ -106,12 +129,12 @@
 /* Morph to × */
 .hamburgerOpen .bar:nth-child(1) {
   transform: translateY(4px) rotate(45deg);
-  width: 24px;
+  width: 20px;
 }
 
 .hamburgerOpen .bar:nth-child(2) {
   transform: translateY(-4px) rotate(-45deg);
-  width: 24px;
+  width: 20px;
 }
 
 /* =============================================================
