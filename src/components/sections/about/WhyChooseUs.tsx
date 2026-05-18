@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Image from "next/image";
+import { urlForImage } from "@/sanity/lib/image";
 import styles from "./WhyChooseUs.module.css";
 import { FadeIn } from "../../animations/ScrollAnimations";
 import { SanityAboutPage } from "@/sanity/lib/types";
@@ -198,6 +200,15 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
       <div className="container">
         <FadeIn direction="up" distance={50}>
           <div className={styles.card} ref={containerRef}>
+            {data?.whyChooseUsBackgroundImage && (
+              <Image
+                src={urlForImage(data.whyChooseUsBackgroundImage).url()}
+                alt={data.whyChooseUsBackgroundImage.alt || "Why Choose Us"}
+                fill
+                style={{ objectFit: "cover", opacity: 0.15 }}
+                priority
+              />
+            )}
             <canvas ref={canvasRef} className={styles.canvas} />
             <div className={styles.content}>
               <p className={styles.subtitle}>{data?.whyChooseUsSubtitle || "why choose us"}</p>

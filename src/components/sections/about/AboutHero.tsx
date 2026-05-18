@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import { urlForImage } from "@/sanity/lib/image";
 import styles from "./AboutHero.module.css";
 import { FadeIn, StaggerContainer } from "../../animations/ScrollAnimations";
 import { Counter } from "../../animations/Counter";
@@ -26,6 +28,15 @@ export function AboutHero({ data }: AboutHeroProps) {
 
   return (
     <section className={`section ${styles.heroSection}`}>
+      {data?.heroBackgroundImage && (
+        <Image
+          src={urlForImage(data.heroBackgroundImage).url()}
+          alt={data.heroBackgroundImage.alt || "Hero Background"}
+          fill
+          style={{ objectFit: "cover", opacity: 0.12, mixBlendMode: "overlay" }}
+          priority
+        />
+      )}
       <div className={styles.mapContainer}>
         <InteractiveWorldMap
           highlightedCountries={data?.highlightedCountries}

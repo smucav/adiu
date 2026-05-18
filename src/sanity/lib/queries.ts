@@ -69,8 +69,8 @@ export const getAwardsQuery = groq`*[_type == "award"] | order(order asc){
   badgeImage ${imageFields}
 }`;
 
-export const getTeamMembersQuery = groq`*[_type == "teamMember"] | order(order asc){
-  _id, name, role, description,
+export const getTeamMembersQuery = groq`*[_type == "teamMember"] | order(rank asc){
+  _id, name, role, description, rank,
   photo ${imageFields}
 }`;
 
