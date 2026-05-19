@@ -48,11 +48,8 @@ export function Features({ data }: FeaturesProps) {
               <div className={styles.illustration}>
                 <Image
                   src={
-                    data?.featuresImage
-                      ? urlForImage(data.featuresImage)
-                          .width(600)
-                          .quality(80)
-                          .url()
+                    data?.featuresImage?.asset
+                      ? urlForImage(data.featuresImage).width(600).quality(80).url()
                       : "/images/network_of_servers_kinda_image.png"
                   }
                   alt={
@@ -68,10 +65,10 @@ export function Features({ data }: FeaturesProps) {
                     height: "auto",
                     objectFit: "contain",
                   }}
-                  {...(data?.featuresImage
+                  {...(data?.featuresImage?.asset && getLqipUrl(data.featuresImage)
                     ? {
                         placeholder: "blur" as const,
-                        blurDataURL: getLqipUrl(data.featuresImage) || "",
+                        blurDataURL: getLqipUrl(data.featuresImage) as string,
                       }
                     : {})}
                 />

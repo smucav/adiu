@@ -29,6 +29,8 @@ export interface SanityGlobalSettings {
     facebook?: string
     linkedin?: string
     instagram?: string
+    twitter?: string
+    youtube?: string
   }
   footerCopyright?: string
   privacyPolicyUrl?: string

@@ -157,10 +157,10 @@ function AwardCard({
             {award.status}
           </div>
         )}
-        {award.badgeImage ? (
+        {award.badgeImage?.asset ? (
           <Image
             src={urlForImage(award.badgeImage).width(200).url()}
-            alt={award.badgeImage.alt || award.name}
+            alt={award.badgeImage?.alt || award?.name || "Award Badge"}
             width={200}
             height={200}
             style={{ objectFit: "contain" }}

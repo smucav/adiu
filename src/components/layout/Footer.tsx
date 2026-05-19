@@ -34,9 +34,21 @@ export function Footer({ settings }: FooterProps) {
               {settings?.footerBrandDesc || "Leading the way in high-tech communication infrastructure and digital excellence across the region."}
             </p>
             <div className={styles.socials}>
-              <a href={settings?.socialUrls?.facebook || "#"} className={styles.socialIcon} aria-label="Facebook">fb</a>
-              <a href={settings?.socialUrls?.linkedin || "#"} className={styles.socialIcon} aria-label="LinkedIn">in</a>
-              <a href={settings?.socialUrls?.instagram || "#"} className={styles.socialIcon} aria-label="Instagram">ig</a>
+              {settings?.socialUrls?.facebook && (
+                <a href={settings.socialUrls.facebook} className={styles.socialIcon} target="_blank" rel="noopener noreferrer" aria-label="Facebook">fb</a>
+              )}
+              {settings?.socialUrls?.linkedin && (
+                <a href={settings.socialUrls.linkedin} className={styles.socialIcon} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
+              )}
+              {settings?.socialUrls?.instagram && (
+                <a href={settings.socialUrls.instagram} className={styles.socialIcon} target="_blank" rel="noopener noreferrer" aria-label="Instagram">ig</a>
+              )}
+              {settings?.socialUrls?.twitter && (
+                <a href={settings.socialUrls.twitter} className={styles.socialIcon} target="_blank" rel="noopener noreferrer" aria-label="Twitter">tw</a>
+              )}
+              {settings?.socialUrls?.youtube && (
+                <a href={settings.socialUrls.youtube} className={styles.socialIcon} target="_blank" rel="noopener noreferrer" aria-label="YouTube">yt</a>
+              )}
             </div>
           </div>
 

@@ -10,7 +10,7 @@ export const getGlobalSettingsQuery = groq`*[_type == "globalSettings"][0]{
   logoImage ${imageFields},
   navLinks[]{ label, href },
   footerBrandDesc,
-  socialUrls{ facebook, linkedin, instagram },
+  socialUrls{ facebook, linkedin, instagram, twitter, youtube },
   footerCopyright, privacyPolicyUrl, termsUrl,
   supportEmail, supportPhone, supportAddress,
   revalidateTime
