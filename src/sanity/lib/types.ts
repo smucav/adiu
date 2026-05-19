@@ -96,7 +96,6 @@ export interface SanityHomePage {
   actionBannerDescription: string
   actionBannerCtaText: string
   actionBannerCtaLink: string
-  actionBannerImage: SanityImage
   testimonialsHeading: string
   testimonialsDescription: string
   articlesHeading: string
@@ -110,11 +109,9 @@ export interface SanityAboutPage {
   heroDescription: string
   heroBackgroundImage?: SanityImage
   heroStats: Array<{ value: string; label: string; description: string }>
-  missionHeading: string
   missionDescription: string
   visionStatement?: string
   coreValues?: string[]
-  missionImage?: SanityImage
   missionStats: Array<{ value: string; label: string }>
   whyChooseUsSubtitle: string
   whyChooseUsHeading: string
@@ -127,8 +124,6 @@ export interface SanityAboutPage {
 }
 
 export interface SanityBlogPage {
-  heroTitle: string
-  heroSubtitle: string
   heroBadge?: string
   archiveTitle: string
   archiveSubtitle: string
@@ -172,13 +167,6 @@ export interface SanityProjectsPage {
   heroSubtitle: string
   heroCtaText?: string
   heroImages?: SanityImage[]
-  showcase1Title: string
-  showcase1Description: string
-  showcase1Image: SanityImage
-  showcase2Title: string
-  showcase2Description: string
-  showcase2ImageLeft: SanityImage
-  showcase2ImageRight: SanityImage
   servicesHeading: string
   servicesSubtitle: string
 }

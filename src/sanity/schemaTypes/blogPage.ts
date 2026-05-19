@@ -6,16 +6,6 @@ export const blogPage = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'heroTitle',
-      title: 'Hero Title',
-      type: 'string',
-    }),
-    defineField({
-      name: 'heroSubtitle',
-      title: 'Hero Subtitle',
-      type: 'string',
-    }),
-    defineField({
       name: 'heroBadge',
       title: 'Hero Badge',
       type: 'string',

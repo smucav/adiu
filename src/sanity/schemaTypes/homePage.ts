@@ -147,20 +147,6 @@ export const homePage = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'actionBannerImage',
-      title: 'Action Banner Image',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          description: 'Important for SEO and accessibility.',
-        },
-      ],
-    }),
-    defineField({
       name: 'testimonialsHeading',
       title: 'Testimonials Heading',
       type: 'string',

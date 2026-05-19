@@ -58,12 +58,6 @@ export const aboutPage = defineType({
       validation: (Rule) => Rule.max(3),
     }),
     defineField({
-      name: 'missionHeading',
-      title: 'Mission Heading',
-      type: 'string',
-      group: 'mission',
-    }),
-    defineField({
       name: 'missionDescription',
       title: 'Mission Description',
       type: 'text',
@@ -81,21 +75,6 @@ export const aboutPage = defineType({
       type: 'array',
       group: 'mission',
       of: [{ type: 'string' }],
-    }),
-    defineField({
-      name: 'missionImage',
-      title: 'Mission Image',
-      type: 'image',
-      group: 'mission',
-      options: { hotspot: true },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative Text',
-          description: 'Important for SEO and accessibility.',
-        },
-      ],
     }),
     defineField({
       name: 'missionStats',

@@ -28,7 +28,6 @@ export const getHomePageQuery = groq`*[_type == "homePage"][0]{
   awardsHeading, awardsDescription,
   awardsStats[]{ value, label },
   actionBannerHeading, actionBannerDescription, actionBannerCtaText, actionBannerCtaLink,
-  actionBannerImage ${imageFields},
   testimonialsHeading, testimonialsDescription,
   articlesHeading, articlesDescription, articlesCtaText, articlesCtaLink
 }`;
@@ -111,9 +110,8 @@ export const getAboutPageQuery = groq`*[_type == "aboutPage"][0]{
   heroHeading, heroDescription,
   heroBackgroundImage ${imageFields},
   heroStats[]{ value, label, description },
-  missionHeading, missionDescription,
+  missionDescription,
   visionStatement, coreValues,
-  missionImage ${imageFields},
   missionStats[]{ value, label },
   whyChooseUsSubtitle, whyChooseUsHeading,
   whyChooseUsBackgroundImage ${imageFields},
@@ -124,7 +122,7 @@ export const getAboutPageQuery = groq`*[_type == "aboutPage"][0]{
 }`;
 
 export const getBlogPageQuery = groq`*[_type == "blogPage"][0]{
-  heroTitle, heroSubtitle, heroBadge,
+  heroBadge,
   archiveTitle, archiveSubtitle,
   filterCategories,
   searchPlaceholder, searchButtonText, featuredLabel
@@ -150,11 +148,6 @@ export const getContactPageQuery = groq`*[_type == "contactPage"][0]{
 export const getProjectsPageQuery = groq`*[_type == "projectsPage"][0]{
   heroTitle, heroSubtitle, heroCtaText,
   heroImages[] ${imageFields},
-  showcase1Title, showcase1Description,
-  showcase1Image ${imageFields},
-  showcase2Title, showcase2Description,
-  showcase2ImageLeft ${imageFields},
-  showcase2ImageRight ${imageFields},
   servicesHeading, servicesSubtitle,
   featuredServices[]->{
     _id, title, slug, category, client, description, content,
