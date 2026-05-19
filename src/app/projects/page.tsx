@@ -1,6 +1,5 @@
 import { ProjectsHero } from "@/components/sections/projects/ProjectsHero";
 import { ProjectMasonry } from "@/components/sections/projects/ProjectMasonry";
-import { ProjectShowcase } from "@/components/sections/projects/ProjectShowcase";
 import { FocusedServices } from "@/components/sections/projects/FocusedServices";
 import { client } from "@/sanity/lib/client";
 import { getProjectsPageQuery, getProjectsQuery } from "@/sanity/lib/queries";
