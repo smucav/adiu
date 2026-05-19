@@ -9,8 +9,17 @@
   background-color: var(--bg-primary);
 }
 
-@media (min-width: 768px)  { .heroSection { padding: 9rem 0 5rem; } }
-@media (min-width: 1024px) { .heroSection { padding: 10rem 0 6rem; } }
+@media (min-width: 768px) {
+  .heroSection {
+    padding: 9rem 0 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroSection {
+    padding: 10rem 0 6rem;
+  }
+}
 
 /* ── Layout: stacked on mobile ────────────────────────────── */
 .layout {
@@ -108,7 +117,7 @@
     gap: 2rem;
   }
 
-  .formRow > div {
+  .formRow>div {
     flex: 1;
   }
 }
@@ -140,6 +149,7 @@
 .textareaField {
   min-height: 120px;
   resize: vertical;
+  padding-top: 2.25rem;
 }
 
 .submitBtn {

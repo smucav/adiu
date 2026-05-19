@@ -19,6 +19,7 @@ import { focusedService } from './focusedService'
 import { servicesPage } from './servicesPage'
 import { serviceFeatureItem } from './serviceFeatureItem'
 import { project } from './project'
+import { cultureImage } from './cultureImage'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -42,5 +43,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     servicesPage,
     serviceFeatureItem,
     project,
+    cultureImage,
   ],
 }

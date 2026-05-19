@@ -33,10 +33,10 @@ export function CareerHero({ data }: CareerHeroProps) {
         <div className={styles.content}>
           <div className={styles.textColumn}>
             <h1 className={styles.title}>
-              {data?.heroTitle || "Build your career with ADIU"}
+              {data?.heroTitle || "Build the Future of Intelligent Operations at Adiu"}
             </h1>
             <p className={styles.subtitle}>
-              {data?.heroSubtitle || "Join our team of elite engineers and technicians working on the next generation of infrastructure."}
+              {data?.heroSubtitle || "At Adiu, we believe technology should make work smarter, faster, and more human. We’re building products and systems that help businesses operate with clarity, efficiency, and confidence. Our team combines curiosity, ownership, and practical innovation to solve meaningful challenges every day."}
             </p>
             <Link href="#open-roles" className={styles.ctaButton}>
               {data?.heroCtaText || "Join our team"} &rsaquo;

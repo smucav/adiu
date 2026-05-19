@@ -16,6 +16,12 @@ export const projectsPage = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'heroCtaText',
+      title: 'Hero CTA Button Text',
+      type: 'string',
+      initialValue: 'explore our work',
+    }),
+    defineField({
       name: 'heroImages',
       title: 'Hero Deck Images',
       description: 'Upload exactly 8 images for the animated "deck of cards" hero section. If fewer are provided, fallbacks will be used.',

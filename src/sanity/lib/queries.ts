@@ -134,7 +134,9 @@ export const getCareerPageQuery = groq`*[_type == "careerPage"][0]{
   heroTitle, heroSubtitle, heroCtaText,
   heroImage ${imageFields},
   whyWorkTitle, whyWorkSubtitle,
-  openRolesTitle, openRolesSubtitle
+  openRolesTitle, openRolesSubtitle,
+  lookingForTitle, lookingForItems,
+  galleryTag, galleryTitle, gallerySubtitle
 }`;
 
 export const getContactPageQuery = groq`*[_type == "contactPage"][0]{
@@ -146,7 +148,7 @@ export const getContactPageQuery = groq`*[_type == "contactPage"][0]{
 }`;
 
 export const getProjectsPageQuery = groq`*[_type == "projectsPage"][0]{
-  heroTitle, heroSubtitle,
+  heroTitle, heroSubtitle, heroCtaText,
   heroImages[] ${imageFields},
   showcase1Title, showcase1Description,
   showcase1Image ${imageFields},
@@ -174,4 +176,12 @@ export const getServicesPageQuery = groq`*[_type == "servicesPage"][0]{
   ctaPrimaryText, ctaPrimaryLink,
   ctaSecondaryText, ctaSecondaryLink,
   ctaMetaItems
+}`;
+
+export const getCultureImagesQuery = groq`*[_type == "cultureImage"] | order(order asc) {
+  _id,
+  title,
+  category,
+  image ${imageFields},
+  order
 }`;

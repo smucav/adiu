@@ -54,5 +54,36 @@ export const careerPage = defineType({
       title: 'Open Roles Subtitle',
       type: 'string',
     }),
+    defineField({
+      name: 'lookingForTitle',
+      title: 'Who We’re Looking For Title',
+      type: 'string',
+      initialValue: 'Who We’re Looking For',
+    }),
+    defineField({
+      name: 'lookingForItems',
+      title: 'Who We’re Looking For Items',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'galleryTag',
+      title: 'Culture Gallery Tag',
+      type: 'string',
+      initialValue: 'Life at Adiu',
+      description: 'Small label above the gallery section heading.',
+    }),
+    defineField({
+      name: 'galleryTitle',
+      title: 'Culture Gallery Title',
+      type: 'string',
+      initialValue: 'our team in action',
+    }),
+    defineField({
+      name: 'gallerySubtitle',
+      title: 'Culture Gallery Subtitle',
+      type: 'text',
+      initialValue: 'A snapshot of our journey. From collaborative engineering workshops to team milestones and offsite adventures, here is how we build together.',
+    }),
   ],
 })

@@ -16,20 +16,29 @@ export function ContactHero({ data }: ContactHeroProps) {
         <div className={styles.layout}>
           {/* Info Column */}
           <div className={styles.infoColumn}>
-            <span className={styles.label}>{data?.heroLabel || "Get in Touch"}</span>
+            <span className={styles.label}>
+              {data?.heroLabel || "Get in Touch"}
+            </span>
             <h1 className={styles.title}>{data?.heroTitle || "Contact Us"}</h1>
             <p className={styles.subtitle}>
-              {data?.heroSubtitle || "Lorem ipsum dolor sit amet consectetur viverra velit faucibus pharetra lorem sed scelerisque sit in nec arcu malesuada."}
+              {data?.heroSubtitle ||
+                "Lorem ipsum dolor sit amet consectetur viverra velit faucibus pharetra lorem sed scelerisque sit in nec arcu malesuada."}
             </p>
 
             <div className={styles.infoBlock}>
               <h3>{data?.addressHeading || "Addis Ababa"}</h3>
-              <p>{data?.addressText || "Lorem ipsum dolor sit amet consectetur viverra velit faucibus."}</p>
+              <p>
+                {data?.addressText ||
+                  "Lorem ipsum dolor sit amet consectetur viverra velit faucibus."}
+              </p>
             </div>
 
             <div className={styles.infoBlock}>
               <h3>{data?.emailHeading || "info@adiucommunications.com"}</h3>
-              <p>{data?.emailText || "Lorem ipsum dolor sit amet consectetur viverra velit faucibus."}</p>
+              <p>
+                {data?.emailText ||
+                  "Lorem ipsum dolor sit amet consectetur viverra velit faucibus."}
+              </p>
             </div>
           </div>
 
@@ -53,12 +62,20 @@ export function ContactHero({ data }: ContactHeroProps) {
               </div>
 
               <div className={styles.fieldGroup}>
-                <label className={styles.inputLabel}>write your message here. ...</label>
-                <textarea className={`${styles.inputField} ${styles.textareaField}`}></textarea>
+                <label className={styles.inputLabel}>
+                  write your message here.
+                </label>
+                <textarea
+                  className={`${styles.inputField} ${styles.textareaField}`}
+                ></textarea>
               </div>
 
-              <Button type="submit" variant="primary" className={styles.submitBtn}>
-                Send Message <span style={{ marginLeft: '8px' }}>&rsaquo;</span>
+              <Button
+                type="submit"
+                variant="primary"
+                className={styles.submitBtn}
+              >
+                Send Message <span style={{ marginLeft: "8px" }}>&rsaquo;</span>
               </Button>
             </form>
           </div>

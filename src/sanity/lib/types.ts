@@ -147,6 +147,11 @@ export interface SanityCareerPage {
   whyWorkSubtitle: string
   openRolesTitle: string
   openRolesSubtitle: string
+  lookingForTitle?: string
+  lookingForItems?: string[]
+  galleryTag?: string
+  galleryTitle?: string
+  gallerySubtitle?: string
 }
 
 export interface SanityContactPage {
@@ -165,6 +170,7 @@ export interface SanityContactPage {
 export interface SanityProjectsPage {
   heroTitle: string
   heroSubtitle: string
+  heroCtaText?: string
   heroImages?: SanityImage[]
   showcase1Title: string
   showcase1Description: string
@@ -273,5 +279,13 @@ export interface SanityProject {
   description: string
   content?: PortableTextBlock[]
   mainImage: SanityImage
+  order: number
+}
+
+export interface SanityCultureImage {
+  _id: string
+  title: string
+  category: 'team-events' | 'office-life' | 'onsite-milestones' | 'workshops'
+  image: SanityImage
   order: number
 }

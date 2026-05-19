@@ -23,7 +23,8 @@
 
 /* Spacer controls scroll distance for animation */
 .spacer {
-  height: 250vh; /* Perfectly balanced for mobile slide-over */
+  height: 250vh;
+  /* Perfectly balanced for mobile slide-over */
   width: 100%;
   pointer-events: none;
 }
@@ -156,5 +157,87 @@
   .card {
     width: clamp(220px, 22vw, 340px);
     border-radius: 20px;
+  }
+}
+
+/* ── Scroll Down Indicator ────────────────────────────────── */
+.scrollIndicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 30;
+  cursor: pointer;
+  pointer-events: auto;
+  will-change: opacity, transform;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.scrollIndicator:hover {
+  transform: translate(-50%, -4px);
+}
+
+.mouse {
+  width: 26px;
+  height: 42px;
+  border: 2px solid var(--text-secondary, #64748b);
+  border-radius: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.3s ease;
+}
+
+.scrollIndicator:hover .mouse {
+  border-color: var(--brand-green, #82c341);
+}
+
+.wheel {
+  width: 4px;
+  height: 8px;
+  background-color: var(--brand-green, #82c341);
+  border-radius: 100px;
+  position: absolute;
+  top: 8px;
+  animation: scrollMouse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.scrollText {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-secondary, #64748b);
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  opacity: 0.85;
+  transition: color 0.3s ease;
+}
+
+.scrollIndicator:hover .scrollText {
+  color: var(--brand-green, #82c341);
+}
+
+@keyframes scrollMouse {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
   }
 }

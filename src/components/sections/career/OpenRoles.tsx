@@ -35,10 +35,12 @@ export function OpenRoles({ data, roles }: OpenRolesProps) {
     <section id="open-roles" className={styles.section}>
       <div className="container">
         <div className={styles.header}>
-          <h2 className={styles.title}>{data?.openRolesTitle || "Open roles"}</h2>
-          <p className={styles.subtitle}>
-            {data?.openRolesSubtitle || "Lorem ipsum dolor sit amet consectetur viverra velit faucibus pharetra lorem sed scelerisque sit in nec arcu."}
-          </p>
+          <h2 className={styles.title}>{data?.openRolesTitle || "Join Adiu"}</h2>
+          <div className={styles.subtitleContainer}>
+            <p className={styles.bodyText}>
+              {data?.openRolesSubtitle || "Explore our open roles below and become part of the team shaping the next generation of intelligent operations. Your next opportunity starts here."}
+            </p>
+          </div>
         </div>
 
         <div className={styles.rolesContainer}>

@@ -60,6 +60,7 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
   const textRef = useRef<HTMLDivElement>(null);
   const deckRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   // Construct exactly 8 images: take what's available from Sanity, then fill the rest from fallbacks
   const images = Array.from({ length: 8 }).map((_, i) => {
@@ -68,6 +69,13 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
     }
     return FALLBACK_IMAGES[i];
   });
+
+  const handleScrollClick = () => {
+    window.scrollTo({
+      top: window.innerHeight * 0.8,
+      behavior: "smooth",
+    });
+  };
 
   useIsomorphicLayoutEffect(() => {
     if (!containerRef.current || !stickyRef.current) return;
@@ -87,6 +95,7 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
         });
       });
       if (textRef.current) gsap.set(textRef.current, { opacity: 1, y: 0 });
+      if (scrollIndicatorRef.current) gsap.set(scrollIndicatorRef.current, { opacity: 0, display: "none" });
       return;
     }
 
@@ -95,12 +104,15 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
     mm.add("(max-width: 767px)", () => {
       // Mobile: Tighter spread
       const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
-      
+
       // Initial State
       cards.forEach((card, i) => {
         gsap.set(card, { x: 0, y: 0, opacity: 1, rotation: INITIAL_ROTATIONS[i] ?? 0 });
       });
       gsap.set(textRef.current, { opacity: 0, y: 30 });
+      if (scrollIndicatorRef.current) {
+        gsap.set(scrollIndicatorRef.current, { opacity: 1, y: 0 });
+      }
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -123,6 +135,12 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
       });
 
       tl.to(textRef.current, { opacity: 1, y: 0, duration: 1 }, 0.8);
+      
+      // Fade out scroll indicator dynamically as user scrolls down
+      if (scrollIndicatorRef.current) {
+        tl.to(scrollIndicatorRef.current, { opacity: 0, y: 15, duration: 0.3 }, 0);
+      }
+
       // After spread, move the whole deck behind text and fade them more
       tl.set(deckRef.current, { zIndex: 5 }, 1.5);
       tl.to(cards, { opacity: 0.4, scale: 0.85, duration: 1 }, 2);
@@ -131,12 +149,15 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
     mm.add("(min-width: 768px)", () => {
       // Tablet/Desktop: Full spread
       const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
-      
+
       // Initial State
       cards.forEach((card, i) => {
         gsap.set(card, { x: 0, y: 0, opacity: 1, rotation: INITIAL_ROTATIONS[i] ?? 0 });
       });
       gsap.set(textRef.current, { opacity: 0, y: 30 });
+      if (scrollIndicatorRef.current) {
+        gsap.set(scrollIndicatorRef.current, { opacity: 1, y: 0 });
+      }
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -159,6 +180,12 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
       });
 
       tl.to(textRef.current, { opacity: 1, y: 0, duration: 1 }, 1);
+      
+      // Fade out scroll indicator dynamically as user scrolls down
+      if (scrollIndicatorRef.current) {
+        tl.to(scrollIndicatorRef.current, { opacity: 0, y: 15, duration: 0.3 }, 0);
+      }
+
       tl.to(cards, { opacity: 0.6, scale: 0.9, duration: 1 }, 2.2);
     });
 
@@ -184,7 +211,7 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
             {data?.heroSubtitle ??
               "Building the backbone of modern connectivity through precision engineering and sustainable practices."}
           </p>
-          <button 
+          <button
             className={styles.ctaButton}
             onClick={() => {
               document.getElementById("projects-masonry")?.scrollIntoView({ behavior: "smooth" });
@@ -214,6 +241,27 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Scroll Indicator */}
+        <div
+          ref={scrollIndicatorRef}
+          className={styles.scrollIndicator}
+          onClick={handleScrollClick}
+          role="button"
+          aria-label="Scroll down to explore projects"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleScrollClick();
+            }
+          }}
+        >
+          <div className={styles.mouse}>
+            <div className={styles.wheel} />
+          </div>
+          <span className={styles.scrollText}>scroll down</span>
         </div>
       </div>
 
