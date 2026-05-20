@@ -24,11 +24,11 @@ export function Awards({ data, awards }: AwardsProps) {
   const displayStats = data?.awardsStats && data.awardsStats.length > 0
     ? data.awardsStats
     : [
-        { value: "12+", label: "Awards" },
-        { value: "8", label: "Certifications" },
-        { value: "6", label: "Partners" },
-        { value: "5", label: "Years" }
-      ];
+      { value: "12+", label: "Awards" },
+      { value: "8", label: "Certifications" },
+      { value: "6", label: "Partners" },
+      { value: "5", label: "Years" }
+    ];
 
   // Distribute awards into rows
   const row1Awards = displayAwards.slice(0, 3);
@@ -159,11 +159,11 @@ function AwardCard({
         )}
         {award.badgeImage?.asset ? (
           <Image
-            src={urlForImage(award.badgeImage).width(200).url()}
+            src={urlForImage(award.badgeImage).url()}
             alt={award.badgeImage?.alt || award?.name || "Award Badge"}
-            width={200}
-            height={200}
-            style={{ objectFit: "contain" }}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className={styles.awardImage}
           />
         ) : (
           <div

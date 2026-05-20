@@ -235,6 +235,7 @@ export function ProjectsHero({ data }: ProjectsHeroProps) {
                   src={src}
                   alt={`Project card ${i + 1}`}
                   fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   className={styles.cardImage}
                   priority={i < 3}
                 />

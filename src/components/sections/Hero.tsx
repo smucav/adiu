@@ -147,7 +147,7 @@ export function Hero({ data, partners }: HeroProps) {
                               width={140}
                               height={60}
                               sizes="140px"
-                              style={{ objectFit: "contain" }}
+                              style={{ width: "auto", height: "auto", objectFit: "contain" }}
                             />
                           </div>
                         </a>
@@ -165,7 +165,7 @@ export function Hero({ data, partners }: HeroProps) {
                           width={140}
                           height={60}
                           sizes="140px"
-                          style={{ objectFit: "contain" }}
+                          style={{ width: "auto", height: "auto", objectFit: "contain" }}
                         />
                       </div>
                     );

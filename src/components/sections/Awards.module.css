@@ -5,18 +5,22 @@
 
 .section {
   background-color: #f8f8f7;
-  padding: 3rem 0; /* Reduced from 3.5rem */
+  padding: 3rem 0;
+  /* Reduced from 3.5rem */
   width: 100%;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding: 3.5rem 0; /* Reduced from 5rem */
+    padding: 3.5rem 0;
+    /* Reduced from 5rem */
   }
 }
+
 @media (min-width: 1024px) {
   .section {
-    padding: 4rem 0; /* Reduced from 6rem */
+    padding: 4rem 0;
+    /* Reduced from 6rem */
   }
 }
 
@@ -33,6 +37,7 @@
     padding: 0 2rem;
   }
 }
+
 @media (min-width: 1024px) {
   .container {
     padding: 0 3.5rem;
@@ -43,8 +48,10 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Reduced from 1.5rem */
-  margin-bottom: 1.5rem; /* Reduced from 2rem */
+  gap: 1rem;
+  /* Reduced from 1.5rem */
+  margin-bottom: 1.5rem;
+  /* Reduced from 2rem */
 }
 
 .headerLeft {
@@ -58,11 +65,13 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
-  margin-bottom: 0.25rem; /* Reduced from 0.5rem */
+  margin-bottom: 0.25rem;
+  /* Reduced from 0.5rem */
 }
 
 .heading {
-  font-size: clamp(1.75rem, 5vw, 2.25rem); /* Slightly smaller max heading */
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  /* Slightly smaller max heading */
   font-weight: 700;
   line-height: 1.1;
   color: var(--text-primary);
@@ -77,7 +86,8 @@
 .subtitle {
   font-size: clamp(0.95rem, 2vw, 1.05rem);
   color: var(--text-secondary);
-  margin-bottom: 1.5rem; /* Reduced from 2.5rem */
+  margin-bottom: 1.5rem;
+  /* Reduced from 2.5rem */
   line-height: 1.6;
   max-width: 60ch;
   font-weight: 400;
@@ -86,8 +96,10 @@
 .statsRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem; /* Slightly tighter gap */
-  margin-top: 0.5rem; /* Reduced from 1rem */
+  gap: 2.5rem;
+  /* Slightly tighter gap */
+  margin-top: 0.5rem;
+  /* Reduced from 1rem */
 }
 
 .statItem {
@@ -97,7 +109,8 @@
 }
 
 .statValue {
-  font-size: 3rem; /* Reduced from 3.5rem to save space */
+  font-size: 3rem;
+  /* Reduced from 3.5rem to save space */
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1;
@@ -107,12 +120,14 @@
 }
 
 .statLabel {
-  font-size: 0.75rem; /* Back to original size */
+  font-size: 0.75rem;
+  /* Back to original size */
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-top: 0.25rem; /* Reduced from 0.75rem */
+  margin-top: 0.25rem;
+  /* Reduced from 0.75rem */
   opacity: 0.7;
 }
 
@@ -153,7 +168,7 @@
     transform 0.25s ease,
     box-shadow 0.25s ease;
   /* Mobile: adaptive height */
-  min-height: 180px;
+  min-height: 240px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -164,21 +179,26 @@
 }
 
 .imageArea {
-  height: 55%;
-  background-color: #f7f7f5;
+  flex: 1;
+  min-height: 180px;
+  background-color: transparent;
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   margin-bottom: 1rem;
-  overflow: visible;
+  overflow: hidden;
 }
 
-.imageArea img {
-  max-width: 80%;
-  max-height: 80%;
+.featuredCard .imageArea {
+  min-height: 240px;
+}
+
+.awardImage {
   object-fit: contain;
+  padding: 0;
+  box-sizing: border-box !important;
 }
 
 .statusBadge {
@@ -197,15 +217,17 @@
 .badgeAmber {
   background-color: #f59e0b;
 }
+
 .badgeGreen {
   background-color: #10b981;
 }
+
 .badgeBlue {
   background-color: #3b82f6;
 }
 
 .textArea {
-  height: 45%;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -303,7 +325,7 @@
   }
 
   .awardCard {
-    min-height: 200px;
+    min-height: 280px;
   }
 }
 
@@ -322,13 +344,14 @@
   }
 
   .awardCard {
-    min-height: 220px;
+    min-height: 300px;
   }
 
   .row1 .awardCard {
-    min-height: 240px;
+    min-height: 320px;
   }
+
   .row1 .featuredCard {
-    min-height: 260px;
+    min-height: 360px;
   }
 }
