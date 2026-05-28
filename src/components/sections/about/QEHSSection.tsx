@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./QEHSSection.module.css";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -78,21 +78,10 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
     offset: ["start end", "end start"],
   });
 
-  // On mobile, skip useSpring — the spring runs continuous JS calculations
-  // on every frame competing with native scroll momentum (very janky on Android).
-  // Raw scroll-linked MotionValues are composited off the main thread.
-  const isMobile =
-    typeof window !== "undefined"
-      ? window.matchMedia("(hover: none) and (pointer: coarse)").matches
-      : false;
-
-  const springProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+  // Use scrollYProgress directly — Framer Motion's scroll MotionValues are composited
+  // off the main thread. useSpring() was running JS physics on every scroll frame,
+  // competing with the WhyChooseUs canvas RAF loop and causing jank at the boundary.
+  const smoothProgress = scrollYProgress;
 
   const totalItems = qehsPolicies.length;
   // Dynamic scaling: starts compacting after 5 items
@@ -156,7 +145,6 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
               index={index}
               globalProgress={smoothProgress}
               totalItems={totalItems}
-              isMobile={isMobile}
             />
           ))}
         </div>
@@ -170,13 +158,11 @@ const PolicyItem = ({
   index,
   globalProgress,
   totalItems,
-  isMobile,
 }: {
   policy: Policy;
   index: number;
   globalProgress: any;
   totalItems: number;
-  isMobile: boolean;
 }) => {
   const isEven = index % 2 === 1;
   const step = 1 / totalItems;
@@ -193,9 +179,7 @@ const PolicyItem = ({
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
 
-  // On mobile: skip slide-in x transforms. Only animate opacity which is
-  // GPU-composited. This frees ~5 useTransform subscriptions per item.
-  const skipMotion = isMobile || prefersReduced;
+  const skipMotion = prefersReduced;
 
   const xText = useTransform(
     itemProgress,
@@ -245,7 +229,10 @@ const PolicyItem = ({
           style={{
             opacity: activeGlowOpacity,
             WebkitTextStroke: "2px rgba(130, 195, 65, 1)",
-            ...(skipMotion ? {} : { filter: "drop-shadow(0 0 30px rgba(130, 195, 65, 0.8))" }),
+            // Replace expensive drop-shadow filter with cheaper text-shadow,
+            // or remove entirely. Animating opacity on a drop-shadowed element
+            // causes massive scroll jank.
+            textShadow: skipMotion ? "none" : "0 0 30px rgba(130, 195, 65, 0.5)",
           }}
         >
           {index + 1}

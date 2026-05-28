@@ -28,7 +28,9 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   experimental: {
-    scrollRestoration: true, // Restore position on back-navigation (important on mobile)
+    // scrollRestoration removed — conflicts with Lenis smooth scroll.
+    // Lenis controls scroll position via RAF; Next.js scrollRestoration
+    // calls window.scrollTo() simultaneously, causing the twitch/jank between sections.
     optimizePackageImports: [
       'lucide-react',
       '@sanity/icons',

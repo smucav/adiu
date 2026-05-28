@@ -51,10 +51,16 @@ export function Team({ data, members }: TeamProps) {
   const middleIndex = Math.floor(archMembers.length / 2);
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  // Ref attached to the actual Rank-1 card in the middle set
+  const middleCardRef = React.useRef<HTMLDivElement>(null);
   // rAF-throttled scroll handler — prevents forced layout on every scroll event
   const rafId = React.useRef<number | null>(null);
+  // Suppress handleScroll while we're setting scrollLeft programmatically
+  const isProgrammatic = React.useRef(false);
 
   const handleScroll = React.useCallback(() => {
+    // Ignore scroll events we triggered ourselves (centering / re-centering)
+    if (isProgrammatic.current) return;
     if (rafId.current !== null) return; // already queued
     rafId.current = requestAnimationFrame(() => {
       rafId.current = null;
@@ -62,18 +68,64 @@ export function Team({ data, members }: TeamProps) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
       const setWidth = scrollWidth / 5;
       if (scrollLeft < setWidth) {
+        isProgrammatic.current = true;
         scrollRef.current.scrollLeft = scrollLeft + setWidth * 2;
+        requestAnimationFrame(() => { isProgrammatic.current = false; });
       } else if (scrollLeft + clientWidth > scrollWidth - setWidth) {
+        isProgrammatic.current = true;
         scrollRef.current.scrollLeft = scrollLeft - setWidth * 2;
+        requestAnimationFrame(() => { isProgrammatic.current = false; });
       }
     });
   }, []);
 
-  // Center on mount
+  // Center the actual Rank-1 card element in the viewport on mount and resize
   React.useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollLeft = (scrollRef.current.scrollWidth / 5) * 2;
-    }
+    const centerTeam = () => {
+      if (scrollRef.current && middleCardRef.current) {
+        const container = scrollRef.current;
+        const card = middleCardRef.current;
+        // getBoundingClientRect gives positions in viewport space,
+        // independent of offsetParent — accurate regardless of CSS positioning
+        const containerRect = container.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+        // Convert card center to scroll-container coordinate space
+        const cardCenterInScroll =
+          (cardRect.left - containerRect.left) + container.scrollLeft + cardRect.width / 2;
+        // Mark as programmatic so handleScroll ignores this assignment
+        isProgrammatic.current = true;
+        container.scrollLeft = cardCenterInScroll - container.clientWidth / 2;
+        requestAnimationFrame(() => { isProgrammatic.current = false; });
+      }
+    };
+
+    // Run centering immediately
+    centerTeam();
+
+    // Reflow-safe retry
+    let frameId: number;
+    const triggerCentering = () => {
+      centerTeam();
+      frameId = requestAnimationFrame(centerTeam);
+    };
+    const timeoutId = setTimeout(triggerCentering, 100);
+
+    // Debounce resize so zoom doesn't fire centerTeam dozens of times mid-gesture
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        frameId = requestAnimationFrame(centerTeam);
+      }, 150);
+    };
+
+    window.addEventListener("resize", onResize);
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(resizeTimer);
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", onResize);
+    };
   }, [archMembers]);
 
   return (
@@ -109,10 +161,15 @@ export function Team({ data, members }: TeamProps) {
             const middleInBase = Math.floor(baseCount / 2);
             const distanceFromMiddle = Math.abs(indexInBase - middleInBase);
             
-            // Pure Smooth Arch (Rank-based)
-            const yOffset = indexInBase === middleInBase ? -20 : (12 * Math.pow(distanceFromMiddle, 1.1) - 20);
-            const scale = indexInBase === middleInBase ? 1.1 : Math.max(0.85, 1 - (distanceFromMiddle * 0.05));
-            const opacity = indexInBase === middleInBase ? 1 : Math.max(0.6, 1 - (distanceFromMiddle * 0.15));
+            // Normalize distance so arch stays gentle regardless of member count
+            const maxDistance = Math.floor(baseCount / 2) || 1;
+            const normalizedDist = distanceFromMiddle / maxDistance; // 0 → 1
+            // Arch: center sits 20px ABOVE baseline; edge sits max 40px BELOW
+            const yOffset = indexInBase === middleInBase
+              ? -20
+              : Math.round(normalizedDist * 60 - 20); // ranges -20 → +40 px
+            const scale   = indexInBase === middleInBase ? 1.1  : Math.max(0.82, 1.05 - normalizedDist * 0.25);
+            const opacity = indexInBase === middleInBase ? 1    : Math.max(0.55, 1    - normalizedDist * 0.45);
 
             const imageSrc = member.photo ? urlForImage(member.photo).width(400).height(550).url() : null;
 
@@ -120,6 +177,7 @@ export function Team({ data, members }: TeamProps) {
               <div
                 key={`${member._id || member.name}-${index}`}
                 className={styles.archOffset}
+                ref={index === middleIndex ? middleCardRef : undefined}
                 style={{
                   transform: `translateY(${yOffset}px)`,
                   zIndex: 100 - distanceFromMiddle

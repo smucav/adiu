@@ -30,7 +30,7 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     if (isTouchDevice) return;
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.85,   // was 1.2 — shorter momentum ends before section-entry animations fire
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
@@ -174,7 +174,11 @@ export const FadeIn = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-20px" }}
-      transition={{ type: "spring", stiffness: 80, damping: 20, delay }}
+      transition={{
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1], // smooth cubic-bezier — no bounce
+        delay,
+      }}
     >
       {children}
     </motion.div>

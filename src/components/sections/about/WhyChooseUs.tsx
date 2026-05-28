@@ -39,7 +39,7 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
 
     // Reduce node count on mobile for performance (O(n²) edge computation)
     const isMobile = window.innerWidth < 768;
-    const NODE_COUNT = isMobile ? 40 : 80;
+    const NODE_COUNT = isMobile ? 35 : 60; // was 80 — fewer nodes = fewer O(n²) edge pairs
     const MAX_DIST = 130;
     const GLOW_RADIUS = 110;
 
@@ -88,6 +88,10 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
     };
 
     let animationFrame: number;
+    let frameCount = 0;
+    let isVisible = false;
+    let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout;
 
     const draw = () => {
       ctx.clearRect(0, 0, W, H);
@@ -105,7 +109,9 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
         if (n.y < 0 || n.y > H) n.vy *= -1;
       }
 
-      buildEdges();
+      /* rebuild edges only every 4 frames — O(n²) Math.sqrt is the main perf culprit */
+      if (frameCount % 4 === 0) buildEdges();
+      frameCount++;
 
       /* edges */
       for (const e of edges) {
@@ -158,6 +164,10 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
         ctx.fill();
       }
 
+      if (!isVisible || isScrolling) {
+        animationFrame = 0;
+        return; // stop RAF when section is off-screen or actively scrolling
+      }
       animationFrame = requestAnimationFrame(draw);
     };
 
@@ -178,19 +188,46 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
       mouse.current.y = e.touches[0].clientY - rect.top;
     };
 
+    // Pause canvas RAF when section scrolls out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !animationFrame && !isScrolling) draw(); // restart loop when re-entering view
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
+
+    // Pause canvas RAF during active scrolling to prevent lag
+    const handleScroll = () => {
+      if (!isScrolling) {
+        isScrolling = true;
+      }
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        if (isVisible && !animationFrame) draw();
+      }, 150);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", resize);
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
     container.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     resize();
+    isVisible = true;
     draw();
 
     return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", resize);
       container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("mouseleave", handleMouseLeave);
       container.removeEventListener("touchmove", handleTouchMove);
+      clearTimeout(scrollTimeout);
       cancelAnimationFrame(animationFrame);
     };
   }, []);
@@ -198,31 +235,29 @@ export function WhyChooseUs({ data }: WhyChooseUsProps) {
   return (
     <section className={styles.section}>
       <div className="container">
-        <FadeIn direction="up" distance={50}>
-          <div className={styles.card} ref={containerRef}>
-            {data?.whyChooseUsBackgroundImage && (
-              <Image
-                src={urlForImage(data.whyChooseUsBackgroundImage).url()}
-                alt={data.whyChooseUsBackgroundImage.alt || "Why Choose Us"}
-                fill
-                style={{ objectFit: "cover", opacity: 0.15 }}
-                priority
-              />
-            )}
-            <canvas ref={canvasRef} className={styles.canvas} />
-            <div className={styles.content}>
-              <p className={styles.subtitle}>{data?.whyChooseUsSubtitle || "why choose us"}</p>
-              <h2 className={styles.heading}>
-                {data?.whyChooseUsHeading || (
-                  <>
-                    With over a decade of experience, we deliver tailored solutions that empower
-                    your business to grow
-                  </>
-                )}
-              </h2>
-            </div>
-          </div>
-        </FadeIn>
+        <div className={styles.card} ref={containerRef}>
+          {data?.whyChooseUsBackgroundImage && (
+            <Image
+              src={urlForImage(data.whyChooseUsBackgroundImage).url()}
+              alt={data.whyChooseUsBackgroundImage.alt || "Why Choose Us"}
+              fill
+              style={{ objectFit: "cover", opacity: 0.15 }}
+              priority
+            />
+          )}
+          <canvas ref={canvasRef} className={styles.canvas} />
+          <FadeIn direction="up" distance={50} className={styles.content}>
+            <p className={styles.subtitle}>{data?.whyChooseUsSubtitle || "why choose us"}</p>
+            <h2 className={styles.heading}>
+              {data?.whyChooseUsHeading || (
+                <>
+                  With over a decade of experience, we deliver tailored solutions that empower
+                  your business to grow
+                </>
+              )}
+            </h2>
+          </FadeIn>
+        </div>
       </div>
     </section>
   );

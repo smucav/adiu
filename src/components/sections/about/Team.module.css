@@ -4,7 +4,7 @@
    ============================================================= */
 
 .section {
-  overflow: hidden;
+  overflow-x: hidden;
   padding: 3rem 0;
   background-color: #fff;
 }
@@ -57,10 +57,11 @@
 
 /* ── Scroll container ─────────────────────────────────────── */
 .teamScroll {
+  position: relative;
   display: flex;
   overflow-x: auto;
   gap: 1.25rem;
-  padding: 3rem 1rem;
+  padding: 3rem 1rem 5rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: auto !important;
@@ -75,7 +76,7 @@
 @media (min-width: 1024px) {
   .teamScroll {
     gap: 1.5rem;
-    padding: 3.5rem 15vw;
+    padding: 3.5rem 15vw 5.5rem;
     scroll-snap-type: none;
   }
 }

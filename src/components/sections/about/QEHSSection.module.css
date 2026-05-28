@@ -94,7 +94,8 @@
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 10px rgba(130, 195, 65, 0.8));
+  /* Removed filter: drop-shadow(...) because animating pathLength 
+     with a drop-shadow forces expensive re-rasterization on every scroll frame. */
 }
 
 /* ── Policy items: stacked on mobile ─────────────────────── */
