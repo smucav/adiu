@@ -54,6 +54,7 @@
 .mazeWrapper {
   position: relative;
   width: 100%;
+  height: auto; /* Let content dictate height on mobile */
 }
 
 .mazePathContainer {
@@ -62,6 +63,10 @@
 }
 
 @media (min-width: 1024px) {
+  .mazeWrapper {
+    height: var(--wrapper-height, auto);
+  }
+
   .mazePathContainer {
     display: block;
     position: absolute;

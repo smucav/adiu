@@ -183,3 +183,9 @@ export const getCultureImagesQuery = groq`*[_type == "cultureImage"] | order(ord
   image ${imageFields},
   order
 }`;
+
+export const getLegalPageQuery = groq`*[_type == "legalPage" && pageType == $pageType][0]{
+  pageType, badge, title, subtitle, lastUpdated,
+  sections[]{ title, body }
+}`;
+

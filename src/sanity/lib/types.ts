@@ -279,3 +279,17 @@ export interface SanityCultureImage {
   image: SanityImage
   order: number
 }
+
+export interface SanityLegalSection {
+  title: string
+  body: string
+}
+
+export interface SanityLegalPage {
+  pageType: 'privacy' | 'terms' | 'cookies'
+  badge?: string
+  title: string
+  subtitle?: string
+  lastUpdated?: string
+  sections?: SanityLegalSection[]
+}

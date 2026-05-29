@@ -116,7 +116,7 @@ const QEHSContent: React.FC<QEHSSectionProps> = ({ data }) => {
           className={styles.mazeWrapper}
           style={
             {
-              height: `${totalItems * itemHeight}px`,
+              "--wrapper-height": `${totalItems * itemHeight}px`,
               "--item-scale": itemScale,
               "--item-height": `${itemHeight}px`,
             } as React.CSSProperties
@@ -172,6 +172,7 @@ const PolicyItem = ({
     globalProgress,
     [start, start + step * 0.3],
     [0, 1],
+    { clamp: true }
   );
 
   const prefersReduced =
@@ -184,14 +185,16 @@ const PolicyItem = ({
   const xText = useTransform(
     itemProgress,
     [0, 0.8],
-    skipMotion ? [0, 0] : [isEven ? 400 : -400, 0]
+    skipMotion ? [0, 0] : [isEven ? 400 : -400, 0],
+    { clamp: true }
   );
   const xImage = useTransform(
     itemProgress,
     [0, 0.8],
-    skipMotion ? [0, 0] : [isEven ? -400 : 400, 0]
+    skipMotion ? [0, 0] : [isEven ? -400 : 400, 0],
+    { clamp: true }
   );
-  const opacity = useTransform(itemProgress, [0, 0.4], [0, 1]);
+  const opacity = useTransform(itemProgress, [0, 0.4], [0, 1], { clamp: true });
 
   // Skip string-interpolated stroke on mobile — CSS color string interpolation
   // cannot be GPU-composited and runs on the main thread every scroll frame.
@@ -206,9 +209,10 @@ const PolicyItem = ({
           "1px rgba(130, 195, 65, 0.6)",
           staticStroke,
         ],
+    { clamp: true }
   );
-  const numberTextOpacity = useTransform(itemProgress, [0, 0.4], [skipMotion ? 0.6 : 0.2, 0.6]);
-  const activeGlowOpacity = useTransform(itemProgress, [0.7, 1], [skipMotion ? 1 : 0, 1]);
+  const numberTextOpacity = useTransform(itemProgress, [0, 0.4], [skipMotion ? 0.6 : 0.2, 0.6], { clamp: true });
+  const activeGlowOpacity = useTransform(itemProgress, [0.7, 1], [skipMotion ? 1 : 0, 1], { clamp: true });
 
   return (
     <div className={`${styles.policyItem} ${isEven ? styles.reverse : ""}`}>
@@ -229,10 +233,8 @@ const PolicyItem = ({
           style={{
             opacity: activeGlowOpacity,
             WebkitTextStroke: "2px rgba(130, 195, 65, 1)",
-            // Replace expensive drop-shadow filter with cheaper text-shadow,
-            // or remove entirely. Animating opacity on a drop-shadowed element
-            // causes massive scroll jank.
-            textShadow: skipMotion ? "none" : "0 0 30px rgba(130, 195, 65, 0.5)",
+            // Removed expensive text-shadow entirely. Animating opacity on a blurred 
+            // text element causes massive scroll jank (the "stoppage" effect).
           }}
         >
           {index + 1}
