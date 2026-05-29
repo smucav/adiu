@@ -1,38 +1,23 @@
 'use client';
 
 import Image from "next/image";
-
 import styles from "./FocusedServices.module.css";
-
-import { SanityProjectsPage, SanityFocusedService } from "@/sanity/lib/types";
+import { SanityProjectsPage } from "@/sanity/lib/types";
 import { urlForImage } from "@/sanity/lib/image";
+import { motion } from "framer-motion";
 
 interface FocusedServicesProps {
   data: SanityProjectsPage | null;
-  services: SanityFocusedService[];
+  services: any[]; // These are now SanityProject objects
 }
-
-import { motion } from "framer-motion";
 
 export function FocusedServices({ data, services }: FocusedServicesProps) {
   const servicesToDisplay = (Array.isArray(services) && services.length > 0) ? services : [
     {
-      title: "Rectifier Module Commissioning",
-      description: "Expert installation and commissioning of power rectifier modules for resilient infrastructure.",
-      category: "Power Systems",
-      features: ["DC Power Systems", "Battery Backup", "Load Testing"]
-    },
-    {
-      title: "Radio Unit Installation",
-      description: "Precision deployment of high-capacity radio units for optimal network coverage.",
-      category: "Network Ops",
-      features: ["RAN Optimization", "Fiber Integration", "Site Audits"]
-    },
-    {
-      title: "Data Center Infrastructure",
-      description: "Scalable solutions for modern data centers, from cooling to cable management.",
-      category: "Critical Facilities",
-      features: ["PUE Optimization", "Rack Design", "Climate Control"]
+      title: "Sample Project",
+      description: "Description of the project.",
+      category: "Infrastructure",
+      client: "Sample Client"
     }
   ];
 
@@ -54,12 +39,12 @@ export function FocusedServices({ data, services }: FocusedServicesProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {data?.servicesHeading || "Focused on Technical Excellence"}
+            {data?.servicesHeading || "Featured Projects"}
           </motion.h2>
         </div>
 
         <div className={styles.grid}>
-          {servicesToDisplay.map((service: any, index: number) => {
+          {servicesToDisplay.map((project: any, index: number) => {
             return (
               <motion.div 
                 key={index} 
@@ -69,25 +54,32 @@ export function FocusedServices({ data, services }: FocusedServicesProps) {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <div className={styles.cardHeader}>
-                  <div className={styles.iconCircle}>
-                    <div className={styles.innerDot} />
+                {project.mainImage && (
+                  <div className={styles.imageWrapper}>
+                    <Image 
+                      src={urlForImage(project.mainImage).url()} 
+                      alt={project.title || "Project"} 
+                      fill 
+                      className={styles.image}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
                   </div>
-                  <span className={styles.category}>{service.category || 'Specialized'}</span>
-                </div>
+                )}
                 
-                <div className={styles.cardBody}>
-                  <h3 className={styles.cardTitle}>{service.title}</h3>
-                  <p className={styles.cardDesc}>{service.description}</p>
-                </div>
-
-                <div className={styles.cardFooter}>
-                  <div className={styles.featureList}>
-                    {(service.features || ["High Performance", "Scalable"]).map((feature: string, fIdx: number) => (
-                      <span key={fIdx} className={styles.featureTag}>{feature}</span>
-                    ))}
+                <div className={styles.cardContent}>
+                  <div className={styles.cardHeader}>
+                    <span className={styles.category}>{project.category || 'Specialized'}</span>
+                    {project.client && <span className={styles.client}>{project.client}</span>}
                   </div>
-                  <div className={styles.index}>0{index + 1}</div>
+                  
+                  <div className={styles.cardBody}>
+                    <h3 className={styles.cardTitle}>{project.title}</h3>
+                    <p className={styles.cardDesc}>{project.description}</p>
+                  </div>
+
+                  <div className={styles.cardFooter}>
+                    <div className={styles.index}>0{index + 1}</div>
+                  </div>
                 </div>
               </motion.div>
             );
@@ -97,5 +89,3 @@ export function FocusedServices({ data, services }: FocusedServicesProps) {
     </section>
   );
 }
-
-

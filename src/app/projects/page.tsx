@@ -2,14 +2,15 @@ import { ProjectsHero } from "@/components/sections/projects/ProjectsHero";
 import { ProjectMasonry } from "@/components/sections/projects/ProjectMasonry";
 import { FocusedServices } from "@/components/sections/projects/FocusedServices";
 import { client } from "@/sanity/lib/client";
-import { getProjectsPageQuery, getProjectsQuery } from "@/sanity/lib/queries";
+import { getProjectsPageQuery, getProjectsQuery, getMasonryItemsQuery } from "@/sanity/lib/queries";
 
 export const revalidate = 60;
 
 export default async function ProjectsPage() {
-  const [projectsPage, allProjects] = await Promise.all([
+  const [projectsPage, allProjects, masonryItems] = await Promise.all([
     client.fetch(getProjectsPageQuery),
     client.fetch(getProjectsQuery),
+    client.fetch(getMasonryItemsQuery),
   ]);
 
   const projects =
@@ -20,7 +21,7 @@ export default async function ProjectsPage() {
   return (
     <main style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
       <ProjectsHero data={projectsPage} />
-      <ProjectMasonry projects={allProjects} />
+      <ProjectMasonry projects={masonryItems} />
       {/*<ProjectShowcase data={projectsPage} />*/}
       <FocusedServices data={projectsPage} services={projects as any} />
     </main>

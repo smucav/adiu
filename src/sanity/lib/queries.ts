@@ -105,6 +105,11 @@ export const getProjectsQuery = groq`*[_type == "project"] | order(order asc){
   mainImage ${imageFields}
 }`;
 
+export const getMasonryItemsQuery = groq`*[_type == "masonryItem"] | order(order asc){
+  _id, title, description,
+  mainImage ${imageFields}
+}`;
+
 // Page Singletons — projected
 export const getAboutPageQuery = groq`*[_type == "aboutPage"][0]{
   heroHeading, heroDescription,

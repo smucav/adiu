@@ -20,6 +20,7 @@ import { servicesPage } from './servicesPage'
 import { serviceFeatureItem } from './serviceFeatureItem'
 import { project } from './project'
 import { cultureImage } from './cultureImage'
+import { masonryItem } from './masonryItem'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -44,5 +45,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     serviceFeatureItem,
     project,
     cultureImage,
+    masonryItem,
   ],
 }
