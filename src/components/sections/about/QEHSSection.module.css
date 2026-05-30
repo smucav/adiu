@@ -27,7 +27,7 @@
 
 /* ── Header ───────────────────────────────────────────────── */
 .header {
-  text-align: center;
+  text-align: left;
   /* Mobile: slimmer bottom margin */
   margin-bottom: 3.5rem;
 }
@@ -113,7 +113,7 @@
   /* Mobile: flat height, auto-sized */
   height: auto;
   margin-bottom: 3.5rem;
-  text-align: center;
+  text-align: left;
 }
 
 .policyItem:last-child { margin-bottom: 0; }
@@ -179,8 +179,8 @@
 .textContent {
   flex: 1;
   max-width: 550px;
-  /* Mobile: centered */
-  margin: 0 auto;
+  /* Mobile: left-aligned */
+  margin: 0;
 }
 
 @media (min-width: 1024px) {

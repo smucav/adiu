@@ -244,9 +244,6 @@ const PolicyItem = ({
       <motion.div style={{ x: xText, opacity }} className={styles.textContent}>
         <h3 className={styles.policyTitle}>{policy.title}</h3>
         <p className={styles.policyText}>{policy.description}</p>
-        <div className={styles.actionCircle}>
-          <div className={styles.arrow} />
-        </div>
       </motion.div>
 
       <motion.div

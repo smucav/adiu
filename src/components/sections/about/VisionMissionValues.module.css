@@ -105,7 +105,7 @@
 
 .valueItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   font-size: 18px;
   color: #1a1a1a;
@@ -115,6 +115,7 @@
 .checkIcon {
   color: #6abf3f;
   flex-shrink: 0;
+  margin-top: 3px;
 }
 
 .statsSide {
@@ -185,7 +186,7 @@
 
 @media (max-width: 1024px) {
   .section {
-    padding: 80px 0;
+    padding: 100px 0 80px;
   }
 
   .tabsContainer {
@@ -221,7 +222,11 @@
   }
 
   .valuesList {
-    align-items: center;
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    text-align: left;
+    max-width: 100%;
   }
 
   .statsSide {
@@ -238,7 +243,7 @@
 
 @media (max-width: 640px) {
   .section {
-    padding: 60px 0;
+    padding: 90px 0 60px;
   }
 
   .tabList {
