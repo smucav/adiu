@@ -165,9 +165,7 @@ function ProjectCard({ project, index, size = "medium" }: { project: any, index:
     "/images/alarm_sensor.png"
   ];
 
-  const imageUrl = project.mainImage?.asset?._ref
-    ? urlForImage(project.mainImage).width(800).quality(85).url()
-    : fallbacks[index % fallbacks.length];
+  const imageUrl = urlForImage(project.mainImage).width(800).quality(85).url() || fallbacks[index % fallbacks.length];
 
   return (
     <div className={`${styles.projectCard} ${styles[size]}`}>
