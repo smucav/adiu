@@ -50,6 +50,13 @@ export const globalSettings = defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'faviconImage',
+      title: 'Favicon Image',
+      type: 'image',
+      description: 'Upload a square image (preferably PNG/ICO/SVG) to use as the browser tab icon.',
+      options: { hotspot: true },
+    }),
+    defineField({
       name: 'navLinks',
       title: 'Navigation Links',
       type: 'array',

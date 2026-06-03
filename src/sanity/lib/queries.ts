@@ -8,6 +8,7 @@ export const getGlobalSettingsQuery = groq`*[_type == "globalSettings"][0]{
   brandGreen, lightMint, darkSlate, olive,
   siteTitle, siteDescription,
   logoImage ${imageFields},
+  faviconImage ${imageFields},
   navLinks[]{ label, href },
   footerBrandDesc,
   socialUrls{ facebook, linkedin, instagram, twitter, youtube },

@@ -19,39 +19,74 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "ADIU Communication",
-    template: "%s | ADIU Communication",
-  },
-  description:
-    "Leading telecom infrastructure and engineering services provider in East Africa. Site deployment, network optimization, and managed services.",
-  metadataBase: new URL("https://adiu.com"),
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: "ADIU Communication",
-    title: "ADIU Communication — Telecom Infrastructure & Engineering",
-    description:
-      "Leading telecom infrastructure and engineering services provider in East Africa.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ADIU Communication",
-    description:
-      "Leading telecom infrastructure and engineering services provider in East Africa.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  let settings = null;
+  try {
+    settings = await client.fetch(
+      getGlobalSettingsQuery,
+      {},
+      { next: { revalidate: 60 } },
+    );
+  } catch (e) {
+    // Sanity CMS fetch error — continue with defaults
+  }
 
-export const viewport: Viewport = {
-  themeColor: "#82c341",
-  width: "device-width",
-  initialScale: 1,
-};
+  const siteTitle = settings?.siteTitle || "ADIU Communication";
+  const siteDescription =
+    settings?.siteDescription ||
+    "Leading telecom infrastructure and engineering services provider in East Africa. Site deployment, network optimization, and managed services.";
+  
+  const faviconUrl = settings?.faviconImage?.asset?.url || "/favicon.ico";
+
+  return {
+    title: {
+      default: siteTitle,
+      template: `%s | ${siteTitle}`,
+    },
+    description: siteDescription,
+    metadataBase: new URL("https://adiu.com"),
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      siteName: siteTitle,
+      title: `${siteTitle} — Telecom Infrastructure & Engineering`,
+      description: siteDescription,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteTitle,
+      description: siteDescription,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    icons: {
+      icon: faviconUrl,
+      shortcut: faviconUrl,
+      apple: faviconUrl,
+    },
+  };
+}
+
+export async function generateViewport(): Promise<Viewport> {
+  let settings = null;
+  try {
+    settings = await client.fetch(
+      getGlobalSettingsQuery,
+      {},
+      { next: { revalidate: 60 } },
+    );
+  } catch (e) {
+    // Sanity CMS fetch error — continue with defaults
+  }
+
+  return {
+    themeColor: settings?.brandGreen || "#82c341",
+    width: "device-width",
+    initialScale: 1,
+  };
+}
 
 export default async function RootLayout({
   children,

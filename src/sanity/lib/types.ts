@@ -23,6 +23,7 @@ export interface SanityGlobalSettings {
   siteTitle: string
   siteDescription?: string
   logoImage?: SanityImage
+  faviconImage?: SanityImage
   navLinks?: Array<{ label: string; href: string }>
   footerBrandDesc?: string
   socialUrls?: {
